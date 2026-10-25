@@ -1,0 +1,32 @@
+/* Provisional foundation tokens. Final values require the Foundations decision. */
+:root {
+  color-scheme: light dark;
+  --prava-color-canvas: #ffffff;
+  --prava-color-surface: #f7f7f8;
+  --prava-color-text: #171717;
+  --prava-color-text-muted: #626262;
+  --prava-color-border: #d6d6d8;
+  --prava-color-focus: #3157d5;
+  --prava-color-primary: #3157d5;
+  --prava-color-success: #18794e;
+  --prava-color-warning: #9a5b00;
+  --prava-color-danger: #b42318;
+  --prava-color-info: #175cd3;
+  --prava-radius-control: 0.375rem;
+  --prava-radius-card: 0.75rem;
+  --prava-duration-fast: 120ms;
+  --prava-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+}
+
+:root[data-prava-theme='light'] {
+  color-scheme: light;
+}
+
+:root[data-prava-theme='dark'] {
+  color-scheme: dark;
+  --prava-color-canvas: #171717;
+  --prava-color-surface: #242424;
+  --prava-color-text: #f5f5f5;
+  --prava-color-text-muted: #b0b0b0;
+  --prava-color-border: #494949;
+}

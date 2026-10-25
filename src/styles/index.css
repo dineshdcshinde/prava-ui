@@ -1,0 +1,7 @@
+@import './tokens.css';
+@import './components/button.css';
+/* Intentionally omit Tailwind Preflight and global element resets. */
+@import 'tailwindcss/theme' theme;
+@import 'tailwindcss/utilities' utilities;
+
+@source '../**/*.{ts,tsx}';

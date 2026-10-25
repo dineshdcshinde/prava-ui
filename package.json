@@ -1,0 +1,70 @@
+{
+  "name": "prava-ui",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Accessible, responsive React components with compiled CSS.",
+  "license": "MIT",
+  "sideEffects": ["**/*.css"],
+  "files": ["dist"],
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css",
+    "./styles/tokens.css": "./dist/tokens.css",
+    "./styles/components/button.css": "./dist/styles/components/button.css",
+    "./package.json": "./package.json"
+  },
+  "peerDependencies": {
+    "react": ">=18.2.0 <20.0.0",
+    "react-dom": ">=18.2.0 <20.0.0"
+  },
+  "scripts": {
+    "dev": "storybook dev -p 6006",
+    "build": "vite build && npm run build:tokens",
+    "build:tokens": "node scripts/build-tokens.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "storybook": "storybook dev -p 6006",
+    "storybook:build": "storybook build",
+    "test:e2e": "playwright test",
+    "test:package": "node scripts/package-check.mjs",
+    "release:check": "npm run typecheck && npm run lint && npm run format:check && npm test && npm run build && npm run storybook:build && npm run test:package && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "@storybook/addon-a11y": "^9.1.0",
+    "@storybook/addon-docs": "^9.1.0",
+    "@storybook/react-vite": "^9.1.0",
+    "@tailwindcss/vite": "^4.1.0",
+    "@testing-library/jest-dom": "^6.8.0",
+    "@testing-library/react": "^16.3.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@typescript-eslint/eslint-plugin": "^8.44.0",
+    "@typescript-eslint/parser": "^8.44.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "eslint": "^9.35.0",
+    "eslint-config-prettier": "^10.1.0",
+    "happy-dom": "^18.0.0",
+    "prettier": "^3.6.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "storybook": "^9.1.0",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.9.0",
+    "vite": "^7.1.0",
+    "vite-plugin-dts": "^4.5.0",
+    "vitest": "^3.2.0"
+  }
+}

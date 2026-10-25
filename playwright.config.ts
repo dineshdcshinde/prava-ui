@@ -1,0 +1,11 @@
+import { defineConfig, devices } from '@playwright/test';
+
+export default defineConfig({
+  testDir: './tests/e2e',
+  use: { ...devices['Desktop Chrome'], baseURL: 'http://127.0.0.1:6006' },
+  webServer: {
+    command: 'npm run storybook -- --ci --host 127.0.0.1',
+    port: 6006,
+    reuseExistingServer: !process.env.CI,
+  },
+});
