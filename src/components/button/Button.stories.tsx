@@ -35,6 +35,17 @@ export const Sizes: Story = {
   ),
 };
 export const Loading: Story = { args: { loading: true } };
+const PlusIcon = () => (
+  <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+    <path d="M12 5v14M5 12h14" />
+  </svg>
+);
+export const WithIcons: Story = {
+  args: { leftIcon: <PlusIcon />, rightIcon: <PlusIcon />, children: "Add item" },
+};
+export const IconOnly: Story = {
+  args: { type: "icon", "aria-label": "Add item", leftIcon: <PlusIcon />, children: undefined },
+};
 export const RTL: Story = {
   render: (args) => (
     <div dir="rtl">

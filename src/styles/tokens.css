@@ -1,20 +1,26 @@
-/* Provisional foundation tokens. Final values require the Foundations decision. */
+/* Provisional Prava direction: calm product surfaces with a confident teal accent. */
 :root {
   color-scheme: light dark;
-  --prava-color-canvas: #ffffff;
-  --prava-color-surface: #f7f7f8;
-  --prava-color-text: #171717;
-  --prava-color-text-muted: #626262;
-  --prava-color-border: #d6d6d8;
-  --prava-color-focus: #3157d5;
-  --prava-color-primary: #3157d5;
-  --prava-color-success: #18794e;
-  --prava-color-warning: #9a5b00;
-  --prava-color-danger: #b42318;
-  --prava-color-info: #175cd3;
-  --prava-radius-control: 0.375rem;
-  --prava-radius-card: 0.75rem;
-  --prava-duration-fast: 120ms;
+  --prava-color-canvas: #f5f7f9;
+  --prava-color-surface: #ffffff;
+  --prava-color-surface-hover: #edf2f5;
+  --prava-color-text: #172631;
+  --prava-color-text-muted: #5c6b76;
+  --prava-color-border: #d8e1e6;
+  --prava-color-focus: #087d89;
+  --prava-color-primary: #116875;
+  --prava-color-primary-hover: #0d5661;
+  --prava-color-on-primary: #ffffff;
+  --prava-color-success: #176b4b;
+  --prava-color-warning: #805000;
+  --prava-color-danger: #b42338;
+  --prava-color-danger-hover: #941c2d;
+  --prava-color-info: #315eae;
+  --prava-radius-control: 0.625rem;
+  --prava-radius-card: 0.875rem;
+  --prava-shadow-control: 0 1px 2px rgb(23 38 49 / 0.08), 0 1px 1px rgb(23 38 49 / 0.04);
+  --prava-shadow-control-hover: 0 4px 12px rgb(23 38 49 / 0.12), 0 1px 2px rgb(23 38 49 / 0.06);
+  --prava-duration-fast: 140ms;
   --prava-ease-standard: cubic-bezier(0.2, 0, 0, 1);
 }
 
@@ -24,9 +30,20 @@
 
 :root[data-prava-theme='dark'] {
   color-scheme: dark;
-  --prava-color-canvas: #171717;
-  --prava-color-surface: #242424;
-  --prava-color-text: #f5f5f5;
-  --prava-color-text-muted: #b0b0b0;
-  --prava-color-border: #494949;
+  --prava-color-canvas: #111a20;
+  --prava-color-surface: #1a2730;
+  --prava-color-surface-hover: #243640;
+  --prava-color-text: #edf4f5;
+  --prava-color-text-muted: #a9b8bf;
+  --prava-color-border: #354852;
+  --prava-color-focus: #72c4cb;
+  --prava-color-primary: #126775;
+  --prava-color-primary-hover: #197988;
+  --prava-color-success: #197452;
+  --prava-color-warning: #805000;
+  --prava-color-danger: #b42338;
+  --prava-color-danger-hover: #cf354b;
+  --prava-color-info: #315eae;
+  --prava-shadow-control: 0 1px 2px rgb(0 0 0 / 0.24);
+  --prava-shadow-control-hover: 0 4px 12px rgb(0 0 0 / 0.32);
 }

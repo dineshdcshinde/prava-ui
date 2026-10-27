@@ -92,7 +92,18 @@ These sources do not authorize copying logos, icons, source code, exact componen
 5. **Accessible for everyone.** Semantic HTML, keyboard operation, visible focus, accessible naming, state announcements, contrast, reduced motion, localization, and RTL are engineering requirements—not optional enhancements.
 6. **Lightweight by default.** Keep runtime dependencies minimal, export components in a tree-shakable way, avoid eager registries, and validate the built package instead of relying on source-only assumptions.
 
-### 4.3 AI implementation instructions
+### 4.3 Prava UI visual direction
+
+Prava UI should feel like a polished, dependable SaaS interface with a restrained contemporary edge. It should be approachable to a broad audience without relying on generational stereotypes or short-lived visual trends. The goal is for consumers to get a cohesive, professional interface from sensible defaults without needing to design every component themselves.
+
+- Build personality through consistent details: a purposeful accent, clear hierarchy, considered spacing, surface and border contrast, and precise interaction feedback. Avoid decoration that does not help users understand or act.
+- Use readable typography that inherits the consumer's font. Keep size and weight hierarchy clear without imposing a branded typeface.
+- Use shape and density intentionally. Controls should feel comfortable and composed; reserve highly rounded treatments for components whose meaning benefits from them. Keep layouts useful in both compact product interfaces and spacious compositions.
+- Use brief hover, pressed, focus, loading, and state feedback where it improves understanding. Motion should feel responsive and restrained, never delay input, and respect `prefers-reduced-motion`.
+- Keep default styling complete and coherent while preserving the documented customization hooks. The library should provide a strong starting point, not force a brand onto the consumer's product.
+- Keep components responsive and lightweight. Visual polish must not add avoidable runtime work, layout shifts, or interaction lag.
+
+### 4.4 AI implementation instructions
 
 When an AI coding agent implements a component, it must:
 
@@ -107,9 +118,9 @@ When an AI coding agent implements a component, it must:
 - Add the component story, tests, and API documentation for the component currently being implemented.
 - Explicitly report a requirement that cannot be satisfied or tested. Do not silently omit it.
 
-### 4.4 Visual identity decisions not yet frozen
+### 4.5 Visual identity decisions not yet frozen
 
-The final accent hue, detailed palette, typeface, exact spacing scale, radius scale, shadows, and motion timings must be finalized in a dedicated Foundations step before multiple components are implemented. Until then, token values in the scaffold are provisional. Do not mistake a provisional value for a settled brand rule.
+The exact accent hue, detailed palette, type scale, spacing scale, radii, shadows, and motion timings remain provisional until they are recorded in Foundations. Establish those decisions before broad component implementation, then review early components against them. Do not treat provisional scaffold token values as settled brand rules.
 
 ## 5. Design-system specification
 
@@ -204,24 +215,27 @@ These primitives must not require the consumer to configure Tailwind. Their API 
 
 ### 6.3 Import API
 
-The simplest consumer experience uses the aggregate stylesheet:
+The simplest consumer experience imports components from the package root. The ESM entry re-exports components through their style-bearing modules so a consumer bundler can include the selected components' compiled CSS:
 
 ```tsx
 import { Button, Card, Input } from "prava-ui";
-import "prava-ui/styles.css";
 ```
 
-Advanced consumers should be able to select only the needed styles:
+Consumers who want only selected component styles import a component entry point; its JavaScript automatically imports its compiled CSS and shared tokens:
 
 ```tsx
 import { Button } from "prava-ui/button";
-import "prava-ui/styles/tokens.css";
-import "prava-ui/styles/components/button.css";
 ```
 
-The two CSS approaches are alternatives; documentation must warn consumers not to import aggregate and granular styles together unless intentional. Direct component JavaScript entry points must be documented and tested. The `exports` map must prevent imports from unsupported internal paths.
+The root and component entry points include styles automatically. The aggregate and granular CSS exports remain available for CSS-only integration; manual granular CSS use includes shared `tokens.css` alongside the selected component stylesheet. Documentation must warn consumers not to combine manual CSS with JavaScript entry points unless intentional. Component JavaScript entry points must be documented and tested. The `exports` map must prevent imports from unsupported internal paths.
 
 `className` accepts ordinary CSS classes and can also accept consumer utility classes when the consumer's own tooling generates them. Because this package ships compiled styles, it must not promise that consumer-provided Tailwind class names will work in a project that does not generate those utilities. CSS variables are the guaranteed theme-customization contract.
+
+### 6.4 Editor-ready component guidance
+
+- Add concise one-line TSDoc/JSDoc descriptions to every component-specific prop and public type so editors can explain the API inline; native React attributes keep their upstream React documentation.
+- Add one copy-ready TypeScript/TSX usage example to each exported component's JSDoc using `@example`. Keep the example aligned with the component's Storybook default and documented API.
+- Preserve JSDoc in generated declaration files and verify representative exported props and examples in the built package. Keep fuller behavior, accessibility, and customization guidance in component documentation; inline help complements it rather than replacing it.
 
 ## 7. Framework-neutral internationalization and RTL
 
@@ -281,7 +295,7 @@ The 25 core components below are the target catalog. The three layout primitives
 #### 2. Badge
 
 - Purpose: compact status/category indicator.
-- API: semantic tone, size, and content.
+- API: semantic tone, size, visible content, and a child element the indicator is anchored to.
 - Behavior: non-interactive by default; must not masquerade as a button.
 - Responsive: content-sized, long labels wrap or truncate only when explicitly configured.
 - A11y: status meaning cannot rely on color alone.

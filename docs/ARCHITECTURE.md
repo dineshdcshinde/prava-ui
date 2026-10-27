@@ -10,9 +10,11 @@ The package is an ESM-first React library built with Vite. React and React DOM a
 - Vitest, Testing Library, Playwright, and release-check script entry points are configured.
 - Token values are provisional. Brand, font, complete scales, and final theme behavior are not frozen.
 - Button is the first representative component and has an aggregate stylesheet plus a granular stylesheet entry point.
+- Badge has an aggregate stylesheet import, granular stylesheet entry point, story, and unit coverage; package and cross-browser quality gates remain pending.
+- Root exports re-export style-bearing component entries, allowing consumer bundlers to include only styles for used components. Direct `prava-ui/button` and `prava-ui/badge` imports include their matching compiled Tailwind CSS automatically.
 
 ## Before component work
 
-The Button stylesheet is emitted/copied as a granular entry point, but its paths have not yet been validated from a packed consumer fixture without Tailwind setup. Keep aggregate CSS as the simple import path. Do not claim CSS selection/tree-shaking until that fixture proves it. JavaScript ESM tree-shaking and CSS selection are separate checks. Foundation token values and Button variants remain provisional until the Foundations decisions are approved.
+The package check installs the packed package in a temporary consumer and verifies root JavaScript tree-shaking, automatic CSS imports, and per-component style selection without consumer Tailwind setup. JavaScript ESM tree-shaking and CSS selection are checked separately. Foundation token values and Button variants remain provisional until the Foundations decisions are approved.
 
 The packed consumer, browser smoke, CI workflow, lockfile, and complete install/build verification remain scaffold completion tasks. No component catalog has been generated. The `prava-ui` name and release metadata remain provisional; verify package availability and release metadata before publishing.

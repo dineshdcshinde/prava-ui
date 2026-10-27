@@ -8,9 +8,13 @@ export default defineConfig({
   plugins: [react(), tailwindcss(), dts({ include: ['src'], outDir: 'dist' })],
   build: {
     lib: {
-      entry: resolve(import.meta.dirname, 'src/index.ts'),
+      entry: {
+        index: resolve(import.meta.dirname, 'src/index.ts'),
+        button: resolve(import.meta.dirname, 'src/components/button/index.ts'),
+        badge: resolve(import.meta.dirname, 'src/components/badge/index.ts'),
+      },
       formats: ['es'],
-      fileName: 'index',
+      fileName: (_format, entryName) => `${entryName}.js`,
       cssFileName: 'styles',
     },
     rollupOptions: {

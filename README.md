@@ -20,14 +20,23 @@ See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for current scaffold status and unre
 
 ## Button
 
-Import the component and either the aggregate stylesheet or the Button stylesheet with shared tokens:
+Importing a component automatically includes its compiled styles. The root entry includes styles for components your bundler keeps; a component entry loads only that component and its styles:
 
 ```tsx
-import { Button } from 'prava-ui';
-import 'prava-ui/styles.css';
-// Or, for CSS selection: import 'prava-ui/styles/tokens.css'; import 'prava-ui/styles/components/button.css';
+import { Button } from 'prava-ui/button';
 
-<Button variant="primary" size="md" onClick={save}>Save</Button>
+<Button variant="primary" size="md">Save</Button>
 ```
 
 Button supports native button attributes, `variant` (`primary`, `secondary`, `outline`, `ghost`, `destructive`), `size` (`sm`, `md`, `lg`), and `loading`. Loading sets `aria-busy` and disables the native button. Use native accessible naming such as visible text or `aria-label` for icon-only content. `className` and `style` are forwarded; styles inherit the consumer font and use the shared `--prava-*` tokens.
+
+## Badge
+
+```tsx
+import { Badge } from 'prava-ui/badge';
+import { Button } from 'prava-ui/button';
+
+<Badge content="3"><Button>Inbox</Button></Badge>
+```
+
+Badge anchors a compact, non-interactive indicator over a child element such as a Button. It requires `content` and the element as `children`; it supports `tone` (`neutral`, `primary`, `success`, `warning`, `danger`, `info`), `size` (`sm`, `md`), native span attributes, `className`, and `style`. Its visible content must communicate the status; color is only a visual treatment. Component imports include their styles automatically. The root import includes styles for components kept by the consumer's bundler; component entry imports include only that component's styles. For manual CSS imports, include shared `styles/tokens.css` with the selected component stylesheet.
