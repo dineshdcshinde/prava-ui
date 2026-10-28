@@ -1,3 +1,113 @@
 @import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@reference 'tailwindcss';
 
 @source '../../components/button/**/*.{ts,tsx}';
+
+.prava-button {
+  @apply inline-flex max-w-full items-center justify-center gap-2 rounded-(--prava-radius-control) border font-[inherit] font-semibold leading-[1.25] text-center transition-[background-color,color,border-color,box-shadow,transform] duration-(--prava-duration-fast) ease-(--prava-ease-standard) focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-(--prava-color-focus) disabled:cursor-not-allowed disabled:opacity-[.58] disabled:shadow-none;
+}
+
+.prava-button[data-variant='primary'] {
+  @apply border-transparent bg-(--prava-color-primary) text-(--prava-color-on-primary) shadow-(--prava-shadow-control);
+}
+
+.prava-button[data-variant='primary']:hover:not(:disabled) {
+  @apply bg-(--prava-color-primary-hover) shadow-(--prava-shadow-control-hover);
+}
+
+.prava-button[data-variant='secondary'] {
+  @apply border-(--prava-color-border) bg-(--prava-color-surface) text-(--prava-color-text) shadow-(--prava-shadow-control);
+}
+
+.prava-button[data-variant='secondary']:hover:not(:disabled) {
+  @apply bg-(--prava-color-surface-hover) shadow-(--prava-shadow-control-hover);
+}
+
+.prava-button[data-variant='outline'] {
+  @apply border-(--prava-color-border) bg-transparent text-(--prava-color-text) shadow-none;
+}
+
+.prava-button[data-variant='outline']:hover:not(:disabled) {
+  @apply bg-(--prava-color-surface-hover);
+}
+
+.prava-button[data-variant='ghost'] {
+  @apply border-transparent bg-transparent text-(--prava-color-text) shadow-none;
+}
+
+.prava-button[data-variant='ghost']:hover:not(:disabled) {
+  @apply bg-(--prava-color-surface-hover);
+}
+
+.prava-button[data-variant='destructive'] {
+  @apply border-transparent bg-(--prava-color-danger) text-(--prava-color-on-primary) shadow-(--prava-shadow-control);
+}
+
+.prava-button[data-variant='destructive']:hover:not(:disabled) {
+  @apply bg-(--prava-color-danger-hover) shadow-(--prava-shadow-control-hover);
+}
+
+.prava-button[data-size='sm'] {
+  @apply min-h-[2rem] px-[.625rem] py-[.375rem] text-[.875rem];
+}
+
+.prava-button[data-size='md'] {
+  @apply min-h-[2.5rem] px-[.875rem] py-[.5rem] text-[1rem];
+}
+
+.prava-button[data-size='lg'] {
+  @apply min-h-[3rem] px-[1.125rem] py-[.75rem] text-[1rem];
+}
+
+.prava-button[data-type='icon'][data-size='sm'] {
+  @apply size-[2rem] p-0;
+}
+
+.prava-button[data-type='icon'][data-size='md'] {
+  @apply size-[2.5rem] p-0;
+}
+
+.prava-button[data-type='icon'][data-size='lg'] {
+  @apply size-[3rem] p-0;
+}
+
+.prava-button:hover:not(:disabled) {
+  @apply -translate-y-px;
+}
+
+.prava-button:active:not(:disabled) {
+  @apply translate-y-0 scale-[.985];
+}
+
+.prava-button__spinner {
+  @apply size-[1rem] shrink-0 animate-spin rounded-[9999px] border-2 border-current border-e-transparent;
+}
+
+.prava-button[data-motion='none'] {
+  @apply transition-none;
+}
+
+.prava-button[data-motion='none']:hover,
+.prava-button[data-motion='none']:active {
+  @apply translate-none scale-none;
+}
+
+.prava-button[data-motion='none'] .prava-button__spinner {
+  @apply animate-none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prava-button,
+  .prava-button__spinner {
+    @apply transition-none;
+  }
+
+  .prava-button__spinner {
+    @apply animate-none;
+  }
+
+  .prava-button:hover,
+  .prava-button:active {
+    @apply translate-none scale-none;
+  }
+}

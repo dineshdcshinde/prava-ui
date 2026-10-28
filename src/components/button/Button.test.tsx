@@ -17,4 +17,9 @@ describe('Button icons', () => {
     render(<Button type="icon" aria-label="Add item" leftIcon={<PlusIcon />} />);
     expect(screen.getByRole('button', { name: 'Add item' }).getAttribute('data-type')).toBe('icon');
   });
+
+  it('can disable its interaction and loading animations', () => {
+    render(<Button disableAnimation loading>Saving</Button>);
+    expect(screen.getByRole('button').getAttribute('data-motion')).toBe('none');
+  });
 });

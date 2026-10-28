@@ -45,6 +45,17 @@ export const Sizes: Story = {
     </div>
   ),
 };
+export const Placements: Story = {
+  render: (args) => (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem", padding: "1rem" }}>
+      {(["top-right", "top-left", "bottom-right", "bottom-left"] as const).map((placement) => (
+        <Badge {...args} key={placement} placement={placement} content={placement}>
+          <Button>Inbox</Button>
+        </Badge>
+      ))}
+    </div>
+  ),
+};
 export const RTL: Story = {
   render: (args) => (
     <div dir="rtl">

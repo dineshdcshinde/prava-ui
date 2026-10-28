@@ -35,6 +35,7 @@ export const Sizes: Story = {
   ),
 };
 export const Loading: Story = { args: { loading: true } };
+export const WithoutAnimation: Story = { args: { disableAnimation: true } };
 const PlusIcon = () => (
   <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
     <path d="M12 5v14M5 12h14" />

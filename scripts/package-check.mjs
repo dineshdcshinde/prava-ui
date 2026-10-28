@@ -4,11 +4,13 @@ import { tmpdir } from 'node:os';
 import { join, resolve, sep } from 'node:path';
 import { build } from 'vite';
 
-const npm = process.platform === 'win32' ? 'npm.cmd' : 'npm';
-const output = execFileSync(npm, ['pack', '--dry-run', '--json'], {
-  encoding: 'utf8',
-  shell: process.platform === 'win32',
-});
+const npmCommand = process.platform === 'win32' ? process.execPath : 'npm';
+const npmPrefixArgs = process.platform === 'win32' ? [process.env.npm_execpath] : [];
+if (process.platform === 'win32' && npmPrefixArgs[0] === undefined) {
+  throw new Error('Run this check through npm so npm can locate its CLI.');
+}
+const runNpm = (args, options) => execFileSync(npmCommand, [...npmPrefixArgs, ...args], options);
+const output = runNpm(['pack', '--dry-run', '--json'], { encoding: 'utf8' });
 const [pack] = JSON.parse(output);
 if (!pack.files.some(({ path }) => path === 'dist/index.js')) {
   throw new Error('Built package is missing dist/index.js. Run npm run build first.');
@@ -51,15 +53,11 @@ const fixture = await mkdtemp(join(tmpdir(), 'prava-ui-consumer-'));
 try {
   const consumer = resolve(fixture, 'consumer');
   const output = resolve(consumer, 'out');
-  const packed = JSON.parse(execFileSync(npm, ['pack', '--pack-destination', fixture, '--json'], {
-    encoding: 'utf8',
-    shell: process.platform === 'win32',
-  }))[0];
+  const packed = JSON.parse(runNpm(['pack', '--pack-destination', fixture, '--json'], { encoding: 'utf8' }))[0];
   await mkdir(consumer, { recursive: true });
-  execFileSync(npm, ['install', join(fixture, packed.filename), '--offline', '--ignore-scripts', '--no-audit', '--no-fund', '--legacy-peer-deps'], {
+  runNpm(['install', join(fixture, packed.filename), '--offline', '--ignore-scripts', '--no-audit', '--no-fund', '--legacy-peer-deps'], {
     cwd: consumer,
     stdio: 'ignore',
-    shell: process.platform === 'win32',
   });
   const cssFiles = async (directory) => {
     const entries = await readdir(directory, { withFileTypes: true });
@@ -91,20 +89,21 @@ try {
   const rootButtonCss = await readCss(resolve(output, 'root'));
   const rootBadgeCss = await readCss(resolve(output, 'root-badge'));
   const aggregateCss = await readFile('dist/styles.css', 'utf8');
-  if (!buttonCss.includes('hover\\:bg-') || buttonCss.includes('.absolute{')) {
+  if (!buttonCss.includes('.prava-button{') || buttonCss.includes('.prava-badge{')) {
     throw new Error('A Button-only consumer build did not select only Button styles.');
   }
-  if (!badgeCss.includes('.absolute{') || badgeCss.includes('animate-spin')) {
+  if (!badgeCss.includes('.prava-badge{') || badgeCss.includes('.prava-button{')) {
     throw new Error('A Badge-only consumer build did not select only Badge styles.');
   }
-  if (!rootButtonCss.includes('hover\\:bg-') || rootButtonCss.includes('.absolute{')) {
+  if (!rootButtonCss.includes('.prava-button{') || rootButtonCss.includes('.prava-badge{')) {
     throw new Error('A root Button-only consumer build did not tree-shake to Button styles.');
   }
-  if (!rootBadgeCss.includes('.absolute{') || rootBadgeCss.includes('animate-spin')) {
+  if (!rootBadgeCss.includes('.prava-badge{') || rootBadgeCss.includes('.prava-button{')) {
     throw new Error('A root Badge-only consumer build did not tree-shake to Badge styles.');
   }
-  if (!aggregateCss.includes('hover\\:bg-') || !aggregateCss.includes('.absolute{')) {
-    throw new Error('The aggregate stylesheet is missing component utilities.');
+  const hasRule = (selector) => aggregateCss.includes(`${selector}{`) || aggregateCss.includes(`${selector} {`);
+  if (!hasRule('.prava-button') || !hasRule('.prava-badge')) {
+    throw new Error('The aggregate stylesheet is missing component styles.');
   }
 } finally {
   const tempRoot = resolve(tmpdir());

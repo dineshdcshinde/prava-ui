@@ -1,3 +1,64 @@
 @import 'tailwindcss/utilities.css' layer(utilities) source(none);
+@reference 'tailwindcss';
 
 @source '../../components/badge/**/*.{ts,tsx}';
+
+.prava-badge {
+  @apply relative inline-flex overflow-visible align-middle;
+}
+
+.prava-badge__target {
+  @apply inline-flex max-w-full;
+}
+
+.prava-badge__indicator {
+  @apply pointer-events-none absolute z-10 inline-flex max-w-full items-center justify-center wrap-break-word rounded-full border border-(--prava-color-canvas) font-[inherit] font-semibold leading-[1.25] shadow-(--prava-shadow-control);
+}
+
+.prava-badge__indicator[data-placement='top-right'] {
+  @apply right-0 top-0 translate-x-1/2 translate-y-[-50%];
+}
+
+.prava-badge__indicator[data-placement='top-left'] {
+  @apply left-0 top-0 translate-x-[-50%] translate-y-[-50%];
+}
+
+.prava-badge__indicator[data-placement='bottom-right'] {
+  @apply right-0 bottom-0 translate-x-1/2 translate-y-1/2;
+}
+
+.prava-badge__indicator[data-placement='bottom-left'] {
+  @apply left-0 bottom-0 translate-x-[-50%] translate-y-1/2;
+}
+
+.prava-badge__indicator[data-tone='neutral'] {
+  @apply border-(--prava-color-border) bg-(--prava-color-surface) text-(--prava-color-text);
+}
+
+.prava-badge__indicator[data-tone='primary'] {
+  @apply border-transparent bg-(--prava-color-primary) text-(--prava-color-on-primary);
+}
+
+.prava-badge__indicator[data-tone='success'] {
+  @apply border-transparent bg-(--prava-color-success) text-(--prava-color-on-primary);
+}
+
+.prava-badge__indicator[data-tone='warning'] {
+  @apply border-transparent bg-(--prava-color-warning) text-(--prava-color-on-primary);
+}
+
+.prava-badge__indicator[data-tone='danger'] {
+  @apply border-transparent bg-(--prava-color-danger) text-(--prava-color-on-primary);
+}
+
+.prava-badge__indicator[data-tone='info'] {
+  @apply border-transparent bg-(--prava-color-info) text-(--prava-color-on-primary);
+}
+
+.prava-badge__indicator[data-size='sm'] {
+  @apply min-h-[1.125rem] min-w-[1.125rem] px-1 py-px text-[.6875rem];
+}
+
+.prava-badge__indicator[data-size='md'] {
+  @apply min-h-[1.5rem] min-w-[1.5rem] px-[.375rem] py-[.125rem] text-[.75rem];
+}

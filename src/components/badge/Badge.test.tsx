@@ -12,9 +12,18 @@ describe('Badge', () => {
     expect(indicator.tagName).toBe('SPAN');
     expect(indicator.getAttribute('data-tone')).toBe('success');
     expect(indicator.getAttribute('data-size')).toBe('sm');
+    expect(indicator.getAttribute('data-placement')).toBe('top-right');
     expect(screen.getByRole('button', { name: 'Inbox' })).toBeTruthy();
     expect(indicator.closest('button')).toBeNull();
   });
+
+  it.each(['top-right', 'top-left', 'bottom-right', 'bottom-left'] as const)(
+    'places the indicator at the %s corner',
+    (placement) => {
+      render(<Badge placement={placement} content="3"><Button>Inbox</Button></Badge>);
+      expect(screen.getByText('3').getAttribute('data-placement')).toBe(placement);
+    },
+  );
 
   it('forwards native span attributes and customization', () => {
     render(<Badge className="custom" title="Status" data-testid="status" content="New"><Button>Updates</Button></Badge>);
