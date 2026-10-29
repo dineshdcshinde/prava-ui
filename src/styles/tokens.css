@@ -1,49 +1,94 @@
-/* Provisional Prava direction: calm product surfaces with a confident teal accent. */
+/* Prava's cool blue palette: quiet neutral surfaces and clear cyan-blue actions. */
 :root {
-  color-scheme: light dark;
-  --prava-color-canvas: #f5f7f9;
+  color-scheme: light;
+  --prava-color-canvas: #fbfbfa;
   --prava-color-surface: #ffffff;
-  --prava-color-surface-hover: #edf2f5;
-  --prava-color-text: #172631;
-  --prava-color-text-muted: #5c6b76;
-  --prava-color-border: #d8e1e6;
-  --prava-color-focus: #087d89;
-  --prava-color-primary: #116875;
-  --prava-color-primary-hover: #0d5661;
+  --prava-color-surface-hover: #f1f5f9;
+  --prava-color-surface-raised: #e2e8f0;
+  --prava-color-text: #11181c;
+  --prava-color-text-muted: #475569;
+  --prava-color-border: #cbd5e1;
+  --prava-color-focus: #0284c7;
+  --prava-color-primary: #0369a1;
+  --prava-color-primary-hover: #075985;
   --prava-color-on-primary: #ffffff;
-  --prava-color-success: #176b4b;
-  --prava-color-warning: #805000;
-  --prava-color-danger: #b42338;
-  --prava-color-danger-hover: #941c2d;
-  --prava-color-info: #315eae;
-  --prava-radius-control: 0.625rem;
-  --prava-radius-card: 0.875rem;
-  --prava-shadow-control: 0 1px 2px rgb(23 38 49 / 0.08), 0 1px 1px rgb(23 38 49 / 0.04);
-  --prava-shadow-control-hover: 0 4px 12px rgb(23 38 49 / 0.12), 0 1px 2px rgb(23 38 49 / 0.06);
+  --prava-color-primary-container: #e0f2fe;
+  --prava-color-on-primary-container: #003351;
+  --prava-color-success: #ecfdf3;
+  --prava-color-on-success: #067647;
+  --prava-color-warning: #fffaeb;
+  --prava-color-on-warning: #93370d;
+  --prava-color-danger: #b42318;
+  --prava-color-on-danger: #ffffff;
+  --prava-color-danger-hover: #912018;
+  --prava-color-danger-container: #fef3f2;
+  --prava-color-on-danger-container: #7a271a;
+  --prava-color-info: #f0f9ff;
+  --prava-color-on-info: #026aa2;
+  --prava-radius-control: 0.375rem;
+  --prava-radius-card: 0.5rem;
+  --prava-shadow-control: 0 1px 2px rgb(15 23 42 / 0.08);
+  --prava-shadow-control-hover: 0 3px 8px rgb(15 23 42 / 0.12);
   --prava-duration-fast: 140ms;
   --prava-ease-standard: cubic-bezier(0.2, 0, 0, 1);
 }
 
-:root[data-prava-theme='light'] {
+[data-prava-theme='light'] {
   color-scheme: light;
+  --prava-color-canvas: #fbfbfa;
+  --prava-color-surface: #ffffff;
+  --prava-color-surface-hover: #f1f5f9;
+  --prava-color-surface-raised: #e2e8f0;
+  --prava-color-text: #11181c;
+  --prava-color-text-muted: #475569;
+  --prava-color-border: #cbd5e1;
+  --prava-color-focus: #0284c7;
+  --prava-color-primary: #0369a1;
+  --prava-color-primary-hover: #075985;
+  --prava-color-on-primary: #ffffff;
+  --prava-color-primary-container: #e0f2fe;
+  --prava-color-on-primary-container: #003351;
+  --prava-color-success: #ecfdf3;
+  --prava-color-on-success: #067647;
+  --prava-color-warning: #fffaeb;
+  --prava-color-on-warning: #93370d;
+  --prava-color-danger: #b42318;
+  --prava-color-on-danger: #ffffff;
+  --prava-color-danger-hover: #912018;
+  --prava-color-danger-container: #fef3f2;
+  --prava-color-on-danger-container: #7a271a;
+  --prava-color-info: #f0f9ff;
+  --prava-color-on-info: #026aa2;
+  --prava-shadow-control: 0 1px 2px rgb(15 23 42 / 0.08);
+  --prava-shadow-control-hover: 0 3px 8px rgb(15 23 42 / 0.12);
 }
 
-:root[data-prava-theme='dark'] {
+[data-prava-theme='dark'] {
   color-scheme: dark;
-  --prava-color-canvas: #111a20;
-  --prava-color-surface: #1a2730;
-  --prava-color-surface-hover: #243640;
-  --prava-color-text: #edf4f5;
-  --prava-color-text-muted: #a9b8bf;
-  --prava-color-border: #354852;
-  --prava-color-focus: #72c4cb;
-  --prava-color-primary: #126775;
-  --prava-color-primary-hover: #197988;
-  --prava-color-success: #197452;
-  --prava-color-warning: #805000;
-  --prava-color-danger: #b42338;
-  --prava-color-danger-hover: #cf354b;
-  --prava-color-info: #315eae;
-  --prava-shadow-control: 0 1px 2px rgb(0 0 0 / 0.24);
-  --prava-shadow-control-hover: 0 4px 12px rgb(0 0 0 / 0.32);
+  --prava-color-canvas: #121318;
+  --prava-color-surface: #1a1b21;
+  --prava-color-surface-hover: #292a2f;
+  --prava-color-surface-raised: #34343a;
+  --prava-color-text: #e3e1e9;
+  --prava-color-text-muted: #bfc7d2;
+  --prava-color-border: #3f4850;
+  --prava-color-focus: #93ccff;
+  --prava-color-primary: #93ccff;
+  --prava-color-primary-hover: #b4dcff;
+  --prava-color-on-primary: #003351;
+  --prava-color-primary-container: #3198dc;
+  --prava-color-on-primary-container: #002c47;
+  --prava-color-success: #183b2a;
+  --prava-color-on-success: #a6f4c5;
+  --prava-color-warning: #3d3013;
+  --prava-color-on-warning: #fec84b;
+  --prava-color-danger: #ffb4ab;
+  --prava-color-on-danger: #690005;
+  --prava-color-danger-hover: #ffd0ca;
+  --prava-color-danger-container: #93000a;
+  --prava-color-on-danger-container: #ffdad6;
+  --prava-color-info: #0b3145;
+  --prava-color-on-info: #7cd4fd;
+  --prava-shadow-control: 0 1px 2px rgb(0 0 0 / 0.28);
+  --prava-shadow-control-hover: 0 3px 8px rgb(0 0 0 / 0.4);
 }

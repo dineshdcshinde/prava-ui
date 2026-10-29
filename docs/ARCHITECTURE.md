@@ -8,13 +8,14 @@ The package is an ESM-first React library built with Vite. React and React DOM a
 - The token stylesheet is separately exported.
 - Storybook uses the React/Vite framework and has a Foundations overview, with no fake component stories.
 - Vitest, Testing Library, Playwright, and release-check script entry points are configured.
-- Token values are provisional. Brand, font, complete scales, and final theme behavior are not frozen.
+- The initial visual foundation is defined in the root `DESIGN.md`: near-white light surfaces, layered obsidian dark surfaces, blue/cyan actions, semantic status pairs, and shared shape tokens.
+- Light is the default; `data-prava-theme="light|dark"` can be set on the document root or a subtree.
 - Button is the first representative component and has an aggregate stylesheet plus a granular stylesheet entry point.
 - Badge has an aggregate stylesheet import, granular stylesheet entry point, story, and unit coverage; package and cross-browser quality gates remain pending.
 - Root exports re-export style-bearing component entries, allowing consumer bundlers to include only styles for used components. Direct `prava-ui/button` and `prava-ui/badge` imports include their matching compiled Tailwind CSS automatically.
 
 ## Before component work
 
-The package check installs the packed package in a temporary consumer and verifies root JavaScript tree-shaking, automatic CSS imports, and per-component style selection without consumer Tailwind setup. JavaScript ESM tree-shaking and CSS selection are checked separately. Foundation token values and Button variants remain provisional until the Foundations decisions are approved.
+The package check installs the packed package in a temporary consumer and verifies root JavaScript tree-shaking, automatic CSS imports, and per-component style selection without consumer Tailwind setup. JavaScript ESM tree-shaking and CSS selection are checked separately. Shared theme tokens let future customer themes override colors and shape without changing component classes or APIs; a theme builder is a V2 direction, not implemented here.
 
 The packed consumer, browser smoke, CI workflow, lockfile, and complete install/build verification remain scaffold completion tasks. No component catalog has been generated. The `prava-ui` name and release metadata remain provisional; verify package availability and release metadata before publishing.

@@ -118,9 +118,9 @@ When an AI coding agent implements a component, it must:
 - Add the component story, tests, and API documentation for the component currently being implemented.
 - Explicitly report a requirement that cannot be satisfied or tested. Do not silently omit it.
 
-### 4.5 Visual identity decisions not yet frozen
+### 4.5 Visual identity decisions
 
-The exact accent hue, detailed palette, type scale, spacing scale, radii, shadows, and motion timings remain provisional until they are recorded in Foundations. Establish those decisions before broad component implementation, then review early components against them. Do not treat provisional scaffold token values as settled brand rules.
+The initial color direction is near-white light surfaces and layered obsidian dark surfaces with blue/cyan primary actions and semantic status colors. Use soft fills for status treatments and sufficient contrast for text and focus indicators. Exact initial values and the shared token contract are in [DESIGN.md](../DESIGN.md). Components consume semantic tokens rather than adding ad hoc colors. Typography, spacing, shadow, and motion scales remain open for Foundations; control and card radii are defined in the guide.
 
 ## 5. Design-system specification
 
@@ -137,15 +137,16 @@ The design system must define and document tokens for:
 - Responsive behavior: documented breakpoints for layout cases that genuinely need them, not a requirement that each component change at every breakpoint.
 - Focus: visible, high-contrast focus treatment.
 
-CSS custom properties are the public theming contract. Their names must be centralized in the token files and documented. The implementation must not scatter raw brand values across component styles.
+CSS custom properties are the public theming contract. Their names must be centralized in the token files and documented. The implementation must not scatter raw brand values across component styles. Status colors use paired background and foreground tokens so fills remain readable in both themes. See the root [DESIGN.md](../DESIGN.md) for the initial palette, token roles, and shape decisions.
 
 ### 5.2 Themes
 
-- Provide light and dark token values.
-- Support a documented way to select a theme, preferably through a root attribute or provider-level setting.
+- Provide the light and dark token values defined in [DESIGN.md](../DESIGN.md).
+- Support `data-prava-theme="light"` and `data-prava-theme="dark"` on the document root or any subtree. Theme tokens inherit within that subtree, allowing separately themed regions without changing the whole document.
+- Default to light tokens unless a theme is explicitly selected; do not silently follow the operating system and create a mismatch with the rendered colors.
 - Respect an inherited theme when practical; do not cause a global style reset.
 - Avoid flash or contradictory styles when consumers control the theme at the application root.
-- The precise theme API must be finalized before the first component family relies on it.
+- Keep semantic CSS custom-property names stable so a future theme builder can override tokens without changing component class names or APIs. A V2 theme builder is not part of V1.
 
 ### 5.3 CSS isolation and global behavior
 
@@ -154,6 +155,7 @@ CSS custom properties are the public theming contract. Their names must be centr
 - Do not include Tailwind Preflight as an unavoidable package-wide reset. Do not modify unrelated page typography, global element margins, or application-wide layout.
 - Do not set a font family on `html` or `body`, or introduce another unwanted global reset. Buttons, inputs, dialogs, menus, and all other components must use consistent consumer-controlled typography.
 - Keep component styles and design tokens namespaced; avoid accidental global selector rules.
+- Keep component rules in their component stylesheet and refer to shared semantic tokens. Components attach their stable root/slot classes; inline `style` is for consumer-provided runtime values, not the library's static design.
 - Ensure CSS imports and `sideEffects` metadata are correct so a consumer's bundler does not accidentally discard required styles. JavaScript modules should remain tree-shakable; CSS files must be declared as side effects where required.
 - Keep all Tailwind class names statically detectable at build time. Do not construct class names through string interpolation such as `bg-${tone}-500`; use explicit maps or component CSS variables/data attributes.
 - Do not claim that importing one component removes unused CSS unless a packed consumer build proves it. JavaScript tree-shaking and CSS selection are tested separately.
@@ -806,7 +808,8 @@ V1 is ready only when all conditions below are true:
 | Framework-neutral i18n, RTL support | Approved; `PravaProvider` uses `direction`, `locale`, optional `messages`, and required `children`, with documented defaults and subtree scope. |
 | Responsive by default; consumer can customize dimensions | Approved. |
 | Design inspiration: Material, Apple HIG, Geist principles | Approved as inspiration only; no visual copying. |
-| Final accent palette/type/radius/motion values | Must be decided in Foundations before broad component implementation. |
+| Initial light/dark palette and control/card radii | Defined in root `DESIGN.md`; other design scales remain open for Foundations. |
+| V2 customer theme builder | Future direction: preview components and export CSS token overrides; not part of V1. |
 | Public npm name and license | Must be verified/approved before first release. |
 | Package manager | Not frozen; recommended default is pnpm, with npm also acceptable. |
 | Icon policy | Not frozen; recommended default is no mandatory icon runtime dependency; accept consumer-provided icons through children/slots. |
@@ -825,7 +828,7 @@ These questions are intentionally recorded so the owner can make explicit decisi
 | Should the library bundle an icon set? | No mandatory icon library. Accept `ReactNode` icon slots/children; use a chosen icon set only in examples if needed. | Before Button and other icon-capable APIs are finalized. |
 | Should the library bundle a font? | No. Components inherit the consumer's font; do not impose a system or branded font family. | Decided for V1; document optional typography CSS custom properties in Foundations. |
 | How should dark mode be selected? | Support an explicit root attribute or provider option and respect inherited application theming; avoid manipulating `document` implicitly. | Before theme-dependent components are implemented. |
-| What exact palette, type scale, radii, spacing, and motion tokens should we use? | Define a distinct Prava palette and tokens in Foundations; do not copy Material, Apple, or Geist values. | Before implementing more than Button. |
+| What type scale, spacing, and motion tokens should we use? | Define these in Foundations as component work needs them; colors and basic radii are defined in `DESIGN.md`. | Before broader component implementation. |
 | Which overlay/positioning dependency should be used? | None until the Dialog/Popover/DropdownMenu spike compares native behavior, accessibility, package size, and maintenance. | Before complex overlay implementation. |
 | Which browsers are officially supported? | Target maintained evergreen browsers; write an explicit support matrix before the first stable release. | Before V1 release. |
 | Which docs hosting/marketing site should be used? | Use Storybook as the initial living component documentation; add a separate marketing/docs site only if it adds real value. | Before first public beta. |

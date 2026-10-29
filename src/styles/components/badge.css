@@ -36,23 +36,23 @@
 }
 
 .prava-badge__indicator[data-tone='primary'] {
-  @apply border-transparent bg-(--prava-color-primary) text-(--prava-color-on-primary);
+  @apply border-transparent bg-(--prava-color-primary-container) text-(--prava-color-on-primary-container);
 }
 
 .prava-badge__indicator[data-tone='success'] {
-  @apply border-transparent bg-(--prava-color-success) text-(--prava-color-on-primary);
+  @apply border-transparent bg-(--prava-color-success) text-(--prava-color-on-success);
 }
 
 .prava-badge__indicator[data-tone='warning'] {
-  @apply border-transparent bg-(--prava-color-warning) text-(--prava-color-on-primary);
+  @apply border-transparent bg-(--prava-color-warning) text-(--prava-color-on-warning);
 }
 
 .prava-badge__indicator[data-tone='danger'] {
-  @apply border-transparent bg-(--prava-color-danger) text-(--prava-color-on-primary);
+  @apply border-transparent bg-(--prava-color-danger-container) text-(--prava-color-on-danger-container);
 }
 
 .prava-badge__indicator[data-tone='info'] {
-  @apply border-transparent bg-(--prava-color-info) text-(--prava-color-on-primary);
+  @apply border-transparent bg-(--prava-color-info) text-(--prava-color-on-info);
 }
 
 .prava-badge__indicator[data-size='sm'] {
