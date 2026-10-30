@@ -1,6 +1,8 @@
 @import './tokens.css';
 @import './components/button.css';
 @import './components/badge.css';
+@import './components/avatar.css';
+@import './components/spinner.css';
 @import 'tailwindcss/theme.css' layer(theme);
 @import 'tailwindcss/utilities.css' layer(utilities) source(none);
 

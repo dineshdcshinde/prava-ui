@@ -3,7 +3,7 @@ import tailwindcss from '@tailwindcss/vite';
 import { copyFile, mkdir, readFile, readdir, unlink, writeFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 
-const components = ['button', 'badge'];
+const components = ['button', 'badge', 'avatar', 'spinner'];
 await mkdir('dist/styles/components', { recursive: true });
 await copyFile('src/styles/tokens.css', 'dist/tokens.css');
 

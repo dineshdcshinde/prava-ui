@@ -1,5 +1,10 @@
-/* Storybook-only typography. The published package inherits the consumer's font. */
+/* Storybook preview styling only; the published components inherit consumer typography. */
 .sb-show-main,
 .sb-show-main #storybook-root {
   font-family: 'Nunito', sans-serif;
+}
+
+.sb-show-main {
+  background: var(--prava-color-canvas);
+  color: var(--prava-color-text);
 }

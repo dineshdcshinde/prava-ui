@@ -1,3 +1,4 @@
+/// <reference types="vite/client" />
 import type { Preview } from '@storybook/react-vite';
 import './preview.css';
 import '../src/styles/index.css';

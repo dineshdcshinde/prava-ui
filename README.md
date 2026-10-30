@@ -44,3 +44,24 @@ import { Button } from 'prava-ui/button';
 ```
 
 Badge anchors a compact, non-interactive indicator over a child element such as a Button. It requires `content` and the element as `children`; it supports `tone` (`neutral`, `primary`, `success`, `warning`, `danger`, `info`), `size` (`sm`, `md`), native span attributes, `className`, and `style`. Its visible content must communicate the status; color is only a visual treatment. Component imports include their styles automatically. The root import includes styles for components kept by the consumer's bundler; component entry imports include only that component's styles. For manual CSS imports, include shared `styles/tokens.css` with the selected component stylesheet.
+
+## Avatar
+
+```tsx
+import { Avatar } from 'prava-ui/avatar';
+
+<Avatar firstName="Fatima" lastName="Lovelace" />
+<Avatar src="/people/fatima.jpg" firstName="Fatima" lastName="Lovelace" />
+```
+
+Avatar displays an image when `src` loads, and otherwise shows the first letters of `firstName` and `lastName` (`FL` in this example). A failed image uses the same fallback. Pass `alt` for an entity image or a custom accessible name; `fallback` replaces the initials. It supports `size` (`sm`, `md`, `lg`), native span attributes, `className`, and `style`.
+
+## Spinner
+
+```tsx
+import { Spinner } from 'prava-ui/spinner';
+
+<Spinner label="Loading results" />
+```
+
+Spinner indicates an ongoing process and supports `variant` (`spinner`, `dots`, `bars`, `pulse`, `bounce`), `size` (`sm`, `md`, `lg`), and `theme` (`primary`, `neutral`, `success`, `warning`, `danger`, `info`). Themes use Prava color tokens and follow the active light or dark theme. Pass `color` for a CSS color or custom property such as `var(--my-accent)` to override the semantic theme. The indicator is decorative by default; pass `label` when the loading status should be announced to assistive technology. Its animation stops for reduced-motion preferences.

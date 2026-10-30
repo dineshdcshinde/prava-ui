@@ -1,0 +1,20 @@
+@layer components {
+  .prava-avatar {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 9999px;
+    background: var(--prava-color-surface-raised);
+    color: var(--prava-color-text);
+    font-weight: 600;
+    line-height: 1;
+    vertical-align: middle;
+  }
+
+  .prava-avatar[data-size='sm'] { width: 2rem; height: 2rem; font-size: .75rem; }
+  .prava-avatar[data-size='md'] { width: 2.5rem; height: 2.5rem; font-size: .875rem; }
+  .prava-avatar[data-size='lg'] { width: 3rem; height: 3rem; font-size: 1rem; }
+  .prava-avatar img { width: 100%; height: 100%; object-fit: cover; }
+}

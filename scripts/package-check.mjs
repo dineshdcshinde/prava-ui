@@ -26,7 +26,7 @@ for (const path of ['dist/tokens.css']) {
 if (!pack.files.some(({ path }) => path === 'dist/styles/components/button.css')) {
   throw new Error('Built package is missing the granular Button stylesheet. Run npm run build first.');
 }
-for (const name of ['button', 'badge']) {
+for (const name of ['button', 'badge', 'avatar', 'spinner']) {
   const entry = `dist/${name}.js`;
   const stylesheet = `dist/styles/components/${name}.css`;
   if (!pack.files.some(({ path }) => path === entry) || !pack.files.some(({ path }) => path === stylesheet)) {
@@ -38,11 +38,11 @@ for (const name of ['button', 'badge']) {
   }
 }
 const manifest = JSON.parse(await readFile('package.json', 'utf8'));
-if (!manifest.exports['./button'] || !manifest.exports['./badge']) {
-  throw new Error('Package exports are missing automatic Button or Badge entry points.');
+if (!manifest.exports['./button'] || !manifest.exports['./badge'] || !manifest.exports['./avatar'] || !manifest.exports['./spinner']) {
+  throw new Error('Package exports are missing automatic component entry points.');
 }
 const rootEntry = await readFile('dist/index.js', 'utf8');
-if (!rootEntry.includes(`export * from './button.js';`) || !rootEntry.includes(`export * from './badge.js';`)) {
+if (!['button', 'badge', 'avatar', 'spinner'].every((name) => rootEntry.includes(`export * from './${name}.js';`))) {
   throw new Error('The package root entry is missing component exports with automatic styles.');
 }
 if (manifest.peerDependencies.react !== '>=18.2.0 <20.0.0') {
@@ -67,10 +67,10 @@ try {
     }))).flat();
   };
 
-  for (const [name, specifier] of [['button', 'prava-ui/button'], ['badge', 'prava-ui/badge'], ['root', 'prava-ui'], ['root-badge', 'prava-ui']]) {
+  for (const [name, specifier] of [['button', 'prava-ui/button'], ['badge', 'prava-ui/badge'], ['avatar', 'prava-ui/avatar'], ['spinner', 'prava-ui/spinner'], ['root', 'prava-ui'], ['root-badge', 'prava-ui'], ['root-spinner', 'prava-ui']]) {
     const input = resolve(consumer, `${name}.js`);
-    const imported = name === 'root' ? 'import { Button }' : name === 'root-badge' ? 'import { Badge }' : 'import * as library';
-    const used = name === 'root' ? 'console.log(Button);' : name === 'root-badge' ? 'console.log(Badge);' : 'console.log(library);';
+    const imported = name === 'root' ? 'import { Button }' : name === 'root-badge' ? 'import { Badge }' : name === 'root-spinner' ? 'import { Spinner }' : 'import * as library';
+    const used = name === 'root' ? 'console.log(Button);' : name === 'root-badge' ? 'console.log(Badge);' : name === 'root-spinner' ? 'console.log(Spinner);' : 'console.log(library);';
     await writeFile(input, `${imported} from '${specifier}'; ${used}`);
     await build({
       configFile: false,
@@ -88,6 +88,8 @@ try {
   const badgeCss = await readCss(resolve(output, 'badge'));
   const rootButtonCss = await readCss(resolve(output, 'root'));
   const rootBadgeCss = await readCss(resolve(output, 'root-badge'));
+  const spinnerCss = await readCss(resolve(output, 'spinner'));
+  const rootSpinnerCss = await readCss(resolve(output, 'root-spinner'));
   const aggregateCss = await readFile('dist/styles.css', 'utf8');
   if (!buttonCss.includes('.prava-button{') || buttonCss.includes('.prava-badge{')) {
     throw new Error('A Button-only consumer build did not select only Button styles.');
@@ -101,8 +103,14 @@ try {
   if (!rootBadgeCss.includes('.prava-badge{') || rootBadgeCss.includes('.prava-button{')) {
     throw new Error('A root Badge-only consumer build did not tree-shake to Badge styles.');
   }
+  if (!spinnerCss.includes('.prava-spinner{') || spinnerCss.includes('.prava-badge{')) {
+    throw new Error('A Spinner-only consumer build did not select only Spinner styles.');
+  }
+  if (!rootSpinnerCss.includes('.prava-spinner{') || rootSpinnerCss.includes('.prava-badge{')) {
+    throw new Error('A root Spinner-only consumer build did not tree-shake to Spinner styles.');
+  }
   const hasRule = (selector) => aggregateCss.includes(`${selector}{`) || aggregateCss.includes(`${selector} {`);
-  if (!hasRule('.prava-button') || !hasRule('.prava-badge')) {
+  if (!hasRule('.prava-button') || !hasRule('.prava-badge') || !hasRule('.prava-avatar') || !hasRule('.prava-spinner')) {
     throw new Error('The aggregate stylesheet is missing component styles.');
   }
 } finally {

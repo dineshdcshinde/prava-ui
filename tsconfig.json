@@ -11,8 +11,6 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "declaration": true,
-    "baseUrl": ".",
-    "paths": { "@/*": ["src/*"] },
     "types": ["vite/client", "vitest/globals"]
   },
   "include": ["src", ".storybook", "vite.config.ts", "vitest.config.ts", "playwright.config.ts"]

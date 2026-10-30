@@ -12,6 +12,8 @@ export default defineConfig({
         index: resolve(import.meta.dirname, 'src/index.ts'),
         button: resolve(import.meta.dirname, 'src/components/button/index.ts'),
         badge: resolve(import.meta.dirname, 'src/components/badge/index.ts'),
+        avatar: resolve(import.meta.dirname, 'src/components/avatar/index.ts'),
+        spinner: resolve(import.meta.dirname, 'src/components/spinner/index.ts'),
       },
       formats: ['es'],
       fileName: (_format, entryName) => `${entryName}.js`,

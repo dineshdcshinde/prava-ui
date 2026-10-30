@@ -12,7 +12,8 @@ The package is an ESM-first React library built with Vite. React and React DOM a
 - Light is the default; `data-prava-theme="light|dark"` can be set on the document root or a subtree.
 - Button is the first representative component and has an aggregate stylesheet plus a granular stylesheet entry point.
 - Badge has an aggregate stylesheet import, granular stylesheet entry point, story, and unit coverage; package and cross-browser quality gates remain pending.
-- Root exports re-export style-bearing component entries, allowing consumer bundlers to include only styles for used components. Direct `prava-ui/button` and `prava-ui/badge` imports include their matching compiled Tailwind CSS automatically.
+- Avatar and Spinner have aggregate and granular stylesheets, component entry points, stories, and unit coverage; package and cross-browser quality gates remain pending.
+- Root exports re-export style-bearing component entries, allowing consumer bundlers to include only styles for used components. Direct component imports include their matching compiled Tailwind CSS automatically.
 
 ## Before component work
 

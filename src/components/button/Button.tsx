@@ -69,7 +69,11 @@ export function Button({
       disabled={disabled || loading}
       aria-busy={loading || props['aria-busy']}
     >
-      {loading && <span className="prava-button__spinner" aria-hidden="true" />}
+      {loading && (
+        <svg className="prava-button__spinner" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="9" />
+        </svg>
+      )}
       {!loading && leftIcon && <span aria-hidden="true">{leftIcon}</span>}
       {children}
       {!loading && rightIcon && <span aria-hidden="true">{rightIcon}</span>}

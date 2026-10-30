@@ -5,8 +5,12 @@
   "type": "module",
   "description": "Accessible, responsive React components with compiled CSS.",
   "license": "MIT",
-  "sideEffects": ["**/*.css"],
-  "files": ["dist"],
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "files": [
+    "dist"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -23,10 +27,20 @@
       "types": "./dist/components/badge/index.d.ts",
       "import": "./dist/badge.js"
     },
+    "./avatar": {
+      "types": "./dist/components/avatar/index.d.ts",
+      "import": "./dist/avatar.js"
+    },
+    "./spinner": {
+      "types": "./dist/components/spinner/index.d.ts",
+      "import": "./dist/spinner.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./styles/tokens.css": "./dist/tokens.css",
     "./styles/components/button.css": "./dist/styles/components/button.css",
     "./styles/components/badge.css": "./dist/styles/components/badge.css",
+    "./styles/components/avatar.css": "./dist/styles/components/avatar.css",
+    "./styles/components/spinner.css": "./dist/styles/components/spinner.css",
     "./package.json": "./package.json"
   },
   "peerDependencies": {
@@ -51,9 +65,9 @@
   },
   "devDependencies": {
     "@playwright/test": "^1.56.0",
-    "@storybook/addon-a11y": "^9.1.0",
-    "@storybook/addon-docs": "^9.1.0",
-    "@storybook/react-vite": "^9.1.0",
+    "@storybook/addon-a11y": "^10.6.5",
+    "@storybook/addon-docs": "^10.6.5",
+    "@storybook/react-vite": "^10.6.5",
     "@tailwindcss/vite": "^4.1.0",
     "@testing-library/jest-dom": "^6.8.0",
     "@testing-library/react": "^16.3.0",
@@ -69,7 +83,7 @@
     "prettier": "^3.6.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "storybook": "^9.1.0",
+    "storybook": "^10.6.5",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.9.0",
     "vite": "^7.1.0",
