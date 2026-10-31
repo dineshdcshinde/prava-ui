@@ -1,0 +1,21 @@
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@reference 'tailwindcss';
+
+@source '../../components/card/**/*.{ts,tsx}';
+
+.prava-card {
+  @apply min-w-0 max-w-full overflow-hidden rounded-(--prava-radius-card) border border-(--prava-color-border) bg-(--prava-color-surface) text-(--prava-color-text);
+}
+
+.prava-card__header,
+.prava-card__content {
+  @apply min-w-0 px-5 py-4;
+}
+
+.prava-card__header {
+  @apply border-b border-(--prava-color-border);
+}
+
+.prava-card__footer {
+  @apply flex min-w-0 flex-wrap items-center justify-end gap-2 border-t border-(--prava-color-border) px-5 py-3;
+}

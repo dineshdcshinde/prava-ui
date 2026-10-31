@@ -35,12 +35,52 @@
       "types": "./dist/components/spinner/index.d.ts",
       "import": "./dist/spinner.js"
     },
+    "./input": {
+      "types": "./dist/components/input/index.d.ts",
+      "import": "./dist/input.js"
+    },
+    "./card": {
+      "types": "./dist/components/card/index.d.ts",
+      "import": "./dist/card.js"
+    },
+    "./separator": {
+      "types": "./dist/components/separator/index.d.ts",
+      "import": "./dist/separator.js"
+    },
+    "./skeleton": {
+      "types": "./dist/components/skeleton/index.d.ts",
+      "import": "./dist/skeleton.js"
+    },
+    "./progress": {
+      "types": "./dist/components/progress/index.d.ts",
+      "import": "./dist/progress.js"
+    },
+    "./textarea": {
+      "types": "./dist/components/textarea/index.d.ts",
+      "import": "./dist/textarea.js"
+    },
+    "./label": {
+      "types": "./dist/components/label/index.d.ts",
+      "import": "./dist/label.js"
+    },
+    "./form-field": {
+      "types": "./dist/components/form-field/index.d.ts",
+      "import": "./dist/form-field.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./styles/tokens.css": "./dist/tokens.css",
     "./styles/components/button.css": "./dist/styles/components/button.css",
     "./styles/components/badge.css": "./dist/styles/components/badge.css",
     "./styles/components/avatar.css": "./dist/styles/components/avatar.css",
     "./styles/components/spinner.css": "./dist/styles/components/spinner.css",
+    "./styles/components/input.css": "./dist/styles/components/input.css",
+    "./styles/components/card.css": "./dist/styles/components/card.css",
+    "./styles/components/separator.css": "./dist/styles/components/separator.css",
+    "./styles/components/skeleton.css": "./dist/styles/components/skeleton.css",
+    "./styles/components/progress.css": "./dist/styles/components/progress.css",
+    "./styles/components/textarea.css": "./dist/styles/components/textarea.css",
+    "./styles/components/label.css": "./dist/styles/components/label.css",
+    "./styles/components/form-field.css": "./dist/styles/components/form-field.css",
     "./package.json": "./package.json"
   },
   "peerDependencies": {

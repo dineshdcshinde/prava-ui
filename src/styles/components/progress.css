@@ -1,0 +1,48 @@
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@reference 'tailwindcss';
+
+@source '../../components/progress/**/*.{ts,tsx}';
+
+.prava-progress {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  block-size: 0.375rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: var(--prava-color-surface-hover);
+}
+
+.prava-progress__indicator {
+  display: block;
+  inline-size: var(--prava-progress-value, 0%);
+  block-size: 100%;
+  border-radius: inherit;
+  background: var(--prava-color-primary);
+  transition: inline-size 180ms ease-out;
+}
+
+.prava-progress[data-indeterminate] .prava-progress__indicator {
+  inline-size: 36%;
+  animation: prava-progress-travel 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes prava-progress-travel {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(180%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prava-progress__indicator {
+    transition: none;
+  }
+  .prava-progress[data-indeterminate] .prava-progress__indicator {
+    inline-size: 36%;
+    animation: none;
+    transform: translateX(90%);
+  }
+}

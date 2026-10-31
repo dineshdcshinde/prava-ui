@@ -1,0 +1,20 @@
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@reference 'tailwindcss';
+
+@source '../../components/label/**/*.{ts,tsx}';
+
+.prava-label {
+  display: inline-flex;
+  max-inline-size: 100%;
+  align-items: baseline;
+  gap: 0.375rem;
+  color: var(--prava-color-text);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.prava-label__required {
+  color: var(--prava-color-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 400;
+}

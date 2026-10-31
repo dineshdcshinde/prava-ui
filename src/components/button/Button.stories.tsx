@@ -4,7 +4,11 @@ import { Button } from "./Button";
 const meta = {
   title: "Components/Button",
   component: Button,
+  tags: ["autodocs"],
   args: { children: "Save changes" },
+  argTypes: {
+    type: { control: 'select', options: ['button', 'submit', 'reset', 'icon'] },
+  },
 } satisfies Meta<typeof Button>;
 export default meta;
 type Story = StoryObj<typeof meta>;
@@ -35,6 +39,18 @@ export const Sizes: Story = {
   ),
 };
 export const Loading: Story = { args: { loading: true } };
+export const LoadingVariants: Story = {
+  render: (args) => (
+    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.5rem' }}>
+      {(['spinner', 'dots', 'bars', 'pulse', 'bounce'] as const).map((loadingVariant) => (
+        <Button {...args} key={loadingVariant} loadingVariant={loadingVariant}>
+          Save changes
+        </Button>
+      ))}
+    </div>
+  ),
+  args: { loading: true },
+};
 export const WithoutAnimation: Story = { args: { disableAnimation: true } };
 const PlusIcon = () => (
   <svg viewBox="0 0 24 24" width="1em" height="1em" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">

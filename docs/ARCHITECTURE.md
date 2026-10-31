@@ -13,6 +13,10 @@ The package is an ESM-first React library built with Vite. React and React DOM a
 - Button is the first representative component and has an aggregate stylesheet plus a granular stylesheet entry point.
 - Badge has an aggregate stylesheet import, granular stylesheet entry point, story, and unit coverage; package and cross-browser quality gates remain pending.
 - Avatar and Spinner have aggregate and granular stylesheets, component entry points, stories, and unit coverage; package and cross-browser quality gates remain pending.
+- Input has aggregate and granular stylesheets, component entry points, stories, and unit coverage; package and cross-browser quality gates remain pending.
+- Card has a root and composable header/content/footer parts, aggregate and granular stylesheets, a component entry point, autodocs, stories, and unit coverage; browser validation is pending.
+- Separator, Skeleton, and Progress have focused APIs, aggregate and granular stylesheets, component entry points, autodocs, stories, and unit coverage; browser validation is pending.
+- Textarea, Label, and FormField provide the next forms increment with native control semantics, stable accessible associations, aggregate and granular stylesheets, autodocs, stories, and unit coverage.
 - Root exports re-export style-bearing component entries, allowing consumer bundlers to include only styles for used components. Direct component imports include their matching compiled Tailwind CSS automatically.
 
 ## Before component work

@@ -1,0 +1,21 @@
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@reference 'tailwindcss';
+
+@source '../../components/separator/**/*.{ts,tsx}';
+
+.prava-separator {
+  flex: none;
+  border: 0;
+  background: var(--prava-color-border);
+}
+
+.prava-separator[data-orientation="horizontal"] {
+  inline-size: 100%;
+  block-size: 1px;
+}
+
+.prava-separator[data-orientation="vertical"] {
+  inline-size: 1px;
+  block-size: auto;
+  align-self: stretch;
+}

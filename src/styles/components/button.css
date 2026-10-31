@@ -4,7 +4,7 @@
 @source '../../components/button/**/*.{ts,tsx}';
 
 .prava-button {
-  @apply inline-flex max-w-full items-center justify-center gap-2 rounded-(--prava-radius-control) border font-[inherit] font-semibold leading-[1.25] text-center transition-[background-color,color,border-color,box-shadow,transform] duration-(--prava-duration-fast) ease-(--prava-ease-standard) focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-(--prava-color-focus) disabled:cursor-not-allowed disabled:opacity-[.58] disabled:shadow-none;
+  @apply relative inline-flex max-w-full items-center justify-center gap-2 rounded-(--prava-radius-control) border font-[inherit] font-semibold leading-[1.25] text-center transition-[background-color,color,border-color,box-shadow,transform] duration-(--prava-duration-fast) ease-(--prava-ease-standard) focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-(--prava-color-focus) disabled:cursor-not-allowed disabled:opacity-[.58] disabled:shadow-none;
 }
 
 .prava-button[data-variant='primary'] {
@@ -79,12 +79,32 @@
   @apply translate-y-0 scale-[.985];
 }
 
-.prava-button__spinner {
-  @apply size-[1rem] shrink-0;
+.prava-button__content {
+  @apply inline-flex items-center justify-center gap-2;
+}
+
+.prava-button[data-loading='true'] .prava-button__content {
+  opacity: 0;
+}
+
+.prava-button__loader {
+  position: absolute;
+  left: 50%;
+  display: inline-flex;
+  width: 1.25rem;
+  height: 1.25rem;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(-50%);
+}
+
+.prava-button__loader[data-variant='spinner'] svg {
+  width: 100%;
+  height: 100%;
   animation: prava-button-spin .8s linear infinite;
 }
 
-.prava-button__spinner circle {
+.prava-button__loader[data-variant='spinner'] circle {
   fill: none;
   stroke: currentColor;
   stroke-width: 3;
@@ -92,8 +112,54 @@
   stroke-dasharray: 42 16;
 }
 
+.prava-button__loader[data-variant='dots'],
+.prava-button__loader[data-variant='bounce'] { gap: .125rem; }
+
+.prava-button__loader[data-variant='dots'] i,
+.prava-button__loader[data-variant='bounce'] i {
+  width: .2rem;
+  height: .2rem;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.prava-button__loader[data-variant='dots'] i { animation: prava-button-pulse 1s ease-in-out infinite; }
+.prava-button__loader[data-variant='dots'] i:nth-child(2),
+.prava-button__loader[data-variant='bounce'] i:nth-child(2) { animation-delay: .15s; }
+.prava-button__loader[data-variant='dots'] i:nth-child(3),
+.prava-button__loader[data-variant='bounce'] i:nth-child(3) { animation-delay: .3s; }
+.prava-button__loader[data-variant='bounce'] i { animation: prava-button-bounce .7s ease-in-out infinite alternate; }
+.prava-button__loader[data-variant='bars'] { gap: .125rem; }
+.prava-button__loader[data-variant='bars'] i {
+  width: .2rem;
+  height: 45%;
+  border-radius: 9999px;
+  background: currentColor;
+  animation: prava-button-bars 1s ease-in-out infinite;
+}
+.prava-button__loader[data-variant='bars'] i:nth-child(2) { animation-delay: .15s; }
+.prava-button__loader[data-variant='bars'] i:nth-child(3) { animation-delay: .3s; }
+.prava-button__loader[data-variant='pulse'] i {
+  width: 45%;
+  height: 45%;
+  border-radius: 50%;
+  background: currentColor;
+  animation: prava-button-pulse 1s ease-in-out infinite;
+}
+
 @keyframes prava-button-spin {
   to { transform: rotate(360deg); }
+}
+@keyframes prava-button-pulse {
+  0%, 60%, 100% { opacity: .35; transform: scale(.75); }
+  30% { opacity: 1; transform: scale(1); }
+}
+@keyframes prava-button-bars {
+  0%, 100% { transform: scaleY(.55); }
+  50% { transform: scaleY(1.8); }
+}
+@keyframes prava-button-bounce {
+  to { transform: translateY(-.2rem); }
 }
 
 .prava-button[data-motion='none'] {
@@ -105,17 +171,19 @@
   @apply translate-none scale-none;
 }
 
-.prava-button[data-motion='none'] .prava-button__spinner {
+.prava-button[data-motion='none'] .prava-button__loader *,
+.prava-button[data-motion='none'] .prava-button__loader {
   animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   .prava-button,
-  .prava-button__spinner {
+  .prava-button__loader {
     @apply transition-none;
   }
 
-  .prava-button__spinner {
+  .prava-button__loader *,
+  .prava-button__loader {
     animation: none;
   }
 

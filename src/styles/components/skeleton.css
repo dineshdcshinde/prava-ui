@@ -1,0 +1,36 @@
+@import "tailwindcss/utilities.css" layer(utilities) source(none);
+@reference 'tailwindcss';
+
+@source '../../components/skeleton/**/*.{ts,tsx}';
+
+.prava-skeleton {
+  display: block;
+  inline-size: 100%;
+  min-block-size: 0.75rem;
+  border-radius: var(--prava-radius-control);
+  background: var(--prava-color-surface-raised);
+  animation: prava-skeleton-breathe 1.8s ease-in-out infinite;
+}
+
+.prava-skeleton[data-shape="text"] {
+  border-radius: 0.25rem;
+}
+.prava-skeleton[data-shape="circle"] {
+  inline-size: 2.5rem;
+  border-radius: 50%;
+}
+.prava-skeleton[data-shape="rect"] {
+  border-radius: var(--prava-radius-card);
+}
+
+@keyframes prava-skeleton-breathe {
+  50% {
+    opacity: 0.62;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .prava-skeleton {
+    animation: none;
+  }
+}

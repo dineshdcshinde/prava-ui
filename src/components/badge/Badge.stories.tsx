@@ -5,6 +5,7 @@ import { Button } from "../button";
 const meta = {
   title: "Components/Badge",
   component: Badge,
+  tags: ["autodocs"],
   args: { content: "3", children: <Button>Inbox</Button> },
 } satisfies Meta<typeof Badge>;
 export default meta;

@@ -314,6 +314,7 @@ The 25 core components below are the target catalog. The three layout primitives
 
 - Purpose: group related content.
 - API: root attributes plus composable header/content/footer parts if justified.
+- V1 composition parts are `CardHeader`, `CardContent`, and `CardFooter`; heading levels remain consumer-controlled.
 - Behavior: no default click semantics unless explicitly made interactive.
 - Responsive: fills its parent naturally; avoids fixed width assumptions.
 - A11y: semantic structure and heading order remain consumer-controlled.
@@ -325,6 +326,7 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: decorative separator by default; semantic separator when it conveys structure.
 - Responsive: orientation can be selected by layout or CSS; it must not create overflow.
 - A11y: correct role and orientation when non-decorative.
+- V1 API: `orientation` (`horizontal` or `vertical`) and `decorative` (true by default); semantic separators expose orientation.
 
 #### 6. Spinner
 
@@ -341,6 +343,7 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: avoid uncontrolled shimmer; support reduced motion.
 - Responsive: parent-aware dimensions; should reduce layout shift when its intended content dimensions are known.
 - A11y: mark decorative placeholders appropriately and avoid exposing meaningless shapes as content.
+- V1 API: `shape` (`text`, `rect`, or `circle`), dimensions through `style`, and native span attributes; each placeholder remains decorative.
 
 #### 8. Progress
 
@@ -349,14 +352,16 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: clamp/validate values consistently.
 - Responsive: fills the available width by default.
 - A11y: expose progress semantics and current values when determinate.
+- V1 API: required accessible `label`, optional `value` for indeterminate mode, and `min`/`max` range (defaults 0/100); finite values are clamped and invalid ranges rejected.
 
 ### 9.2 Forms and feedback
 
 #### 9. Input
 
 - Purpose: single-line user input.
-- API: native input attributes, `size` variant, `invalid`, `disabled`, `className`, `style`.
+- API: native input attributes, `size` variant, optional floating `label`, decorative `leftIcon`/`rightIcon`, `invalid`, `disabled`, optional `disabledReason`, `className`, `style`, and a ref to the native input.
 - Behavior: support consumer-controlled values and standard browser input types; do not impose validation rules unexpectedly.
+- A supplied label is associated with the input and floats above it on focus or while it contains a value; placeholder text is never the only accessible name.
 - Responsive: fills available parent width by default; consumer can set intrinsic or fixed width.
 - A11y: label, description, and error associations are provided by FormField or consumer markup.
 
@@ -367,6 +372,7 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: avoid automatic resizing unless explicitly enabled and accessible.
 - Responsive: fills available width; content and resize behavior must not break small viewports.
 - A11y: standard textarea labeling and error associations.
+- V1 API: all native textarea attributes/ref, `resize` (`none`, `vertical`, `horizontal`, `both`; vertical by default), and `invalid`; height remains row-based.
 
 #### 11. Label
 
@@ -375,6 +381,7 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: preserve correct `htmlFor`/control association.
 - Responsive: text wraps naturally.
 - A11y: never rely on placeholder text as the sole label.
+- V1 API: native label attributes and children, plus optional `required` text.
 
 #### 12. FormField
 
@@ -383,6 +390,7 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: generate or accept IDs without collisions; associate descriptions/errors using `aria-describedby` where appropriate.
 - Responsive: label/control flow must remain usable in narrow containers.
 - A11y: error and help text are associated with the control; required state is conveyed correctly.
+- V1 API: required `label` and one React control, optional `description`, `error`, `required`, and control `id`; generated IDs are stable per field instance.
 
 #### 13. Checkbox
 
@@ -781,60 +789,60 @@ V1 is ready only when all conditions below are true:
 
 ## 16. Risks and mitigations
 
-| Risk | Mitigation |
-|---|---|
-| Over-scoping 25 components | Use component quality gates and incremental implementation; do not rush the complex overlays. |
-| CSS leaking into consumer applications | Avoid Preflight, scope styles, use namespaced tokens, and test in a blank consumer app. |
-| False tree-shaking claims | Verify JavaScript and CSS selection independently using packed consumer builds; distinguish aggregate CSS from granular component styles. |
-| React 18/19 incompatibility | Keep peer ranges explicit and test minimum/latest supported versions. |
-| Inaccessible custom widgets | Prefer native controls; follow WAI-ARIA patterns; allow focused dependency spikes for overlays and menus. |
-| Responsive overrides are hard to apply | Document class/style/slot/CSS-variable hooks and test customization. |
-| Internationalization retrofit cost | Use logical CSS and framework-neutral message contracts from the start. |
-| AI-generated design drift | Require `AGENTS.md` and this PRD as the source of truth; implement one component at a time. |
-| Name collisions or forced rename | Keep the brand provisional; verify npm, repository, domain, and trademark considerations before public release. |
+| Risk                                   | Mitigation                                                                                                                                |
+| -------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| Over-scoping 25 components             | Use component quality gates and incremental implementation; do not rush the complex overlays.                                             |
+| CSS leaking into consumer applications | Avoid Preflight, scope styles, use namespaced tokens, and test in a blank consumer app.                                                   |
+| False tree-shaking claims              | Verify JavaScript and CSS selection independently using packed consumer builds; distinguish aggregate CSS from granular component styles. |
+| React 18/19 incompatibility            | Keep peer ranges explicit and test minimum/latest supported versions.                                                                     |
+| Inaccessible custom widgets            | Prefer native controls; follow WAI-ARIA patterns; allow focused dependency spikes for overlays and menus.                                 |
+| Responsive overrides are hard to apply | Document class/style/slot/CSS-variable hooks and test customization.                                                                      |
+| Internationalization retrofit cost     | Use logical CSS and framework-neutral message contracts from the start.                                                                   |
+| AI-generated design drift              | Require `AGENTS.md` and this PRD as the source of truth; implement one component at a time.                                               |
+| Name collisions or forced rename       | Keep the brand provisional; verify npm, repository, domain, and trademark considerations before public release.                           |
 
 ## 17. Decision log
 
-| Decision | Status |
-|---|---|
-| Working name: Prava UI | Provisional; rename may happen before publication. |
-| React support: 18.2+ and 19 | Approved direction; validate implementation. |
-| Tailwind CSS v4; compiled CSS distributed | Approved. |
-| JavaScript tree-shaking plus aggregate and granular component CSS | Required; must be verified by a packed consumer build. |
-| Consumer does not configure Tailwind to use default styles | Approved. |
-| 25 core components for V1 | Approved target. |
-| Container, Stack, Grid as additional layout primitives | Included to support the agreed responsive design-system direction; total 28 public building blocks. |
-| Storybook, Vitest, React Testing Library, Playwright | Approved. |
-| Framework-neutral i18n, RTL support | Approved; `PravaProvider` uses `direction`, `locale`, optional `messages`, and required `children`, with documented defaults and subtree scope. |
-| Responsive by default; consumer can customize dimensions | Approved. |
-| Design inspiration: Material, Apple HIG, Geist principles | Approved as inspiration only; no visual copying. |
-| Initial light/dark palette and control/card radii | Defined in root `DESIGN.md`; other design scales remain open for Foundations. |
-| V2 customer theme builder | Future direction: preview components and export CSS token overrides; not part of V1. |
-| Public npm name and license | Must be verified/approved before first release. |
-| Package manager | Not frozen; recommended default is pnpm, with npm also acceptable. |
-| Icon policy | Not frozen; recommended default is no mandatory icon runtime dependency; accept consumer-provided icons through children/slots. |
-| Typography | Components inherit the consumer font by default; do not bundle or impose a font. Optional typography customization uses documented CSS custom properties. |
+| Decision                                                          | Status                                                                                                                                                    |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Working name: Prava UI                                            | Provisional; rename may happen before publication.                                                                                                        |
+| React support: 18.2+ and 19                                       | Approved direction; validate implementation.                                                                                                              |
+| Tailwind CSS v4; compiled CSS distributed                         | Approved.                                                                                                                                                 |
+| JavaScript tree-shaking plus aggregate and granular component CSS | Required; must be verified by a packed consumer build.                                                                                                    |
+| Consumer does not configure Tailwind to use default styles        | Approved.                                                                                                                                                 |
+| 25 core components for V1                                         | Approved target.                                                                                                                                          |
+| Container, Stack, Grid as additional layout primitives            | Included to support the agreed responsive design-system direction; total 28 public building blocks.                                                       |
+| Storybook, Vitest, React Testing Library, Playwright              | Approved.                                                                                                                                                 |
+| Framework-neutral i18n, RTL support                               | Approved; `PravaProvider` uses `direction`, `locale`, optional `messages`, and required `children`, with documented defaults and subtree scope.           |
+| Responsive by default; consumer can customize dimensions          | Approved.                                                                                                                                                 |
+| Design inspiration: Material, Apple HIG, Geist principles         | Approved as inspiration only; no visual copying.                                                                                                          |
+| Initial light/dark palette and control/card radii                 | Defined in root `DESIGN.md`; other design scales remain open for Foundations.                                                                             |
+| V2 customer theme builder                                         | Future direction: preview components and export CSS token overrides; not part of V1.                                                                      |
+| Public npm name and license                                       | Must be verified/approved before first release.                                                                                                           |
+| Package manager                                                   | Not frozen; recommended default is pnpm, with npm also acceptable.                                                                                        |
+| Icon policy                                                       | Not frozen; recommended default is no mandatory icon runtime dependency; accept consumer-provided icons through children/slots.                           |
+| Typography                                                        | Components inherit the consumer font by default; do not bundle or impose a font. Optional typography customization uses documented CSS custom properties. |
 
 ## 18. Open questions and recommended defaults
 
 These questions are intentionally recorded so the owner can make explicit decisions. They should not block the initial scaffold unless marked as a release blocker. The recommended defaults keep the first implementation focused.
 
-| Question | Recommended default | When it must be decided |
-|---|---|---|
-| Is `prava-ui` available and suitable as the final npm name? | Treat Prava UI and `prava-ui` as temporary; verify npm, GitHub, domain, and trademark conflicts before public release. | Before publishing or promoting publicly. |
-| Which license should the project use? | MIT, subject to owner approval. | Before public release and before adding the license file. |
-| Should Container, Stack, and Grid ship alongside the 25 named components? | Yes, as three additional layout primitives; the total catalog is 25 core components plus 3 layout primitives. | Confirm before implementation reaches the layout phase. |
-| Which package manager should be used? | pnpm for lockfile/workspace ergonomics; npm is fine if simplicity is preferred. | At scaffold creation. |
-| Should the library bundle an icon set? | No mandatory icon library. Accept `ReactNode` icon slots/children; use a chosen icon set only in examples if needed. | Before Button and other icon-capable APIs are finalized. |
-| Should the library bundle a font? | No. Components inherit the consumer's font; do not impose a system or branded font family. | Decided for V1; document optional typography CSS custom properties in Foundations. |
-| How should dark mode be selected? | Support an explicit root attribute or provider option and respect inherited application theming; avoid manipulating `document` implicitly. | Before theme-dependent components are implemented. |
-| What type scale, spacing, and motion tokens should we use? | Define these in Foundations as component work needs them; colors and basic radii are defined in `DESIGN.md`. | Before broader component implementation. |
-| Which overlay/positioning dependency should be used? | None until the Dialog/Popover/DropdownMenu spike compares native behavior, accessibility, package size, and maintenance. | Before complex overlay implementation. |
-| Which browsers are officially supported? | Target maintained evergreen browsers; write an explicit support matrix before the first stable release. | Before V1 release. |
-| Which docs hosting/marketing site should be used? | Use Storybook as the initial living component documentation; add a separate marketing/docs site only if it adds real value. | Before first public beta. |
-| What is the bundle-size budget? | Measure Button and the overlay spike first, then set enforceable budgets for simple components, full JS, aggregate CSS, and per-component CSS. | After the first build spike and before many components are added. |
-| Should components ship CommonJS as well as ESM? | ESM is mandatory; ship CommonJS only if consumer tests demonstrate a real need and the output stays correct. | During packaging spike. |
-| Should class names merge Tailwind conflicts automatically? | Decide after testing `className` customization. Prefer a small, documented merge strategy; do not claim arbitrary overrides always win. | Before Button's public API is frozen. |
+| Question                                                                  | Recommended default                                                                                                                            | When it must be decided                                                            |
+| ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| Is `prava-ui` available and suitable as the final npm name?               | Treat Prava UI and `prava-ui` as temporary; verify npm, GitHub, domain, and trademark conflicts before public release.                         | Before publishing or promoting publicly.                                           |
+| Which license should the project use?                                     | MIT, subject to owner approval.                                                                                                                | Before public release and before adding the license file.                          |
+| Should Container, Stack, and Grid ship alongside the 25 named components? | Yes, as three additional layout primitives; the total catalog is 25 core components plus 3 layout primitives.                                  | Confirm before implementation reaches the layout phase.                            |
+| Which package manager should be used?                                     | pnpm for lockfile/workspace ergonomics; npm is fine if simplicity is preferred.                                                                | At scaffold creation.                                                              |
+| Should the library bundle an icon set?                                    | No mandatory icon library. Accept `ReactNode` icon slots/children; use a chosen icon set only in examples if needed.                           | Before Button and other icon-capable APIs are finalized.                           |
+| Should the library bundle a font?                                         | No. Components inherit the consumer's font; do not impose a system or branded font family.                                                     | Decided for V1; document optional typography CSS custom properties in Foundations. |
+| How should dark mode be selected?                                         | Support an explicit root attribute or provider option and respect inherited application theming; avoid manipulating `document` implicitly.     | Before theme-dependent components are implemented.                                 |
+| What type scale, spacing, and motion tokens should we use?                | Define these in Foundations as component work needs them; colors and basic radii are defined in `DESIGN.md`.                                   | Before broader component implementation.                                           |
+| Which overlay/positioning dependency should be used?                      | None until the Dialog/Popover/DropdownMenu spike compares native behavior, accessibility, package size, and maintenance.                       | Before complex overlay implementation.                                             |
+| Which browsers are officially supported?                                  | Target maintained evergreen browsers; write an explicit support matrix before the first stable release.                                        | Before V1 release.                                                                 |
+| Which docs hosting/marketing site should be used?                         | Use Storybook as the initial living component documentation; add a separate marketing/docs site only if it adds real value.                    | Before first public beta.                                                          |
+| What is the bundle-size budget?                                           | Measure Button and the overlay spike first, then set enforceable budgets for simple components, full JS, aggregate CSS, and per-component CSS. | After the first build spike and before many components are added.                  |
+| Should components ship CommonJS as well as ESM?                           | ESM is mandatory; ship CommonJS only if consumer tests demonstrate a real need and the output stays correct.                                   | During packaging spike.                                                            |
+| Should class names merge Tailwind conflicts automatically?                | Decide after testing `className` customization. Prefer a small, documented merge strategy; do not claim arbitrary overrides always win.        | Before Button's public API is frozen.                                              |
 
 ### Questions the owner should not leave implicit
 
