@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Identity Manual</title>
+<style>
+*{box-sizing:border-box;margin:0}
+body{width:1440px;height:900px;overflow:hidden;font:15px/1.45 system-ui,sans-serif;color:#111;background:#fff;display:flex;flex-direction:column}
+header{height:56px;border-bottom:1px solid #111;display:flex;align-items:center;gap:32px;padding:0 48px}
+.brand{font-weight:700;margin-inline-end:24px}
+.nav{color:#555}.nav.on{color:#111;font-weight:600;box-shadow:inset 0 -3px 0 #0050c8;padding-block:17px}
+main{padding:40px 48px;display:grid;grid-template-columns:repeat(12,1fr);column-gap:24px;row-gap:28px}
+.head{grid-column:1/-1;border-bottom:1px solid #d9d9d9;padding-bottom:20px}
+h1{font-size:28px;font-weight:700;letter-spacing:-.02em}
+.sub{color:#555;margin-top:4px}
+.colA{grid-column:1/8;display:flex;flex-direction:column;gap:22px}
+.colB{grid-column:8/13;display:flex;flex-direction:column;gap:28px}
+h2{font-size:13px;font-weight:700;text-transform:none;border-top:2px solid #111;padding-top:10px}
+label{display:block;font-size:14px;font-weight:600;margin-bottom:6px}
+.in{height:40px;border:1px solid #8a8a8a;padding:0 12px;display:flex;align-items:center;border-radius:2px}
+.in.focus{border-color:#0050c8;outline:2px solid #0050c8;outline-offset:1px}
+.in.bad{border-color:#c81e1e}
+.err{color:#c81e1e;font-size:13px;margin-top:6px}
+.row{display:flex;gap:12px}
+.btn{height:40px;padding:0 18px;display:inline-flex;align-items:center;font-weight:600;border-radius:2px}
+.pri{background:#0050c8;color:#fff}.sec{border:1px solid #111}
+.set{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e6e6e6;padding:10px 0}
+.muted{color:#666;font-size:14px}
+.sw{width:40px;height:22px;background:#0050c8;position:relative;border-radius:11px}
+.sw::after{content:"";position:absolute;top:3px;inset-inline-end:3px;width:16px;height:16px;background:#fff;border-radius:50%}
+.sw.off{background:#bdbdbd}.sw.off::after{inset-inline-end:auto;inset-inline-start:3px}
+.bar{height:6px;background:#e6e6e6}.bar i{display:block;height:100%;width:68%;background:#0050c8}
+.tag{font-size:12px;font-weight:600;border:1px solid #111;padding:1px 6px}
+.alert{border-top:2px solid #c98a00;background:#f1f1ef;padding:12px;font-size:14px}
+</style></head><body>
+<header><span class="brand">Northwind</span><a class="nav">Overview</a><a class="nav">Projects</a><a class="nav">Members</a><a class="nav on">Settings</a><a class="nav">Billing</a></header>
+<main>
+<div class="head"><h1>Workspace settings</h1><p class="sub">Changes apply to everyone in Northwind.</p></div>
+<section class="colA">
+<h2>General</h2>
+<div><label>Workspace name</label><div class="in focus">Northwind Logistics</div></div>
+<div><label>Billing email</label><div class="in bad">finance@northwind</div><p class="err">Enter a full email address, like name@company.com.</p></div>
+<div><label>Data region</label><div class="in">Frankfurt (eu-central)</div></div>
+<div class="row"><span class="btn pri">Save changes</span><span class="btn sec">Cancel</span></div>
+</section>
+<section class="colB">
+<div><h2>Notifications</h2>
+<div class="set"><div>Weekly digest<div class="muted">Summary every Monday</div></div><span class="sw"></span></div>
+<div class="set"><div>Mentions<div class="muted">When someone tags you</div></div><span class="sw"></span></div>
+<div class="set"><div>Product updates</div><span class="sw off"></span></div></div>
+<div><h2>Storage</h2>
+<div class="set"><span class="muted">68 GB of 100 GB used</span><span class="tag">Team plan</span></div>
+<div class="bar"><i></i></div></div>
+<div class="alert">Two members haven't accepted their invites.</div>
+</section>
+</main>
+</body></html>

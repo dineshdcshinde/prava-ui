@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Cobalt Porcelain</title>
+<style>
+*{box-sizing:border-box;margin:0}
+body{width:1440px;height:900px;overflow:hidden;font:15px/1.45 system-ui,sans-serif;color:#131a2b;background:#eef2f8;display:flex}
+.rail{width:248px;background:#e3e9f3;padding:20px 14px;display:flex;flex-direction:column;gap:4px;border-inline-end:1px solid #d3dbe8}
+.brand{font-weight:650;font-size:17px;padding:8px 10px 18px}
+.nav{padding:8px 10px;border-radius:8px;color:#3a4560}
+.nav.on{background:#f6f8fb;color:#2347b5;font-weight:600;box-shadow:0 1px 0 #fff inset,0 1px 2px rgb(19 26 43/.08)}
+main{flex:1;padding:36px 56px;display:flex;flex-direction:column;gap:24px}
+h1{font-size:26px;font-weight:650;letter-spacing:-.02em}
+.sub{color:#56607a;margin-top:4px}
+.grid{display:grid;grid-template-columns:1.4fr 1fr;gap:24px}
+.panel{background:#f9fbfd;border-radius:14px;padding:24px;box-shadow:0 1px 0 #fff inset,0 1px 2px rgb(19 26 43/.06),0 4px 12px rgb(19 26 43/.05);display:flex;flex-direction:column;gap:18px}
+.panel h2{font-size:17px;font-weight:620}
+label{display:block;font-size:14px;font-weight:560;margin-bottom:6px}
+.in{height:40px;border-radius:8px;background:#fff;border:1px solid #cfd7e4;padding:0 12px;display:flex;align-items:center;box-shadow:0 1px 1px rgb(19 26 43/.04) inset}
+.in.focus{border-color:#2347b5;box-shadow:0 0 0 3px #dce5f7}
+.in.bad{border-color:#b3261e}
+.err{color:#b3261e;font-size:13px;margin-top:6px}
+.row{display:flex;gap:12px;align-items:center}
+.btn{height:40px;padding:0 16px;border-radius:8px;display:inline-flex;align-items:center;font-weight:600}
+.pri{background:#2347b5;color:#fff;box-shadow:0 1px 0 rgb(255 255 255/.22) inset,0 1px 2px rgb(19 26 43/.25)}
+.sec{background:#f6f8fb;border:1px solid #cfd7e4;box-shadow:0 1px 0 #fff inset}
+.sw{width:40px;height:24px;border-radius:12px;background:#2347b5;position:relative}
+.sw::after{content:"";position:absolute;inset-block-start:3px;inset-inline-end:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgb(0 0 0/.25)}
+.sw.off{background:#c3ccdb}.sw.off::after{inset-inline-end:auto;inset-inline-start:3px}
+.set{display:flex;justify-content:space-between;align-items:center;padding:4px 0}
+.muted{color:#56607a;font-size:14px}
+.bar{height:8px;border-radius:4px;background:#dce5f7;overflow:hidden}.bar i{display:block;height:100%;width:68%;background:#2347b5}
+.badge{font-size:12px;font-weight:600;padding:2px 8px;border-radius:999px;background:#dce5f7;color:#1b3a94}
+.badge.ok{background:#e1f1e7;color:#1d6b3e}
+.alert{color:#7a4b06;font-size:14px;border-top:1px solid #e3e9f3;padding-top:14px}
+.av{width:32px;height:32px;border-radius:50%;background:#dce5f7;color:#1b3a94;display:grid;place-items:center;font-size:13px;font-weight:600;border:2px solid #f9fbfd;margin-inline-start:-8px}
+</style></head><body>
+<nav class="rail">
+<div class="brand">Northwind</div>
+<a class="nav">Overview</a><a class="nav">Projects</a><a class="nav">Members</a><a class="nav on">Settings</a><a class="nav">Billing</a>
+</nav>
+<main>
+<div><h1>Workspace settings</h1><p class="sub">Changes apply to everyone in Northwind.</p></div>
+<div class="grid">
+<section class="panel">
+<h2>General</h2>
+<div><label>Workspace name</label><div class="in focus">Northwind Logistics</div></div>
+<div><label>Billing email</label><div class="in bad">finance@northwind</div><p class="err">Enter a full email address, like name@company.com.</p></div>
+<div><label>Data region</label><div class="in">Frankfurt (eu-central)</div></div>
+<div class="row"><span class="btn pri">Save changes</span><span class="btn sec">Cancel</span></div>
+</section>
+<div style="display:flex;flex-direction:column;gap:24px">
+<section class="panel">
+<h2>Notifications</h2>
+<div class="set"><div>Weekly digest<div class="muted">Summary every Monday</div></div><span class="sw"></span></div>
+<div class="set"><div>Mentions<div class="muted">When someone tags you</div></div><span class="sw"></span></div>
+<div class="set"><div>Product updates</div><span class="sw off"></span></div>
+</section>
+<section class="panel">
+<div class="set"><h2>Storage</h2><span class="badge">Team plan</span></div>
+<div class="bar"><i></i></div>
+<div class="set"><span class="muted">68 GB of 100 GB used</span><span class="badge ok">Healthy</span></div>
+<div class="alert">Two members haven't accepted their invites.</div>
+<div class="row" style="padding-inline-start:8px"><span class="av">AK</span><span class="av">MR</span><span class="av">JL</span><span class="av">+4</span></div>
+</section>
+</div>
+</div>
+</main>
+</body></html>

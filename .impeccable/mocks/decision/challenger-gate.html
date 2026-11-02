@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Gate Board</title>
+<style>
+*{box-sizing:border-box;margin:0}
+body{width:1440px;height:900px;overflow:hidden;font:15px/1.45 system-ui,sans-serif;color:#1c1c1c;background:#e6e6e1;display:flex;font-variant-numeric:tabular-nums}
+.rail{width:232px;background:#1c1c1c;color:#d9d9d4;padding:22px 14px;display:flex;flex-direction:column;gap:2px}
+.brand{color:#fff;font-weight:650;padding:6px 10px 20px}
+.nav{padding:9px 10px;border-radius:4px}.nav.on{background:#2e2e2e;color:#fff;font-weight:600}
+main{flex:1;padding:32px 48px;display:flex;flex-direction:column;gap:20px}
+h1{font-size:26px;font-weight:650;letter-spacing:-.01em}
+.sub{color:#5b5b55}
+.pass{display:grid;grid-template-columns:1.5fr 1fr;background:#f2f2ee;border-radius:6px;overflow:hidden}
+.seg{padding:24px;display:flex;flex-direction:column;gap:16px}
+.seg+.seg{border-inline-start:2px dashed #c9c9c2}
+.k{font-size:12px;font-weight:650;color:#6b6b64;letter-spacing:.02em}
+.in{height:40px;background:#fff;border:1px solid #bdbdb6;border-radius:4px;padding:0 12px;display:flex;align-items:center;margin-top:4px}
+.in.chg{border-color:#e8a317;box-shadow:0 0 0 3px #fbe7b8}
+.in.bad{border-color:#c0392b}
+.err{color:#c0392b;font-size:13px;margin-top:4px}
+.btn{height:40px;padding:0 16px;border-radius:4px;display:inline-flex;align-items:center;font-weight:600}
+.pri{background:#2b59c3;color:#fff}.sec{background:#fff;border:1px solid #bdbdb6}
+.row{display:flex;gap:12px;align-items:center}
+.board{background:#f2f2ee;border-radius:6px}
+.tr{display:grid;grid-template-columns:2fr 1fr 1fr 120px;padding:12px 20px;border-bottom:1px solid #dcdcd5;align-items:center}
+.tr.h{font-size:12px;font-weight:650;color:#6b6b64}
+.tr.lit{background:#fdf3dc}
+.st{font-size:12px;font-weight:650;padding:2px 8px;border-radius:3px;background:#dfe6f6;color:#1f3f8f;justify-self:start}
+.st.w{background:#fbe7b8;color:#7a5200}
+</style></head><body>
+<nav class="rail"><div class="brand">Northwind</div><a class="nav">Overview</a><a class="nav">Projects</a><a class="nav">Members</a><a class="nav on">Settings</a><a class="nav">Billing</a></nav>
+<main>
+<div><h1>Workspace settings</h1><p class="sub">Changes apply to everyone in Northwind.</p></div>
+<div class="pass">
+<div class="seg">
+<div><span class="k">WORKSPACE NAME</span><div class="in chg">Northwind Logistics</div></div>
+<div><span class="k">BILLING EMAIL</span><div class="in bad">finance@northwind</div><p class="err">Enter a full email address, like name@company.com.</p></div>
+<div class="row"><span class="btn pri">Save changes</span><span class="btn sec">Cancel</span></div>
+</div>
+<div class="seg">
+<div><span class="k">DATA REGION</span><div class="in">Frankfurt (eu-central)</div></div>
+<div><span class="k">STORAGE</span><div style="font-size:22px;font-weight:650">68.0 / 100 GB</div></div>
+</div>
+</div>
+<div class="board">
+<div class="tr h"><span>Member</span><span>Role</span><span>Last active</span><span>Status</span></div>
+<div class="tr lit"><span>Amira Khan</span><span>Admin</span><span>09:42</span><span class="st w">Role changed</span></div>
+<div class="tr"><span>Mateo Ruiz</span><span>Editor</span><span>08:15</span><span class="st">Active</span></div>
+<div class="tr"><span>Jia Li</span><span>Viewer</span><span>Yesterday</span><span class="st">Invited</span></div>
+</div>
+</main>
+</body></html>
