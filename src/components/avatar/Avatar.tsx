@@ -1,6 +1,6 @@
-import { useState, type HTMLAttributes, type ReactNode } from 'react';
+import { useState, type HTMLAttributes, type ReactNode } from "react";
 
-export type AvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, 'children'> & {
+export type AvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, "children"> & {
   /** Image URL. A failed or missing image displays the fallback. */
   src?: string;
   /** Person's first name, used to form initials and an accessible name. */
@@ -12,26 +12,69 @@ export type AvatarProps = Omit<HTMLAttributes<HTMLSpanElement>, 'children'> & {
   /** Content shown when the image is missing or fails; defaults to the initials. */
   fallback?: ReactNode;
   /** Avatar dimensions. */
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
 };
 
 /** Shows a person's image or their initials when no image is available. */
-export function Avatar({ src, firstName, lastName, alt, fallback, size = 'md', className, onError, ...props }: AvatarProps) {
+const tones = [
+  "primary",
+  "success",
+  "warning",
+  "info",
+  "danger",
+  "neutral",
+] as const;
+
+export function Avatar({
+  src,
+  firstName,
+  lastName,
+  alt,
+  fallback,
+  size = "md",
+  className,
+  onError,
+  ...props
+}: AvatarProps) {
   const [imageFailed, setImageFailed] = useState(false);
-  const name = [firstName, lastName].filter(Boolean).join(' ');
-  const initials = [firstName, lastName].filter(Boolean).map((part) => part!.trim()[0]).filter(Boolean).join('').toLocaleUpperCase();
+  const name = [firstName, lastName].filter(Boolean).join(" ");
+  const initials = [firstName, lastName]
+    .filter(Boolean)
+    .map((part) => part!.trim()[0])
+    .filter(Boolean)
+    .join("")
+    .toLocaleUpperCase();
+  // Same name, same tone, every render and every page: a static map, never a dynamic class.
+  const tone = name
+    ? tones[
+        [...name].reduce((sum, char) => sum + char.charCodeAt(0), 0) %
+          tones.length
+      ]
+    : undefined;
   const label = alt ?? name;
 
   return (
     <span
       {...props}
-      className={['prava-avatar', className].filter(Boolean).join(' ')}
+      className={["prava-avatar", className].filter(Boolean).join(" ")}
       data-size={size}
-      role={label ? 'img' : undefined}
+      data-tone={src && !imageFailed ? undefined : tone}
+      role={label ? "img" : undefined}
       aria-label={label || undefined}
       aria-hidden={label ? undefined : true}
     >
-      {src && !imageFailed ? <img src={src} alt="" onError={(event) => { setImageFailed(true); onError?.(event); }} /> : (fallback ?? initials)}
+      {src && !imageFailed ? (
+        <img
+          src={src}
+          alt=""
+          onError={(event) => {
+            setImageFailed(true);
+            onError?.(event);
+          }}
+        />
+      ) : (
+        (fallback ?? initials)
+      )}
     </span>
   );
 }

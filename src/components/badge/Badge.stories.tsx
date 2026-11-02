@@ -3,7 +3,7 @@ import { Badge } from "./Badge";
 import { Button } from "../button";
 
 const meta = {
-  title: "Components/Badge",
+  title: "Feedback/Badge",
   component: Badge,
   tags: ["autodocs"],
   args: { content: "3", children: <Button>Inbox</Button> },
@@ -48,12 +48,26 @@ export const Sizes: Story = {
 };
 export const Placements: Story = {
   render: (args) => (
-    <div style={{ display: "flex", flexWrap: "wrap", gap: "2rem", padding: "1rem" }}>
-      {(["top-right", "top-left", "bottom-right", "bottom-left"] as const).map((placement) => (
-        <Badge {...args} key={placement} placement={placement} content={placement}>
-          <Button>Inbox</Button>
-        </Badge>
-      ))}
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: "2rem",
+        padding: "1rem",
+      }}
+    >
+      {(["top-start", "top-end", "bottom-start", "bottom-end"] as const).map(
+        (placement) => (
+          <Badge
+            {...args}
+            key={placement}
+            placement={placement}
+            content={placement}
+          >
+            <Button>Inbox</Button>
+          </Badge>
+        ),
+      )}
     </div>
   ),
 };
@@ -73,4 +87,19 @@ export const Customized: Story = {
     content: "New",
     children: <Button>Updates</Button>,
   },
+};
+
+/** Without a child, Badge is an inline status label. Keep the meaning in the text. */
+export const Standalone: Story = {
+  args: { children: undefined },
+  render: () => (
+    <div style={{ display: "flex", flexWrap: "wrap", gap: ".5rem" }}>
+      <Badge tone="success" content="Active" />
+      <Badge tone="warning" content="Pending review" />
+      <Badge tone="danger" content="Payment failed" />
+      <Badge tone="info" content="Beta" />
+      <Badge tone="primary" content="Pro" />
+      <Badge content="Draft" />
+    </div>
+  ),
 };

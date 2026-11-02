@@ -1,0 +1,26 @@
+@reference 'tailwindcss';
+
+/* Row, indicator, and states are shared in field.css; this adds the group layout and the dot. */
+@layer prava.components {
+  .prava-radio-group {
+    @apply m-0 min-w-0 border-0 p-0;
+  }
+  .prava-radio-group__options {
+    @apply flex flex-col gap-2.5;
+  }
+  .prava-radio-group__options[data-orientation="horizontal"] {
+    @apply flex-row flex-wrap gap-x-6 gap-y-2.5;
+  }
+  .prava-radio .prava-choice__indicator {
+    @apply rounded-full;
+  }
+  .prava-radio .prava-choice__indicator::after {
+    @apply size-1.5 rounded-full bg-(--prava-color-on-primary);
+    content: "";
+    scale: 0;
+    transition: scale var(--prava-duration-normal) var(--prava-ease-standard);
+  }
+  .prava-radio .prava-choice__input:checked + .prava-choice__indicator::after {
+    scale: 1;
+  }
+}

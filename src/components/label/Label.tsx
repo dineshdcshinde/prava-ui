@@ -1,4 +1,5 @@
 import type { LabelHTMLAttributes, ReactNode } from "react";
+import { usePravaConfig } from "../provider/PravaProvider";
 
 export type LabelProps = LabelHTMLAttributes<HTMLLabelElement> & {
   /** Marks the associated form control as required and presents a readable cue. */
@@ -20,13 +21,16 @@ export function Label({
   children,
   ...props
 }: LabelProps) {
+  const { messages } = usePravaConfig();
   return (
     <label
       {...props}
       className={["prava-label", className].filter(Boolean).join(" ")}
     >
       <span>{children}</span>
-      {required && <span className="prava-label__required">Required</span>}
+      {required && (
+        <span className="prava-label__required">{messages.required}</span>
+      )}
     </label>
   );
 }

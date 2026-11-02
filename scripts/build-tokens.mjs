@@ -9,25 +9,14 @@ import {
   writeFile,
 } from "node:fs/promises";
 import { resolve } from "node:path";
+import { components, fieldControls } from "./components.mjs";
 
-const components = [
-  "button",
-  "badge",
-  "avatar",
-  "spinner",
-  "input",
-  "card",
-  "separator",
-  "skeleton",
-  "progress",
-  "textarea",
-  "label",
-  "form-field",
-];
+const names = components.map(({ name }) => name);
+
 await mkdir("dist/styles/components", { recursive: true });
 await copyFile("src/styles/tokens.css", "dist/tokens.css");
 
-for (const name of components) {
+for (const name of [...names, "field"]) {
   await build({
     configFile: false,
     plugins: [tailwindcss()],
@@ -43,18 +32,18 @@ for (const name of components) {
   });
 }
 
-for (const name of components) {
+for (const name of names) {
   const entry = `dist/${name}.js`;
   const code = await readFile(entry, "utf8");
   await writeFile(
     entry,
-    `import './tokens.css';\nimport './styles/components/${name}.css';\n${code}`,
+    `import './tokens.css';\n${fieldControls.has(name) ? "import './styles/components/field.css';\n" : ""}import './styles/components/${name}.css';\n${code}`,
   );
 }
 
 await writeFile(
   "dist/index.js",
-  components.map((name) => `export * from './${name}.js';`).join("\n") + "\n",
+  names.map((name) => `export * from './${name}.js';`).join("\n") + "\n",
 );
 
 for (const file of await readdir("dist/styles/components")) {

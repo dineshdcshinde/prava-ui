@@ -1,37 +1,51 @@
-import type { HTMLAttributes, ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from "react";
 
-/** Props for a compact indicator anchored to a child element. */
 export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
-  /** Visible count or status text; meaning must not rely on color alone. */
+  /** Visible badge text or count. Status meaning must be in this text, not only the tone. */
   content: ReactNode;
-  /** The element the indicator is anchored to. */
-  children: ReactNode;
-  /** Semantic color treatment. */
-  tone?: 'neutral' | 'primary' | 'success' | 'warning' | 'danger' | 'info';
-  /** Selects the indicator's compact or standard dimensions. */
-  size?: 'sm' | 'md';
-  /** Positions the indicator on a physical child corner; defaults to top-right. */
-  placement?: 'top-right' | 'top-left' | 'bottom-right' | 'bottom-left';
+  /** Element the badge is anchored to. Omit to render a standalone status label. */
+  children?: ReactNode;
+  /** Semantic color. Defaults to `danger` when anchored (counts) and `neutral` when standalone. */
+  tone?: "neutral" | "primary" | "success" | "warning" | "danger" | "info";
+  size?: "sm" | "md";
+  /** Corner of the anchored element, in logical directions so it mirrors in RTL. */
+  placement?: "top-start" | "top-end" | "bottom-start" | "bottom-end";
 };
 
 /**
- * Anchors a non-interactive count or status indicator to a child element.
+ * A compact, non-interactive status or count, either anchored to an element or standalone.
  * @example
  * ```tsx
  * import { Badge } from 'prava-ui/badge';
- * import { Button } from 'prava-ui/button';
- *
- * <Badge content="3" placement="top-right"><Button>Inbox</Button></Badge>
+ * <Badge content="3"><Button>Inbox</Button></Badge>
+ * <Badge tone="success" content="Active" />
  * ```
  */
-export function Badge({ tone = 'danger', size = 'sm', placement = 'top-right', content, className, children, ...props }: BadgeProps) {
+export function Badge({
+  tone,
+  size = "sm",
+  placement = "top-end",
+  content,
+  className,
+  children,
+  ...props
+}: BadgeProps) {
+  const standalone = children == null;
   return (
     <span
       {...props}
-      className={['prava-badge', className].filter(Boolean).join(' ')}
+      className={["prava-badge", className].filter(Boolean).join(" ")}
+      data-standalone={standalone || undefined}
     >
-      <span className="prava-badge__target">{children}</span>
-      <span className="prava-badge__indicator" data-tone={tone} data-size={size} data-placement={placement}>{content}</span>
+      {!standalone && <span className="prava-badge__target">{children}</span>}
+      <span
+        className="prava-badge__indicator"
+        data-tone={tone ?? (standalone ? "neutral" : "danger")}
+        data-size={size}
+        data-placement={standalone ? undefined : placement}
+      >
+        {content}
+      </span>
     </span>
   );
 }

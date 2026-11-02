@@ -1,13 +1,25 @@
-import { cloneElement, useId } from "react";
-import type { HTMLAttributes, ReactElement, ReactNode } from "react";
+import { cloneElement } from "react";
+import type {
+  AriaAttributes,
+  ChangeEventHandler,
+  FocusEventHandler,
+  FormEventHandler,
+  HTMLAttributes,
+  ReactElement,
+  ReactNode,
+} from "react";
+import { FieldContext, useField, type FieldControl } from "../field/field";
 import { Label } from "../label";
 
 type AssociatedControlProps = {
   id?: string;
   required?: boolean;
   "aria-describedby"?: string;
-  "aria-invalid"?: boolean | "true" | "false" | "grammar" | "spelling";
-  "aria-required"?: boolean | "true" | "false";
+  "aria-invalid"?: AriaAttributes["aria-invalid"];
+  "aria-required"?: AriaAttributes["aria-required"];
+  onBlur?: FocusEventHandler<FieldControl>;
+  onChange?: ChangeEventHandler<FieldControl>;
+  onInvalid?: FormEventHandler<FieldControl>;
 };
 
 export type FormFieldProps = Omit<
@@ -20,7 +32,7 @@ export type FormFieldProps = Omit<
   control: ReactElement<AssociatedControlProps>;
   /** Optional explanatory text associated with the control. */
   description?: ReactNode;
-  /** Optional validation message associated with and announced by the control. */
+  /** Validation message associated with the control; replaces built-in validation text. */
   error?: ReactNode;
   /** Marks the control required and adds the readable cue to the label. */
   required?: boolean;
@@ -29,12 +41,13 @@ export type FormFieldProps = Omit<
 };
 
 /**
- * Composes a label, control, help text, and error with stable accessible associations.
+ * Composes a label, any control, help text, and error with stable accessible associations.
+ * Native and Prava controls both get localized validation messages here.
  * @example
  * ```tsx
  * import { FormField } from 'prava-ui/form-field';
  * import { Input } from 'prava-ui/input';
- * <FormField label="Email" required control={<Input type="email" />} />
+ * <FormField label="Email" required error={errors.email?.message} control={<Input type="email" field={register('email')} />} />
  * ```
  */
 export function FormField({
@@ -47,41 +60,36 @@ export function FormField({
   className,
   ...props
 }: FormFieldProps) {
-  const generatedId = useId();
-  const controlId = id ?? control.props.id ?? generatedId;
-  const descriptionId = description ? `${controlId}-description` : undefined;
-  const errorId = error ? `${controlId}-error` : undefined;
-  const controlProps = control.props;
-  const describedBy =
-    [controlProps["aria-describedby"], descriptionId, errorId]
-      .filter(Boolean)
-      .join(" ") || undefined;
+  const c = control.props;
+  const field = useField({
+    id: id ?? c.id,
+    description,
+    error,
+    onBlur: c.onBlur,
+    onChange: c.onChange,
+    onInvalid: c.onInvalid,
+    "aria-describedby": c["aria-describedby"],
+    "aria-invalid": c["aria-invalid"],
+  });
 
   return (
     <div
       {...props}
-      className={["prava-form-field", className].filter(Boolean).join(" ")}
+      className={["prava-field prava-form-field", className]
+        .filter(Boolean)
+        .join(" ")}
     >
-      <Label htmlFor={controlId} required={required}>
+      <Label htmlFor={field.id} required={required}>
         {label}
       </Label>
-      {cloneElement(control, {
-        id: controlProps.id ?? controlId,
-        required: required || controlProps.required,
-        "aria-required": required || controlProps["aria-required"],
-        "aria-invalid": error ? true : controlProps["aria-invalid"],
-        "aria-describedby": describedBy,
-      })}
-      {description && (
-        <div id={descriptionId} className="prava-form-field__description">
-          {description}
-        </div>
-      )}
-      {error && (
-        <div id={errorId} className="prava-form-field__error">
-          {error}
-        </div>
-      )}
+      <FieldContext.Provider value>
+        {cloneElement(control, {
+          ...field.controlProps,
+          required: required || c.required,
+          "aria-required": required || c["aria-required"],
+        })}
+      </FieldContext.Provider>
+      {field.messages}
     </div>
   );
 }

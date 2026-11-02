@@ -5,19 +5,31 @@ import { Button } from "../components/button";
 const colorTokens = [
   "canvas",
   "surface",
+  "surface-sunken",
   "surface-hover",
   "surface-raised",
+  "border",
+  "border-strong",
   "text",
   "text-muted",
-  "border",
   "primary",
+  "primary-hover",
+  "primary-active",
+  "on-primary",
   "primary-container",
-  "success",
-  "warning",
-  "danger",
-  "danger-container",
-  "info",
+  "on-primary-container",
   "focus",
+  "success",
+  "on-success",
+  "warning",
+  "on-warning",
+  "danger",
+  "danger-hover",
+  "on-danger",
+  "danger-container",
+  "on-danger-container",
+  "info",
+  "on-info",
 ];
 const badgeTones = ["primary", "success", "warning", "danger", "info"] as const;
 
@@ -41,7 +53,7 @@ function ThemePreview({ theme }: { theme: "light" | "dark" }) {
           {theme === "light" ? "Light" : "Dark"} theme
         </h2>
         <p style={{ color: "var(--prava-color-text-muted)" }}>
-          Blue actions, semantic badges, shared tokens.
+          Every component reads only these tokens. A theme replaces them all.
         </p>
       </div>
       <div style={{ display: "flex", flexWrap: "wrap", gap: ".5rem" }}>
@@ -59,7 +71,7 @@ function ThemePreview({ theme }: { theme: "light" | "dark" }) {
         }}
       >
         {badgeTones.map((tone) => (
-          <Badge key={tone} tone={tone} content={tone} placement="top-right">
+          <Badge key={tone} tone={tone} content={tone}>
             <span
               style={{
                 padding: ".5rem",
@@ -122,8 +134,8 @@ function FoundationsPage() {
       <header>
         <h1>Prava UI foundations</h1>
         <p>
-          Near-white light surfaces and layered obsidian dark surfaces with
-          clear blue actions.
+          Cobalt Porcelain: glazed cool surfaces with cobalt for action and
+          selection. Use the toolbar to switch theme and direction on any story.
         </p>
       </header>
       <section

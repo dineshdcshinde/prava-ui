@@ -1,4 +1,5 @@
 @import "./tokens.css";
+@import "./components/field.css";
 @import "./components/button.css";
 @import "./components/badge.css";
 @import "./components/avatar.css";
@@ -11,7 +12,8 @@
 @import "./components/textarea.css";
 @import "./components/label.css";
 @import "./components/form-field.css";
-@import "tailwindcss/theme.css" layer(theme);
-@import "tailwindcss/utilities.css" layer(utilities) source(none);
-
-@source '../components/**/*.{ts,tsx}';
+@import "./components/provider.css";
+@import "./components/checkbox.css";
+@import "./components/switch.css";
+@import "./components/radio-group.css";
+@import "./components/select.css";

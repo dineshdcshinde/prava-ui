@@ -1,15 +1,36 @@
-import type { CSSProperties, HTMLAttributes } from 'react';
+import type { CSSProperties, HTMLAttributes } from "react";
 
 function SpinnerArc() {
-  return <svg className="prava-spinner__indicator" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /></svg>;
+  return (
+    <svg
+      className="prava-spinner__indicator"
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+    >
+      <circle className="prava-spinner__track" cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="9" />
+    </svg>
+  );
 }
 
 function SpinnerDots() {
-  return <span className="prava-spinner__dots" aria-hidden="true"><span /><span /><span /></span>;
+  return (
+    <span className="prava-spinner__dots" aria-hidden="true">
+      <span />
+      <span />
+      <span />
+    </span>
+  );
 }
 
 function SpinnerBars() {
-  return <span className="prava-spinner__bars" aria-hidden="true"><span /><span /><span /></span>;
+  return (
+    <span className="prava-spinner__bars" aria-hidden="true">
+      <span />
+      <span />
+      <span />
+    </span>
+  );
 }
 
 function SpinnerPulse() {
@@ -17,7 +38,13 @@ function SpinnerPulse() {
 }
 
 function SpinnerBounce() {
-  return <span className="prava-spinner__bounce" aria-hidden="true"><span /><span /><span /></span>;
+  return (
+    <span className="prava-spinner__bounce" aria-hidden="true">
+      <span />
+      <span />
+      <span />
+    </span>
+  );
 }
 
 const spinnerVariants = {
@@ -32,28 +59,37 @@ export type SpinnerProps = HTMLAttributes<HTMLSpanElement> & {
   /** Optional status text for assistive technology. */
   label?: string;
   /** Indicator diameter. */
-  size?: 'sm' | 'md' | 'lg';
+  size?: "sm" | "md" | "lg";
   /** Loading indicator style. */
-  variant?: 'spinner' | 'dots' | 'bars' | 'pulse' | 'bounce';
-  /** Semantic color theme; follows Prava's active light or dark tokens. */
-  theme?: 'primary' | 'neutral' | 'success' | 'warning' | 'danger' | 'info';
+  variant?: "spinner" | "dots" | "bars" | "pulse" | "bounce";
+  /** Semantic color; follows the active light or dark tokens. */
+  tone?: "primary" | "neutral" | "success" | "warning" | "danger" | "info";
   /** CSS color value, including a CSS custom property. Defaults to the primary token. */
-  color?: CSSProperties['color'];
+  color?: CSSProperties["color"];
 };
 
 /** Shows an ongoing process. Pass a label when the loading status needs to be announced. */
-export function Spinner({ label, size = 'md', variant = 'spinner', theme = 'primary', color, className, style, ...props }: SpinnerProps) {
+export function Spinner({
+  label,
+  size = "md",
+  variant = "spinner",
+  tone = "primary",
+  color,
+  className,
+  style,
+  ...props
+}: SpinnerProps) {
   const Indicator = spinnerVariants[variant];
 
   return (
     <span
       {...props}
       style={{ ...style, ...(color ? { color } : {}) }}
-      className={['prava-spinner', className].filter(Boolean).join(' ')}
+      className={["prava-spinner", className].filter(Boolean).join(" ")}
       data-size={size}
       data-variant={variant}
-      data-theme={theme}
-      role={label ? 'status' : undefined}
+      data-tone={tone}
+      role={label ? "status" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
     >

@@ -1,36 +1,33 @@
-@import "tailwindcss/utilities.css" layer(utilities) source(none);
 @reference 'tailwindcss';
 
-@source '../../components/skeleton/**/*.{ts,tsx}';
-
-.prava-skeleton {
-  display: block;
-  inline-size: 100%;
-  min-block-size: 0.75rem;
-  border-radius: var(--prava-radius-control);
-  background: var(--prava-color-surface-raised);
-  animation: prava-skeleton-breathe 1.8s ease-in-out infinite;
-}
-
-.prava-skeleton[data-shape="text"] {
-  border-radius: 0.25rem;
-}
-.prava-skeleton[data-shape="circle"] {
-  inline-size: 2.5rem;
-  border-radius: 50%;
-}
-.prava-skeleton[data-shape="rect"] {
-  border-radius: var(--prava-radius-card);
-}
-
-@keyframes prava-skeleton-breathe {
-  50% {
-    opacity: 0.62;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
+@layer prava.components {
   .prava-skeleton {
-    animation: none;
+    @apply block w-full rounded-(--prava-radius-control) bg-(--prava-color-surface-raised);
+    min-block-size: 0.75rem;
+    animation: prava-skeleton-breathe 2s var(--prava-ease-standard) infinite;
+  }
+  /* A text bar matches a line of the surrounding type, so swapping in real text doesn't shift layout. */
+  .prava-skeleton[data-shape="text"] {
+    @apply rounded-(--prava-radius-sm);
+    block-size: 1em;
+    min-block-size: 0;
+    margin-block: calc((1lh - 1em) / 2);
+  }
+  .prava-skeleton[data-shape="circle"] {
+    @apply w-10 rounded-full;
+  }
+  .prava-skeleton[data-shape="rect"] {
+    @apply rounded-(--prava-radius-card);
+  }
+
+  @keyframes prava-skeleton-breathe {
+    50% {
+      opacity: 0.55;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .prava-skeleton {
+      animation: none;
+    }
   }
 }

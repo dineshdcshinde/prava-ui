@@ -31,8 +31,8 @@ describe("Input", () => {
     render(
       <Input
         label="Search"
-        leftIcon={<svg data-testid="leading-icon" />}
-        rightIcon={<svg data-testid="trailing-icon" />}
+        startIcon={<svg data-testid="leading-icon" />}
+        endIcon={<svg data-testid="trailing-icon" />}
         onChange={onChange}
         onBlur={onBlur}
       />,
@@ -69,18 +69,13 @@ describe("Input", () => {
     ).toBe("24");
   });
 
-  it("floats its associated label on focus and keeps it floated after typing", () => {
+  it("floats its label from the real value, including values set through the ref", () => {
     render(<Input label="Email" type="email" />);
     const input = screen.getByRole("textbox", { name: "Email" });
-    const label = screen.getByText("Email");
-    expect(input.id).toBe(label.getAttribute("for"));
-    expect(input.getAttribute("data-floated")).toBeNull();
-
-    fireEvent.focus(input);
-    expect(input.getAttribute("data-floated")).toBe("true");
-    fireEvent.change(input, { target: { value: "a@example.com" } });
-    fireEvent.blur(input);
-    expect(input.getAttribute("data-floated")).toBe("true");
+    expect(input.id).toBe(screen.getByText("Email").getAttribute("for"));
+    expect(input).toHaveAttribute("placeholder", " ");
+    (input as HTMLInputElement).value = "a@example.com";
+    expect(input.matches(":placeholder-shown")).toBe(false);
   });
 
   it("forwards className, style, and disabled state", () => {

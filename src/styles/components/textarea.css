@@ -1,54 +1,24 @@
-@import "tailwindcss/utilities.css" layer(utilities) source(none);
 @reference 'tailwindcss';
 
-@source '../../components/textarea/**/*.{ts,tsx}';
-
-.prava-textarea {
-  display: block;
-  box-sizing: border-box;
-  inline-size: 100%;
-  min-inline-size: 0;
-  max-inline-size: 100%;
-  min-block-size: 6rem;
-  padding: 0.75rem;
-  border: 1px solid var(--prava-color-border);
-  border-radius: var(--prava-radius-control);
-  background: var(--prava-color-surface);
-  color: var(--prava-color-text);
-  font: inherit;
-  line-height: 1.5;
-  box-shadow: var(--prava-shadow-control);
-  resize: vertical;
-}
-
-.prava-textarea[data-resize="none"] {
-  resize: none;
-}
-.prava-textarea[data-resize="horizontal"] {
-  resize: horizontal;
-}
-.prava-textarea[data-resize="both"] {
-  resize: both;
-}
-
-.prava-textarea::placeholder {
-  color: var(--prava-color-text-muted);
-}
-.prava-textarea:focus-visible {
-  outline: 2px solid var(--prava-color-focus);
-  outline-offset: 1px;
-}
-.prava-textarea:disabled {
-  background: var(--prava-color-surface-hover);
-  color: var(--prava-color-text-muted);
-  cursor: not-allowed;
-  box-shadow: none;
-}
-.prava-textarea[data-invalid="true"],
-.prava-textarea[aria-invalid="true"] {
-  border-color: var(--prava-color-danger);
-}
-.prava-textarea[data-invalid="true"]:focus-visible,
-.prava-textarea[aria-invalid="true"]:focus-visible {
-  outline-color: var(--prava-color-danger);
+/* The well itself is .prava-control in field.css. Height comes from rows and maxRows, set inline. */
+@layer prava.components {
+  .prava-textarea {
+    @apply px-3 py-2 text-(length:--prava-font-size-4);
+    field-sizing: content;
+    overflow-y: auto;
+    line-height: var(--prava-line-height-normal);
+    resize: none;
+    caret-color: var(--prava-color-primary);
+    scrollbar-color: var(--prava-color-border-strong) transparent;
+    scrollbar-width: thin;
+  }
+  .prava-textarea[data-resize="vertical"] {
+    resize: vertical;
+  }
+  .prava-textarea[data-resize="horizontal"] {
+    resize: horizontal;
+  }
+  .prava-textarea[data-resize="both"] {
+    resize: both;
+  }
 }

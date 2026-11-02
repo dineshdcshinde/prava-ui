@@ -1,48 +1,55 @@
-@import "tailwindcss/utilities.css" layer(utilities) source(none);
 @reference 'tailwindcss';
 
-@source '../../components/progress/**/*.{ts,tsx}';
-
-.prava-progress {
-  position: relative;
-  display: block;
-  inline-size: 100%;
-  block-size: 0.375rem;
-  overflow: hidden;
-  border-radius: 9999px;
-  background: var(--prava-color-surface-hover);
-}
-
-.prava-progress__indicator {
-  display: block;
-  inline-size: var(--prava-progress-value, 0%);
-  block-size: 100%;
-  border-radius: inherit;
-  background: var(--prava-color-primary);
-  transition: inline-size 180ms ease-out;
-}
-
-.prava-progress[data-indeterminate] .prava-progress__indicator {
-  inline-size: 36%;
-  animation: prava-progress-travel 1.4s ease-in-out infinite alternate;
-}
-
-@keyframes prava-progress-travel {
-  from {
-    transform: translateX(-100%);
+@layer prava.components {
+  .prava-progress {
+    @apply grid w-full gap-2;
   }
-  to {
-    transform: translateX(180%);
+  .prava-progress__header {
+    @apply flex items-baseline justify-between gap-3 text-(length:--prava-font-size-3) text-(--prava-color-text);
+    line-height: var(--prava-line-height-tight);
   }
-}
-
-@media (prefers-reduced-motion: reduce) {
+  .prava-progress__value {
+    @apply font-(--prava-font-weight-medium) text-(--prava-color-text-muted) tabular-nums;
+  }
+  .prava-progress__track {
+    @apply relative block h-1.5 w-full overflow-hidden rounded-full bg-(--prava-color-surface-raised);
+  }
   .prava-progress__indicator {
-    transition: none;
+    @apply block h-full rounded-full bg-(--prava-color-primary);
+    inline-size: var(--prava-progress-value, 0%);
+    transition: inline-size var(--prava-duration-slow)
+      var(--prava-ease-standard);
   }
+
   .prava-progress[data-indeterminate] .prava-progress__indicator {
-    inline-size: 36%;
-    animation: none;
-    transform: translateX(90%);
+    inline-size: 40%;
+    animation: prava-progress-travel 1.6s var(--prava-ease-standard) infinite;
+  }
+  .prava-progress[data-indeterminate]:dir(rtl) .prava-progress__track {
+    scale: -1 1;
+  }
+  @keyframes prava-progress-travel {
+    from {
+      translate: -100% 0;
+    }
+    to {
+      translate: 250% 0;
+    }
+  }
+
+  /* Reduced motion keeps a slow fade so "still working" stays visible without travel. */
+  @media (prefers-reduced-motion: reduce) {
+    .prava-progress__indicator {
+      transition: none;
+    }
+    .prava-progress[data-indeterminate] .prava-progress__indicator {
+      inline-size: 100%;
+      animation: prava-progress-fade 1.6s ease-in-out infinite alternate;
+    }
+    @keyframes prava-progress-fade {
+      to {
+        opacity: 0.35;
+      }
+    }
   }
 }

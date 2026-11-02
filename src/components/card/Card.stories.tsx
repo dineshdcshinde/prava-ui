@@ -3,7 +3,7 @@ import { Button } from "../button";
 import { Card, CardContent, CardFooter, CardHeader } from "./Card";
 
 const meta = {
-  title: "Components/Card",
+  title: "Display/Card",
   component: Card,
   tags: ["autodocs"],
   subcomponents: { CardHeader, CardContent, CardFooter },

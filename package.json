@@ -67,20 +67,29 @@
       "types": "./dist/components/form-field/index.d.ts",
       "import": "./dist/form-field.js"
     },
+    "./provider": {
+      "types": "./dist/components/provider/index.d.ts",
+      "import": "./dist/provider.js"
+    },
+    "./checkbox": {
+      "types": "./dist/components/checkbox/index.d.ts",
+      "import": "./dist/checkbox.js"
+    },
+    "./switch": {
+      "types": "./dist/components/switch/index.d.ts",
+      "import": "./dist/switch.js"
+    },
+    "./radio-group": {
+      "types": "./dist/components/radio-group/index.d.ts",
+      "import": "./dist/radio-group.js"
+    },
+    "./select": {
+      "types": "./dist/components/select/index.d.ts",
+      "import": "./dist/select.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./styles/tokens.css": "./dist/tokens.css",
-    "./styles/components/button.css": "./dist/styles/components/button.css",
-    "./styles/components/badge.css": "./dist/styles/components/badge.css",
-    "./styles/components/avatar.css": "./dist/styles/components/avatar.css",
-    "./styles/components/spinner.css": "./dist/styles/components/spinner.css",
-    "./styles/components/input.css": "./dist/styles/components/input.css",
-    "./styles/components/card.css": "./dist/styles/components/card.css",
-    "./styles/components/separator.css": "./dist/styles/components/separator.css",
-    "./styles/components/skeleton.css": "./dist/styles/components/skeleton.css",
-    "./styles/components/progress.css": "./dist/styles/components/progress.css",
-    "./styles/components/textarea.css": "./dist/styles/components/textarea.css",
-    "./styles/components/label.css": "./dist/styles/components/label.css",
-    "./styles/components/form-field.css": "./dist/styles/components/form-field.css",
+    "./styles/components/*": "./dist/styles/components/*",
     "./package.json": "./package.json"
   },
   "peerDependencies": {
@@ -88,6 +97,7 @@
     "react-dom": ">=18.2.0 <20.0.0"
   },
   "scripts": {
+    "start":"storybook dev -p 6006",
     "dev": "storybook dev -p 6006",
     "build": "vite build && npm run build:tokens",
     "build:tokens": "node scripts/build-tokens.mjs",
@@ -123,6 +133,7 @@
     "prettier": "^3.6.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "react-hook-form": "^7.91.0",
     "storybook": "^10.6.5",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.9.0",

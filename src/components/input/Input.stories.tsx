@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Controller } from "react-hook-form";
+import { HookFormStory } from "../field/HookFormStory";
 import { Input } from "./Input";
 
 const meta = {
-  title: "Components/Input",
+  title: "Forms/Input",
   component: Input,
   tags: ["autodocs"],
   args: {
@@ -60,13 +62,13 @@ export const WithIcons: Story = {
         {...args}
         label="Leading icon"
         type="search"
-        leftIcon={<SearchIcon />}
+        startIcon={<SearchIcon />}
       />
       <Input
         {...args}
         label="Trailing icon"
         type="search"
-        rightIcon={<SearchIcon />}
+        endIcon={<SearchIcon />}
       />
     </div>
   ),
@@ -88,4 +90,43 @@ export const Customized: Story = {
     style: { borderRadius: "999px", paddingInline: "1.25rem" },
     label: "Custom input",
   },
+};
+
+/** Connect with `field={register(name, rules)}` and pass the message to `error`. */
+export const WithRegister: Story = {
+  render: () => (
+    <HookFormStory defaultValues={{ email: "" }}>
+      {({ register, formState: { errors } }) => (
+        <Input
+          label="Email"
+          type="email"
+          field={register("email", { required: "Enter your email." })}
+          error={errors.email?.message}
+        />
+      )}
+    </HookFormStory>
+  ),
+};
+
+/** Inside `Controller`, pass its `field` and `fieldState.error?.message`. */
+export const WithController: Story = {
+  render: () => (
+    <HookFormStory defaultValues={{ email: "" }}>
+      {({ control }) => (
+        <Controller
+          name="email"
+          control={control}
+          rules={{ required: "Enter your email." }}
+          render={({ field, fieldState }) => (
+            <Input
+              label="Email"
+              type="email"
+              field={field}
+              error={fieldState.error?.message}
+            />
+          )}
+        />
+      )}
+    </HookFormStory>
+  ),
 };

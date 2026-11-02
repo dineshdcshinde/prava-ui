@@ -1,21 +1,41 @@
-@import "tailwindcss/utilities.css" layer(utilities) source(none);
 @reference 'tailwindcss';
 
-@source '../../components/card/**/*.{ts,tsx}';
+@layer prava.components {
+  .prava-card {
+    @apply max-w-full min-w-0 overflow-hidden rounded-(--prava-radius-card) border border-(--prava-color-border) bg-(--prava-color-surface) text-(--prava-color-text);
+    box-shadow: var(--prava-shadow-control);
+  }
 
-.prava-card {
-  @apply min-w-0 max-w-full overflow-hidden rounded-(--prava-radius-card) border border-(--prava-color-border) bg-(--prava-color-surface) text-(--prava-color-text);
-}
+  .prava-card__header,
+  .prava-card__content {
+    @apply min-w-0 px-5 py-4;
+  }
+  /* Header and content read as one block; the footer is the only divided zone. */
+  .prava-card__header {
+    @apply grid gap-1 pb-0;
+  }
+  .prava-card__header + .prava-card__content {
+    @apply pt-4;
+  }
+  .prava-card__header :is(h1, h2, h3, h4, h5, h6) {
+    @apply m-0 text-(length:--prava-font-size-5) font-(--prava-font-weight-semibold);
+    line-height: var(--prava-line-height-tight);
+    text-wrap: balance;
+  }
+  .prava-card__header p {
+    @apply m-0 text-(length:--prava-font-size-3) text-(--prava-color-text-muted);
+    line-height: var(--prava-line-height-normal);
+  }
 
-.prava-card__header,
-.prava-card__content {
-  @apply min-w-0 px-5 py-4;
-}
+  .prava-card__footer {
+    @apply flex min-w-0 flex-wrap items-center justify-end gap-2 border-t border-(--prava-color-border) bg-(--prava-color-canvas) px-5 py-3;
+  }
 
-.prava-card__header {
-  @apply border-b border-(--prava-color-border);
-}
-
-.prava-card__footer {
-  @apply flex min-w-0 flex-wrap items-center justify-end gap-2 border-t border-(--prava-color-border) px-5 py-3;
+  @media (max-width: 30rem) {
+    .prava-card__header,
+    .prava-card__content,
+    .prava-card__footer {
+      @apply px-4;
+    }
+  }
 }

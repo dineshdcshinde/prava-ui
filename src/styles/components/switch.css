@@ -1,0 +1,37 @@
+@reference 'tailwindcss';
+
+/* Row, focus, and invalid states are shared in field.css; this paints the track and thumb. */
+@layer prava.components {
+  .prava-switch .prava-choice__indicator {
+    @apply h-5 w-9 rounded-full bg-(--prava-color-surface-raised);
+  }
+  /* The thumb travels on inset-inline-start, so it moves the right way in RTL. */
+  .prava-switch .prava-choice__indicator::after {
+    @apply absolute top-1/2 size-3.5 -translate-y-1/2 rounded-full bg-(--prava-color-text-muted);
+    content: "";
+    inset-inline-start: 0.125rem;
+    transition:
+      inset-inline-start var(--prava-duration-normal) var(--prava-ease-standard),
+      inline-size var(--prava-duration-fast) var(--prava-ease-standard);
+  }
+  .prava-switch .prava-choice__input:checked + .prava-choice__indicator::after {
+    @apply bg-(--prava-color-on-primary);
+    inset-inline-start: calc(100% - 1rem);
+  }
+  /* A pressed thumb stretches toward where it will land. */
+  .prava-switch
+    .prava-choice__input:active:not(:disabled)
+    + .prava-choice__indicator {
+    scale: none;
+  }
+  .prava-switch
+    .prava-choice__input:active:not(:disabled)
+    + .prava-choice__indicator::after {
+    inline-size: 1.125rem;
+  }
+  .prava-switch
+    .prava-choice__input:checked:active:not(:disabled)
+    + .prava-choice__indicator::after {
+    inset-inline-start: calc(100% - 1.25rem);
+  }
+}

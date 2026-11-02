@@ -1,0 +1,6 @@
+@layer prava.components {
+  /* The provider only scopes dir, lang, and theme tokens; it never affects layout. */
+  .prava-provider {
+    display: contents;
+  }
+}

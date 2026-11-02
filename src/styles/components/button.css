@@ -1,194 +1,165 @@
-@import 'tailwindcss/utilities.css' layer(utilities) source(none);
 @reference 'tailwindcss';
 
-@source '../../components/button/**/*.{ts,tsx}';
-
-.prava-button {
-  @apply relative inline-flex max-w-full items-center justify-center gap-2 rounded-(--prava-radius-control) border font-[inherit] font-semibold leading-[1.25] text-center transition-[background-color,color,border-color,box-shadow,transform] duration-(--prava-duration-fast) ease-(--prava-ease-standard) focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-(--prava-color-focus) disabled:cursor-not-allowed disabled:opacity-[.58] disabled:shadow-none;
-}
-
-.prava-button[data-variant='primary'] {
-  @apply border-transparent bg-(--prava-color-primary) text-(--prava-color-on-primary) shadow-(--prava-shadow-control);
-}
-
-.prava-button[data-variant='primary']:hover:not(:disabled) {
-  @apply bg-(--prava-color-primary-hover) shadow-(--prava-shadow-control-hover);
-}
-
-.prava-button[data-variant='secondary'] {
-  @apply border-(--prava-color-border) bg-(--prava-color-surface) text-(--prava-color-text) shadow-(--prava-shadow-control);
-}
-
-.prava-button[data-variant='secondary']:hover:not(:disabled) {
-  @apply bg-(--prava-color-surface-hover) shadow-(--prava-shadow-control-hover);
-}
-
-.prava-button[data-variant='outline'] {
-  @apply border-(--prava-color-border) bg-transparent text-(--prava-color-text) shadow-none;
-}
-
-.prava-button[data-variant='outline']:hover:not(:disabled) {
-  @apply bg-(--prava-color-surface-hover);
-}
-
-.prava-button[data-variant='ghost'] {
-  @apply border-transparent bg-transparent text-(--prava-color-text) shadow-none;
-}
-
-.prava-button[data-variant='ghost']:hover:not(:disabled) {
-  @apply bg-(--prava-color-surface-hover);
-}
-
-.prava-button[data-variant='destructive'] {
-  @apply border-transparent bg-(--prava-color-danger) text-(--prava-color-on-primary) shadow-(--prava-shadow-control);
-}
-
-.prava-button[data-variant='destructive']:hover:not(:disabled) {
-  @apply bg-(--prava-color-danger-hover) shadow-(--prava-shadow-control-hover);
-}
-
-.prava-button[data-size='sm'] {
-  @apply min-h-[2rem] px-[.625rem] py-[.375rem] text-[.875rem];
-}
-
-.prava-button[data-size='md'] {
-  @apply min-h-[2.5rem] px-[.875rem] py-[.5rem] text-[1rem];
-}
-
-.prava-button[data-size='lg'] {
-  @apply min-h-[3rem] px-[1.125rem] py-[.75rem] text-[1rem];
-}
-
-.prava-button[data-type='icon'][data-size='sm'] {
-  @apply size-[2rem] p-0;
-}
-
-.prava-button[data-type='icon'][data-size='md'] {
-  @apply size-[2.5rem] p-0;
-}
-
-.prava-button[data-type='icon'][data-size='lg'] {
-  @apply size-[3rem] p-0;
-}
-
-.prava-button:hover:not(:disabled) {
-  @apply -translate-y-px;
-}
-
-.prava-button:active:not(:disabled) {
-  @apply translate-y-0 scale-[.985];
-}
-
-.prava-button__content {
-  @apply inline-flex items-center justify-center gap-2;
-}
-
-.prava-button[data-loading='true'] .prava-button__content {
-  opacity: 0;
-}
-
-.prava-button__loader {
-  position: absolute;
-  left: 50%;
-  display: inline-flex;
-  width: 1.25rem;
-  height: 1.25rem;
-  align-items: center;
-  justify-content: center;
-  transform: translateX(-50%);
-}
-
-.prava-button__loader[data-variant='spinner'] svg {
-  width: 100%;
-  height: 100%;
-  animation: prava-button-spin .8s linear infinite;
-}
-
-.prava-button__loader[data-variant='spinner'] circle {
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 3;
-  stroke-linecap: round;
-  stroke-dasharray: 42 16;
-}
-
-.prava-button__loader[data-variant='dots'],
-.prava-button__loader[data-variant='bounce'] { gap: .125rem; }
-
-.prava-button__loader[data-variant='dots'] i,
-.prava-button__loader[data-variant='bounce'] i {
-  width: .2rem;
-  height: .2rem;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-.prava-button__loader[data-variant='dots'] i { animation: prava-button-pulse 1s ease-in-out infinite; }
-.prava-button__loader[data-variant='dots'] i:nth-child(2),
-.prava-button__loader[data-variant='bounce'] i:nth-child(2) { animation-delay: .15s; }
-.prava-button__loader[data-variant='dots'] i:nth-child(3),
-.prava-button__loader[data-variant='bounce'] i:nth-child(3) { animation-delay: .3s; }
-.prava-button__loader[data-variant='bounce'] i { animation: prava-button-bounce .7s ease-in-out infinite alternate; }
-.prava-button__loader[data-variant='bars'] { gap: .125rem; }
-.prava-button__loader[data-variant='bars'] i {
-  width: .2rem;
-  height: 45%;
-  border-radius: 9999px;
-  background: currentColor;
-  animation: prava-button-bars 1s ease-in-out infinite;
-}
-.prava-button__loader[data-variant='bars'] i:nth-child(2) { animation-delay: .15s; }
-.prava-button__loader[data-variant='bars'] i:nth-child(3) { animation-delay: .3s; }
-.prava-button__loader[data-variant='pulse'] i {
-  width: 45%;
-  height: 45%;
-  border-radius: 50%;
-  background: currentColor;
-  animation: prava-button-pulse 1s ease-in-out infinite;
-}
-
-@keyframes prava-button-spin {
-  to { transform: rotate(360deg); }
-}
-@keyframes prava-button-pulse {
-  0%, 60%, 100% { opacity: .35; transform: scale(.75); }
-  30% { opacity: 1; transform: scale(1); }
-}
-@keyframes prava-button-bars {
-  0%, 100% { transform: scaleY(.55); }
-  50% { transform: scaleY(1.8); }
-}
-@keyframes prava-button-bounce {
-  to { transform: translateY(-.2rem); }
-}
-
-.prava-button[data-motion='none'] {
-  @apply transition-none;
-}
-
-.prava-button[data-motion='none']:hover,
-.prava-button[data-motion='none']:active {
-  @apply translate-none scale-none;
-}
-
-.prava-button[data-motion='none'] .prava-button__loader *,
-.prava-button[data-motion='none'] .prava-button__loader {
-  animation: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .prava-button,
-  .prava-button__loader {
-    @apply transition-none;
+@layer prava.components {
+  .prava-button {
+    @apply relative inline-flex max-w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-(--prava-radius-control) border border-transparent text-center whitespace-nowrap no-underline select-none;
+    font: inherit;
+    font-weight: var(--prava-font-weight-semibold);
+    line-height: var(--prava-line-height-tight);
+    /* The focus ring grows outward from the edge; it never shifts layout. */
+    outline: var(--prava-stroke) solid transparent;
+    outline-offset: 0;
+    transition-property:
+      background-color, border-color, color, box-shadow, outline-color,
+      outline-offset, scale;
+    transition-duration: var(--prava-duration-fast);
+    transition-timing-function: var(--prava-ease-standard);
+    -webkit-tap-highlight-color: transparent;
   }
 
-  .prava-button__loader *,
+  .prava-button:focus-visible {
+    @apply outline-offset-2 outline-(--prava-color-focus);
+  }
+
+  .prava-button[data-full-width] {
+    @apply flex w-full;
+  }
+
+  /* Variants. Filled variants carry the glaze rim; pressing sinks it. */
+  .prava-button[data-variant="primary"] {
+    @apply bg-(--prava-color-primary) text-(--prava-color-on-primary) shadow-(--prava-shadow-control-filled);
+  }
+
+  @media (hover: hover) {
+    .prava-button:not(
+        :disabled,
+        [aria-disabled="true"]
+      )[data-variant="primary"]:hover {
+      @apply bg-(--prava-color-primary-hover);
+    }
+  }
+
+  .prava-button:not(
+      :disabled,
+      [aria-disabled="true"]
+    )[data-variant="primary"]:active {
+    @apply bg-(--prava-color-primary-active);
+  }
+
+  .prava-button[data-variant="secondary"] {
+    @apply border-(--prava-color-border) bg-(--prava-color-surface) text-(--prava-color-text) shadow-(--prava-shadow-control);
+  }
+
+  @media (hover: hover) {
+    .prava-button:not(
+        :disabled,
+        [aria-disabled="true"]
+      )[data-variant="secondary"]:hover {
+      @apply bg-(--prava-color-surface-hover) shadow-(--prava-shadow-control-hover);
+    }
+  }
+
+  .prava-button[data-variant="outline"] {
+    @apply border-(--prava-color-border) bg-transparent text-(--prava-color-text);
+  }
+
+  .prava-button[data-variant="ghost"] {
+    @apply bg-transparent text-(--prava-color-text);
+  }
+
+  @media (hover: hover) {
+    .prava-button:not(
+        :disabled,
+        [aria-disabled="true"]
+      )[data-variant="outline"]:hover,
+    .prava-button:not(
+        :disabled,
+        [aria-disabled="true"]
+      )[data-variant="ghost"]:hover {
+      @apply bg-(--prava-color-surface-hover);
+    }
+  }
+
+  .prava-button[data-variant="destructive"] {
+    @apply bg-(--prava-color-danger) text-(--prava-color-on-danger) shadow-(--prava-shadow-control-filled);
+  }
+
+  @media (hover: hover) {
+    .prava-button:not(
+        :disabled,
+        [aria-disabled="true"]
+      )[data-variant="destructive"]:hover {
+      @apply bg-(--prava-color-danger-hover);
+    }
+  }
+
+  .prava-button:not(:disabled, [aria-disabled="true"]):active {
+    @apply scale-98 shadow-(--prava-shadow-pressed);
+    transition-timing-function: var(--prava-ease-press);
+  }
+
+  /* Sizes step in 8px; icon buttons are square at the same heights. */
+  .prava-button[data-size="sm"] {
+    @apply h-(--prava-control-height-sm) gap-1.5 px-3 text-(length:--prava-font-size-2);
+  }
+
+  .prava-button[data-size="md"] {
+    @apply h-(--prava-control-height-md) px-4 text-(length:--prava-font-size-3);
+  }
+
+  .prava-button[data-size="lg"] {
+    @apply h-(--prava-control-height-lg) px-5 text-(length:--prava-font-size-4);
+  }
+
+  .prava-button[data-type="icon"] {
+    @apply aspect-square px-0;
+  }
+
+  .prava-button__content,
+  .prava-button__icon {
+    @apply inline-flex items-center justify-center;
+    gap: inherit;
+  }
+
+  .prava-button__icon > svg {
+    @apply shrink-0;
+    width: 1.15em;
+    height: 1.15em;
+  }
+
+  /* Loading keeps the label's width so nothing reflows. */
+  .prava-button[data-loading] {
+    @apply cursor-progress;
+  }
+
+  .prava-button[data-loading] .prava-button__content {
+    @apply invisible;
+  }
+
   .prava-button__loader {
+    @apply absolute inset-0 grid place-items-center;
+  }
+
+  /* Disabled: the native attribute for buttons, aria-disabled for links. */
+  .prava-button:disabled,
+  .prava-button[aria-disabled="true"]:not([data-loading]) {
+    @apply cursor-not-allowed opacity-50 shadow-none;
+  }
+
+  .prava-button[data-motion="none"],
+  .prava-button[data-motion="none"] .prava-spinner * {
     animation: none;
+    transition: none;
+    scale: none;
   }
 
-  .prava-button:hover,
-  .prava-button:active {
-    @apply translate-none scale-none;
+  @media (prefers-reduced-motion: reduce) {
+    .prava-button {
+      transition: none;
+    }
+
+    .prava-button:active {
+      scale: none;
+    }
   }
 }

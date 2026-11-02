@@ -1,21 +1,8 @@
-@import "tailwindcss/utilities.css" layer(utilities) source(none);
 @reference 'tailwindcss';
 
-@source '../../components/form-field/**/*.{ts,tsx}';
-
-.prava-form-field {
-  display: grid;
-  min-inline-size: 0;
-  gap: 0.5rem;
-}
-.prava-form-field__description,
-.prava-form-field__error {
-  font-size: 0.875rem;
-  line-height: 1.45;
-}
-.prava-form-field__description {
-  color: var(--prava-color-text-muted);
-}
-.prava-form-field__error {
-  color: var(--prava-color-on-danger-container);
+/* Layout and messages come from .prava-field in field.css; the label sits slightly apart from its control. */
+@layer prava.components {
+  .prava-form-field > .prava-label {
+    @apply mb-0.5;
+  }
 }

@@ -1,0 +1,168 @@
+@reference 'tailwindcss';
+
+/* Shared by every form control: messages, the text-control well, and the choice row. */
+@layer prava.components {
+  .prava-field {
+    @apply grid min-w-0 content-start gap-1.5;
+  }
+
+  .prava-field__description,
+  .prava-field__error {
+    @apply text-(length:--prava-font-size-2);
+    line-height: var(--prava-line-height-normal);
+  }
+  .prava-field__description {
+    @apply text-(--prava-color-text-muted);
+  }
+  .prava-field__error {
+    @apply flex items-start gap-1.5 font-(--prava-font-weight-medium) text-(--prava-color-danger);
+    animation: prava-field-enter var(--prava-duration-normal)
+      var(--prava-ease-standard);
+  }
+  .prava-field__error svg {
+    flex: none;
+    inline-size: 1em;
+    block-size: 1lh;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  @keyframes prava-field-enter {
+    from {
+      opacity: 0;
+      translate: 0 -0.25rem;
+    }
+  }
+
+  .prava-field__legend {
+    @apply mb-1.5 inline-flex max-w-full items-baseline gap-1.5 p-0 text-(length:--prava-font-size-3) font-(--prava-font-weight-medium) text-(--prava-color-text);
+    line-height: var(--prava-line-height-tight);
+  }
+  .prava-label__required {
+    @apply text-(length:--prava-font-size-2) font-(--prava-font-weight-regular) text-(--prava-color-text-muted);
+  }
+
+  /* Text controls (Input, Textarea, Select) are one glazed well: a faint inner shade, a 3:1 boundary. */
+  .prava-control {
+    /* Popups, date icons, and scrollbars follow the Prava theme, even when no theme attribute is set. */
+    color-scheme: var(--prava-color-scheme);
+    @apply box-border block w-full max-w-full min-w-0 rounded-(--prava-radius-control) border border-(--prava-color-border-strong) bg-(--prava-color-surface) text-(--prava-color-text) placeholder:text-(--prava-color-text-muted);
+    font: inherit;
+    line-height: var(--prava-line-height-tight);
+    box-shadow: inset 0 1px 2px var(--prava-color-surface-raised);
+    outline: var(--prava-stroke) solid transparent;
+    outline-offset: 0;
+    transition-property:
+      border-color, outline-color, outline-offset, background-color;
+    transition-duration: var(--prava-duration-fast);
+    transition-timing-function: var(--prava-ease-standard);
+  }
+  @media (hover: hover) {
+    .prava-control:hover:not(:disabled, :focus, [aria-invalid="true"]) {
+      @apply border-(--prava-color-text-muted);
+    }
+  }
+  .prava-control:focus-visible {
+    @apply border-(--prava-color-focus) outline-offset-1 outline-(--prava-color-focus);
+  }
+  .prava-control[aria-invalid="true"] {
+    @apply border-(--prava-color-danger);
+  }
+  .prava-control[aria-invalid="true"]:focus-visible {
+    @apply outline-(--prava-color-danger);
+  }
+  .prava-control:disabled {
+    border-color: var(--prava-color-border);
+    background: var(--prava-color-surface-sunken);
+    color: var(--prava-color-text-muted);
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 1;
+  }
+  .prava-control[data-size="sm"] {
+    @apply min-h-(--prava-control-height-sm) px-2.5 py-1.5 text-(length:--prava-font-size-3);
+  }
+  .prava-control[data-size="md"] {
+    @apply min-h-(--prava-control-height-md) px-3 py-2 text-(length:--prava-font-size-4);
+  }
+  .prava-control[data-size="lg"] {
+    @apply min-h-(--prava-control-height-lg) px-3.5 py-3 text-(length:--prava-font-size-4);
+  }
+
+  /* Choice row: a transparent native input over a painted indicator, centered on the label's first line. */
+  .prava-choice {
+    @apply inline-flex max-w-full cursor-pointer items-start gap-2.5 text-(length:--prava-font-size-3) text-(--prava-color-text);
+    line-height: var(--prava-line-height-normal);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .prava-choice__control {
+    @apply relative inline-flex flex-none items-center justify-center;
+    block-size: 1lh;
+  }
+  .prava-choice__input {
+    @apply absolute inset-0 m-0 opacity-0;
+    cursor: inherit;
+  }
+  .prava-choice__indicator {
+    @apply relative box-border grid size-4.5 place-items-center border border-(--prava-color-border-strong) bg-(--prava-color-surface) text-(--prava-color-on-primary);
+    box-shadow: var(--prava-shadow-control);
+    outline: var(--prava-stroke) solid transparent;
+    outline-offset: 0;
+    transition-property:
+      background-color, border-color, box-shadow, outline-color, outline-offset,
+      scale;
+    transition-duration: var(--prava-duration-fast);
+    transition-timing-function: var(--prava-ease-standard);
+  }
+  @media (hover: hover) {
+    .prava-choice:hover
+      .prava-choice__input:not(:disabled, :checked)
+      + .prava-choice__indicator {
+      @apply border-(--prava-color-text-muted);
+    }
+  }
+  .prava-choice__input:focus-visible + .prava-choice__indicator {
+    @apply outline-offset-2 outline-(--prava-color-focus);
+  }
+  .prava-choice__input:active:not(:disabled) + .prava-choice__indicator {
+    scale: 0.92;
+    transition-timing-function: var(--prava-ease-press);
+  }
+  .prava-choice__input:is(:checked, :indeterminate) + .prava-choice__indicator {
+    @apply border-transparent bg-(--prava-color-primary);
+    box-shadow: var(--prava-shadow-control-filled);
+  }
+  .prava-choice__input[aria-invalid="true"] + .prava-choice__indicator,
+  [aria-invalid="true"] .prava-choice__indicator {
+    @apply border-(--prava-color-danger);
+  }
+  .prava-choice:has(.prava-choice__input:disabled) {
+    @apply cursor-not-allowed opacity-50;
+  }
+  .prava-choice__label {
+    @apply min-w-0;
+    overflow-wrap: anywhere;
+  }
+  /* Messages line up with the label text, not the indicator. */
+  .prava-field[data-choice]
+    > :is(.prava-field__description, .prava-field__error) {
+    padding-inline-start: 1.75rem;
+  }
+  .prava-field[data-choice="switch"]
+    > :is(.prava-field__description, .prava-field__error) {
+    padding-inline-start: 2.875rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prava-control,
+    .prava-choice__indicator,
+    .prava-choice__indicator::after,
+    .prava-choice__indicator * {
+      transition: none;
+    }
+    .prava-field__error {
+      animation: none;
+    }
+  }
+}

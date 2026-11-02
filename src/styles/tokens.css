@@ -1,94 +1,186 @@
-/* Prava's cool blue palette: quiet neutral surfaces and clear cyan-blue actions. */
-:root {
-  color-scheme: light;
-  --prava-color-canvas: #fbfbfa;
-  --prava-color-surface: #ffffff;
-  --prava-color-surface-hover: #f1f5f9;
-  --prava-color-surface-raised: #e2e8f0;
-  --prava-color-text: #11181c;
-  --prava-color-text-muted: #475569;
-  --prava-color-border: #cbd5e1;
-  --prava-color-focus: #0284c7;
-  --prava-color-primary: #0369a1;
-  --prava-color-primary-hover: #075985;
-  --prava-color-on-primary: #ffffff;
-  --prava-color-primary-container: #e0f2fe;
-  --prava-color-on-primary-container: #003351;
-  --prava-color-success: #ecfdf3;
-  --prava-color-on-success: #067647;
-  --prava-color-warning: #fffaeb;
-  --prava-color-on-warning: #93370d;
-  --prava-color-danger: #b42318;
-  --prava-color-on-danger: #ffffff;
-  --prava-color-danger-hover: #912018;
-  --prava-color-danger-container: #fef3f2;
-  --prava-color-on-danger-container: #7a271a;
-  --prava-color-info: #f0f9ff;
-  --prava-color-on-info: #026aa2;
-  --prava-radius-control: 0.375rem;
-  --prava-radius-card: 0.5rem;
-  --prava-shadow-control: 0 1px 2px rgb(15 23 42 / 0.08);
-  --prava-shadow-control-hover: 0 3px 8px rgb(15 23 42 / 0.12);
-  --prava-duration-fast: 140ms;
-  --prava-ease-standard: cubic-bezier(0.2, 0, 0, 1);
-}
+/*
+ * Prava UI tokens: Cobalt Porcelain. Glazed cool-white surfaces, cobalt for action and selection.
+ * The semantic color and shadow tokens below are the complete theme contract: a theme that redefines
+ * all of them restyles every component. Defaults live in a cascade layer so any unlayered consumer
+ * or theme CSS wins regardless of import order.
+ */
+@layer prava.tokens {
+  /* system starts from light values so it resets inside a dark subtree; the media block below flips it. */
+  :root,
+  [data-prava-theme="light"],
+  [data-prava-theme="system"] {
+    --prava-color-scheme: light;
+    --prava-color-canvas: #f2f5f9;
+    --prava-color-surface: #fbfcfe;
+    --prava-color-surface-sunken: #e8ecf4;
+    --prava-color-surface-hover: #ebeff6;
+    --prava-color-surface-raised: #dfe5ef;
+    --prava-color-border: #d3d9e3;
+    --prava-color-border-strong: #778193;
+    --prava-color-text: #171e2c;
+    --prava-color-text-muted: #555e6f;
+    --prava-color-primary: #2b4db5;
+    --prava-color-primary-hover: #213f9f;
+    --prava-color-primary-active: #1a358d;
+    --prava-color-on-primary: #fafcff;
+    --prava-color-primary-container: #dfeaff;
+    --prava-color-on-primary-container: #1c3788;
+    --prava-color-focus: #3760d8;
+    --prava-color-success: #ddf7e6;
+    --prava-color-on-success: #125b3a;
+    --prava-color-warning: #fff1d1;
+    --prava-color-on-warning: #7f490c;
+    --prava-color-danger: #c22826;
+    --prava-color-danger-hover: #a91518;
+    --prava-color-on-danger: #fefbfa;
+    --prava-color-danger-container: #ffe8e6;
+    --prava-color-on-danger-container: #8d2521;
+    --prava-color-info: #ddf3ff;
+    --prava-color-on-info: #005581;
+    /* The glaze rim: a hairline highlight on the top edge of raised controls; pressing sinks it. */
+    --prava-shadow-control:
+      inset 0 1px 0 rgb(255 255 255 / 0.7), 0 1px 2px rgb(23 30 44 / 0.08);
+    --prava-shadow-control-hover:
+      inset 0 1px 0 rgb(255 255 255 / 0.7), 0 2px 6px rgb(23 30 44 / 0.1);
+    --prava-shadow-control-filled:
+      inset 0 1px 0 rgb(255 255 255 / 0.18), 0 1px 2px rgb(23 30 44 / 0.2);
+    --prava-shadow-pressed: inset 0 1px 2px rgb(23 30 44 / 0.16);
+    --prava-shadow-raised:
+      inset 0 1px 0 rgb(255 255 255 / 0.8), 0 1px 2px rgb(23 30 44 / 0.05),
+      0 4px 12px rgb(23 30 44 / 0.05);
+    --prava-shadow-overlay:
+      0 4px 8px rgb(23 30 44 / 0.06), 0 12px 32px rgb(23 30 44 / 0.12);
+  }
 
-[data-prava-theme='light'] {
-  color-scheme: light;
-  --prava-color-canvas: #fbfbfa;
-  --prava-color-surface: #ffffff;
-  --prava-color-surface-hover: #f1f5f9;
-  --prava-color-surface-raised: #e2e8f0;
-  --prava-color-text: #11181c;
-  --prava-color-text-muted: #475569;
-  --prava-color-border: #cbd5e1;
-  --prava-color-focus: #0284c7;
-  --prava-color-primary: #0369a1;
-  --prava-color-primary-hover: #075985;
-  --prava-color-on-primary: #ffffff;
-  --prava-color-primary-container: #e0f2fe;
-  --prava-color-on-primary-container: #003351;
-  --prava-color-success: #ecfdf3;
-  --prava-color-on-success: #067647;
-  --prava-color-warning: #fffaeb;
-  --prava-color-on-warning: #93370d;
-  --prava-color-danger: #b42318;
-  --prava-color-on-danger: #ffffff;
-  --prava-color-danger-hover: #912018;
-  --prava-color-danger-container: #fef3f2;
-  --prava-color-on-danger-container: #7a271a;
-  --prava-color-info: #f0f9ff;
-  --prava-color-on-info: #026aa2;
-  --prava-shadow-control: 0 1px 2px rgb(15 23 42 / 0.08);
-  --prava-shadow-control-hover: 0 3px 8px rgb(15 23 42 / 0.12);
-}
+  [data-prava-theme="light"] {
+    color-scheme: light;
+  }
 
-[data-prava-theme='dark'] {
-  color-scheme: dark;
-  --prava-color-canvas: #121318;
-  --prava-color-surface: #1a1b21;
-  --prava-color-surface-hover: #292a2f;
-  --prava-color-surface-raised: #34343a;
-  --prava-color-text: #e3e1e9;
-  --prava-color-text-muted: #bfc7d2;
-  --prava-color-border: #3f4850;
-  --prava-color-focus: #93ccff;
-  --prava-color-primary: #93ccff;
-  --prava-color-primary-hover: #b4dcff;
-  --prava-color-on-primary: #003351;
-  --prava-color-primary-container: #3198dc;
-  --prava-color-on-primary-container: #002c47;
-  --prava-color-success: #183b2a;
-  --prava-color-on-success: #a6f4c5;
-  --prava-color-warning: #3d3013;
-  --prava-color-on-warning: #fec84b;
-  --prava-color-danger: #ffb4ab;
-  --prava-color-on-danger: #690005;
-  --prava-color-danger-hover: #ffd0ca;
-  --prava-color-danger-container: #93000a;
-  --prava-color-on-danger-container: #ffdad6;
-  --prava-color-info: #0b3145;
-  --prava-color-on-info: #7cd4fd;
-  --prava-shadow-control: 0 1px 2px rgb(0 0 0 / 0.28);
-  --prava-shadow-control-hover: 0 3px 8px rgb(0 0 0 / 0.4);
+  [data-prava-theme="dark"] {
+    color-scheme: dark;
+    --prava-color-scheme: dark;
+    --prava-color-canvas: #0c1019;
+    --prava-color-surface: #151924;
+    --prava-color-surface-sunken: #11151e;
+    --prava-color-surface-hover: #1e2430;
+    --prava-color-surface-raised: #252b39;
+    --prava-color-border: #2f3543;
+    --prava-color-border-strong: #697284;
+    --prava-color-text: #e6e9f0;
+    --prava-color-text-muted: #a8aebb;
+    --prava-color-primary: #8aacfa;
+    --prava-color-primary-hover: #a0bdff;
+    --prava-color-primary-active: #7e9fed;
+    --prava-color-on-primary: #091431;
+    --prava-color-primary-container: #22335e;
+    --prava-color-on-primary-container: #d5e1fd;
+    --prava-color-focus: #93b5ff;
+    --prava-color-success: #153524;
+    --prava-color-on-success: #a1e7be;
+    --prava-color-warning: #422f13;
+    --prava-color-on-warning: #f9d280;
+    --prava-color-danger: #f17871;
+    --prava-color-danger-hover: #fc928a;
+    --prava-color-on-danger: #290b0a;
+    --prava-color-danger-container: #551f1d;
+    --prava-color-on-danger-container: #ffd5d1;
+    --prava-color-info: #163347;
+    --prava-color-on-info: #a8dcfc;
+    --prava-shadow-control:
+      inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.4);
+    --prava-shadow-control-hover:
+      inset 0 1px 0 rgb(255 255 255 / 0.08), 0 2px 6px rgb(0 0 0 / 0.45);
+    --prava-shadow-control-filled:
+      inset 0 1px 0 rgb(255 255 255 / 0.3), 0 1px 2px rgb(0 0 0 / 0.4);
+    --prava-shadow-pressed: inset 0 1px 2px rgb(0 0 0 / 0.45);
+    --prava-shadow-raised:
+      inset 0 1px 0 rgb(255 255 255 / 0.05), 0 1px 2px rgb(0 0 0 / 0.3),
+      0 4px 12px rgb(0 0 0 / 0.25);
+    --prava-shadow-overlay:
+      0 4px 8px rgb(0 0 0 / 0.3), 0 12px 32px rgb(0 0 0 / 0.5);
+  }
+
+  /* Keep identical to the dark block above; foundations.test.ts enforces it. */
+  @media (prefers-color-scheme: dark) {
+    [data-prava-theme="system"] {
+      color-scheme: dark;
+      --prava-color-scheme: dark;
+      --prava-color-canvas: #0c1019;
+      --prava-color-surface: #151924;
+      --prava-color-surface-sunken: #11151e;
+      --prava-color-surface-hover: #1e2430;
+      --prava-color-surface-raised: #252b39;
+      --prava-color-border: #2f3543;
+      --prava-color-border-strong: #697284;
+      --prava-color-text: #e6e9f0;
+      --prava-color-text-muted: #a8aebb;
+      --prava-color-primary: #8aacfa;
+      --prava-color-primary-hover: #a0bdff;
+      --prava-color-primary-active: #7e9fed;
+      --prava-color-on-primary: #091431;
+      --prava-color-primary-container: #22335e;
+      --prava-color-on-primary-container: #d5e1fd;
+      --prava-color-focus: #93b5ff;
+      --prava-color-success: #153524;
+      --prava-color-on-success: #a1e7be;
+      --prava-color-warning: #422f13;
+      --prava-color-on-warning: #f9d280;
+      --prava-color-danger: #f17871;
+      --prava-color-danger-hover: #fc928a;
+      --prava-color-on-danger: #290b0a;
+      --prava-color-danger-container: #551f1d;
+      --prava-color-on-danger-container: #ffd5d1;
+      --prava-color-info: #163347;
+      --prava-color-on-info: #a8dcfc;
+      --prava-shadow-control:
+        inset 0 1px 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.4);
+      --prava-shadow-control-hover:
+        inset 0 1px 0 rgb(255 255 255 / 0.08), 0 2px 6px rgb(0 0 0 / 0.45);
+      --prava-shadow-control-filled:
+        inset 0 1px 0 rgb(255 255 255 / 0.3), 0 1px 2px rgb(0 0 0 / 0.4);
+      --prava-shadow-pressed: inset 0 1px 2px rgb(0 0 0 / 0.45);
+      --prava-shadow-raised:
+        inset 0 1px 0 rgb(255 255 255 / 0.05), 0 1px 2px rgb(0 0 0 / 0.3),
+        0 4px 12px rgb(0 0 0 / 0.25);
+      --prava-shadow-overlay:
+        0 4px 8px rgb(0 0 0 / 0.3), 0 12px 32px rgb(0 0 0 / 0.5);
+    }
+  }
+
+  @media (prefers-color-scheme: light) {
+    [data-prava-theme="system"] {
+      color-scheme: light;
+    }
+  }
+
+  /* Theme-independent scales. Type sizes only; the font family is always inherited.
+     Spacing uses Tailwind's 4px scale, compiled into each component stylesheet. */
+  :root {
+    --prava-font-size-1: 0.75rem;
+    --prava-font-size-2: 0.8125rem;
+    --prava-font-size-3: 0.875rem;
+    --prava-font-size-4: 1rem;
+    --prava-font-size-5: 1.125rem;
+    --prava-font-size-6: 1.375rem;
+    --prava-font-size-7: 1.75rem;
+    --prava-line-height-tight: 1.25;
+    --prava-line-height-normal: 1.5;
+    --prava-font-weight-regular: 400;
+    --prava-font-weight-medium: 500;
+    --prava-font-weight-semibold: 600;
+    --prava-control-height-sm: 2rem;
+    --prava-control-height-md: 2.5rem;
+    --prava-control-height-lg: 3rem;
+    --prava-radius-sm: 0.25rem;
+    --prava-radius-control: 0.5rem;
+    --prava-radius-card: 0.875rem;
+    --prava-radius-full: 9999px;
+    /* One stroke weight for focus rings, checkbox marks, progress and spinner tracks. */
+    --prava-stroke: 2px;
+    --prava-duration-fast: 120ms;
+    --prava-duration-normal: 200ms;
+    --prava-duration-slow: 320ms;
+    --prava-ease-standard: cubic-bezier(0.22, 1, 0.36, 1);
+    --prava-ease-press: cubic-bezier(0.3, 0, 0.5, 1);
+  }
 }

@@ -1,4 +1,5 @@
 import type { CSSProperties, HTMLAttributes } from "react";
+import { usePravaConfig } from "../provider/PravaProvider";
 
 export type ProgressProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   /** Current value; omit for an indeterminate task. */
@@ -9,6 +10,8 @@ export type ProgressProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   max?: number;
   /** Accessible name describing the task being measured. */
   label: string;
+  /** Shows the label and the percentage (formatted for the provider locale) above the bar. */
+  showValue?: boolean;
 };
 
 /** Communicates determinate or indeterminate task progress with accessible progressbar semantics. */
@@ -17,6 +20,7 @@ export function Progress({
   min = 0,
   max = 100,
   label,
+  showValue = false,
   className,
   style,
   ...props
@@ -37,6 +41,8 @@ export function Progress({
       ? undefined
       : ((clampedValue - min) / (max - min)) * 100;
 
+  const { locale } = usePravaConfig();
+
   return (
     <div
       {...props}
@@ -54,7 +60,22 @@ export function Progress({
       }}
       data-indeterminate={value === undefined ? "" : undefined}
     >
-      <span className="prava-progress__indicator" aria-hidden="true" />
+      {showValue && (
+        <span className="prava-progress__header" aria-hidden="true">
+          <span>{label}</span>
+          {percentage !== undefined && (
+            <span className="prava-progress__value">
+              {new Intl.NumberFormat(locale, {
+                style: "percent",
+                maximumFractionDigits: 0,
+              }).format(percentage / 100)}
+            </span>
+          )}
+        </span>
+      )}
+      <span className="prava-progress__track" aria-hidden="true">
+        <span className="prava-progress__indicator" />
+      </span>
     </div>
   );
 }

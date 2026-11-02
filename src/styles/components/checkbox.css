@@ -1,0 +1,36 @@
+@reference 'tailwindcss';
+
+/* Row, indicator, and states are shared in field.css; this adds the box and its marks. */
+@layer prava.components {
+  .prava-checkbox .prava-choice__indicator {
+    @apply rounded-(--prava-radius-sm);
+  }
+  .prava-checkbox svg {
+    @apply size-3.5;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  /* The check draws itself in; the stroke length is the path's own. */
+  .prava-choice__check {
+    stroke-dasharray: 14;
+    stroke-dashoffset: 14;
+    transition: stroke-dashoffset var(--prava-duration-normal)
+      var(--prava-ease-standard);
+  }
+  .prava-choice__dash {
+    opacity: 0;
+  }
+  .prava-choice__input:checked:not(:indeterminate)
+    + .prava-choice__indicator
+    .prava-choice__check {
+    stroke-dashoffset: 0;
+  }
+  .prava-choice__input:indeterminate
+    + .prava-choice__indicator
+    .prava-choice__dash {
+    opacity: 1;
+  }
+}

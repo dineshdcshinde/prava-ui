@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { Controller } from "react-hook-form";
+import { HookFormStory } from "../field/HookFormStory";
+import { PravaProvider } from "../provider";
 import { Input } from "../input";
 import { Textarea } from "../textarea";
 import { FormField } from "./FormField";
 
 const meta = {
-  title: "Components/FormField",
+  title: "Forms/FormField",
   component: FormField,
   tags: ["autodocs"],
   parameters: {
@@ -49,5 +52,68 @@ export const Invalid: Story = {
         control={<Input type="email" defaultValue="not-an-email" invalid />}
       />
     </div>
+  ),
+};
+
+export const RTL: Story = {
+  args: { label: "البريد", control: <Input /> },
+  render: () => (
+    <PravaProvider direction="rtl" locale="ar" messages={{ required: "مطلوب" }}>
+      <div style={{ width: "min(100%, 28rem)" }}>
+        <FormField
+          label="البريد الإلكتروني"
+          required
+          description="نستخدمه لتسجيل الدخول."
+          error="أدخل بريدًا صالحًا."
+          control={<Input type="email" />}
+        />
+      </div>
+    </PravaProvider>
+  ),
+};
+
+/** Connect with `field={register(name, rules)}` and pass the message to `error`. */
+export const WithRegister: Story = {
+  args: { label: "Work email", control: <Input /> },
+  render: () => (
+    <HookFormStory defaultValues={{ email: "" }}>
+      {({ register, formState: { errors } }) => (
+        <FormField
+          label="Work email"
+          required
+          error={errors.email?.message}
+          control={
+            <Input
+              type="email"
+              field={register("email", { required: "Enter your work email." })}
+            />
+          }
+        />
+      )}
+    </HookFormStory>
+  ),
+};
+
+/** Inside `Controller`, pass its `field` and `fieldState.error?.message`. */
+export const WithController: Story = {
+  args: { label: "Work email", control: <Input /> },
+  render: () => (
+    <HookFormStory defaultValues={{ email: "" }}>
+      {({ control }) => (
+        <Controller
+          name="email"
+          control={control}
+          rules={{ required: "Enter your work email." }}
+          render={({ field, fieldState }) => (
+            <FormField
+              label="Work email"
+              required
+              error={fieldState.error?.message}
+              control={<Input type="email" field={field} />}
+            />
+          )}
+        />
+      )}
+    </HookFormStory>
   ),
 };

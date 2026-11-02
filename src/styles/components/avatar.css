@@ -1,20 +1,41 @@
-@layer components {
+@reference 'tailwindcss';
+
+@layer prava.components {
   .prava-avatar {
-    display: inline-flex;
-    flex: none;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden;
-    border-radius: 9999px;
-    background: var(--prava-color-surface-raised);
-    color: var(--prava-color-text);
-    font-weight: 600;
+    @apply inline-flex flex-none items-center justify-center overflow-hidden rounded-full bg-(--prava-color-surface-raised) align-middle font-(--prava-font-weight-semibold) text-(--prava-color-text) select-none;
     line-height: 1;
-    vertical-align: middle;
+    /* A hairline inner edge keeps light photos from melting into the page. */
+    box-shadow: inset 0 0 0 1px var(--prava-color-border);
+  }
+  .prava-avatar[data-size="sm"] {
+    @apply size-8 text-(length:--prava-font-size-1);
+  }
+  .prava-avatar[data-size="md"] {
+    @apply size-10 text-(length:--prava-font-size-3);
+  }
+  .prava-avatar[data-size="lg"] {
+    @apply size-12 text-(length:--prava-font-size-4);
+  }
+  .prava-avatar img {
+    @apply size-full object-cover;
   }
 
-  .prava-avatar[data-size='sm'] { width: 2rem; height: 2rem; font-size: .75rem; }
-  .prava-avatar[data-size='md'] { width: 2.5rem; height: 2.5rem; font-size: .875rem; }
-  .prava-avatar[data-size='lg'] { width: 3rem; height: 3rem; font-size: 1rem; }
-  .prava-avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .prava-avatar[data-tone] {
+    box-shadow: none;
+  }
+  .prava-avatar[data-tone="primary"] {
+    @apply bg-(--prava-color-primary-container) text-(--prava-color-on-primary-container);
+  }
+  .prava-avatar[data-tone="success"] {
+    @apply bg-(--prava-color-success) text-(--prava-color-on-success);
+  }
+  .prava-avatar[data-tone="warning"] {
+    @apply bg-(--prava-color-warning) text-(--prava-color-on-warning);
+  }
+  .prava-avatar[data-tone="info"] {
+    @apply bg-(--prava-color-info) text-(--prava-color-on-info);
+  }
+  .prava-avatar[data-tone="danger"] {
+    @apply bg-(--prava-color-danger-container) text-(--prava-color-on-danger-container);
+  }
 }
