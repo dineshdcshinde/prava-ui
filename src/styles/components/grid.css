@@ -1,0 +1,63 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-grid {
+    --prava-grid-min: 16rem;
+    --prava-grid-gap: 1rem;
+    --prava-grid-columns: 1;
+    @apply box-border grid max-w-full min-w-0;
+    gap: var(--prava-grid-gap);
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(var(--prava-grid-min), 100%), 1fr)
+    );
+  }
+  /* The track is at least one Nth of the width, which caps the count at N with no breakpoints. */
+  .prava-grid[data-columns] {
+    --prava-grid-min: 10rem;
+    grid-template-columns: repeat(
+      auto-fill,
+      minmax(
+        min(
+          100%,
+          max(
+            var(--prava-grid-min),
+            calc(
+              (100% - (var(--prava-grid-columns) - 1) * var(--prava-grid-gap)) /
+                var(--prava-grid-columns)
+            )
+          )
+        ),
+        1fr
+      )
+    );
+  }
+
+  .prava-grid[data-gap="0"] {
+    --prava-grid-gap: 0rem;
+  }
+  .prava-grid[data-gap="1"] {
+    --prava-grid-gap: 0.25rem;
+  }
+  .prava-grid[data-gap="2"] {
+    --prava-grid-gap: 0.5rem;
+  }
+  .prava-grid[data-gap="3"] {
+    --prava-grid-gap: 0.75rem;
+  }
+  .prava-grid[data-gap="5"] {
+    --prava-grid-gap: 1.25rem;
+  }
+  .prava-grid[data-gap="6"] {
+    --prava-grid-gap: 1.5rem;
+  }
+  .prava-grid[data-gap="8"] {
+    --prava-grid-gap: 2rem;
+  }
+  .prava-grid[data-gap="10"] {
+    --prava-grid-gap: 2.5rem;
+  }
+  .prava-grid[data-gap="12"] {
+    --prava-grid-gap: 3rem;
+  }
+}

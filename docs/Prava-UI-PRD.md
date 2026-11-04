@@ -420,9 +420,10 @@ The 25 core components below are the target catalog. The three layout primitives
 
 - Purpose: select one option from a list.
 - V1 default: a custom listbox over a hidden native `<select>`. Proven requirement (owner, 2026-11-02): themed popup colors, an opening animation, and option icons, none of which a native popup allows.
-- API: `options` (`{ value, label, searchText?, icon?, description?, disabled? }` plus any extra fields, or `{ label, options }` groups), `label`, `placeholder`, `size`, `multiple`, `searchable`, `renderOption`, `onValueChange`, `field`, `error`, `description`, `required`, `disabled`, `name`.
+- API: `options` (`{ value, label, searchText?, icon?, description?, disabled? }` plus any extra fields, or `{ label, options }` groups), `label`, `placeholder`, `size`, `placement`, `multiple`, `searchable`, `renderOption`, `onValueChange`, `field`, `error`, `description`, `required`, `disabled`, `name`.
 - Behavior: follows the WAI-ARIA select-only combobox pattern; `value` is stable data and `label` carries translated text; search filters the given options only.
 - Responsive: fills available parent width and prevents text/arrow overflow.
+- Placement (owner, 2026-11-03): automatic, with no props. The list opens below, or above when below is too small, and shrinks and scrolls to fit. It is at least as wide as the field and widens for long options (up to 24rem) without leaving the screen. When neither above nor below can show about three rows, it opens beside the field if there is room, inline-end first. The story `Forms/Select/AutoPlacement` shows each case. `placement` (`auto` by default, `top`, `bottom`, `start`, `end`) forces a side while it leaves about three rows of room, or fits when beside the field; otherwise `auto` takes over, so the list is never unusable.
 - A11y: programmatic label and selected-value semantics.
 
 #### 17. Alert
@@ -432,6 +433,7 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: informative by default; does not auto-dismiss unless explicitly designed to do so.
 - Responsive: long text wraps; actions remain reachable on small screens.
 - A11y: choose status/alert semantics according to urgency rather than applying assertive announcements to every alert.
+- V1 API: `tone` (`neutral`, `info`, `success`, `warning`, `danger`), `title`, `children`, `icon` (`null` hides it), `action`, `onDismiss`, and native div attributes. It is `role="status"` by default; pass `role="alert"` only when a message must interrupt. The consumer removes the Alert in `onDismiss`.
 
 ### 9.3 Interaction components
 
@@ -442,6 +444,8 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: focus placement, containment for modal dialogs, Escape handling, dismissal policy, scroll handling, and focus restoration must be specified and tested.
 - Responsive: viewport-safe width/height and scroll; sensible maximum width on desktop.
 - A11y: dialog naming, focus management, role/modal semantics, and dismissal behavior.
+- V1 API: required `title`, `description`, `children`, `footer`, `trigger`, `open`/`defaultOpen`/`onOpenChange`, `modal` (default true), `dismissible` (default true), `hideClose`, `size` (`sm`, `md`, `lg`), `classNames` (`header`, `title`, `description`, `body`, `footer`, `close`), and native dialog attributes (`role="alertdialog"` for a required choice). `DialogClose` makes its child close the Dialog.
+- Specified behavior: a native `<dialog>`, so the browser provides the top layer, focus containment, and focus restoration. Focus lands on the first focusable child, or on the element marked `data-autofocus`. When `dismissible`, Escape closes it, and so does a press on the backdrop that also started there. Modal dialogs lock page scroll without shifting layout. Only the body scrolls. Content unmounts after the exit transition.
 
 #### 19. Drawer
 
@@ -450,6 +454,7 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: consistent overlay/dismissal/focus rules; only use a modal interaction when configured as modal.
 - Responsive: adapt panel width/height to available viewport; placement and content must remain usable in RTL.
 - A11y: correct dialog semantics when modal, focus handling, Escape behavior.
+- V1 API: every Dialog prop plus `placement` (`start`, `end`, `top`, `bottom`; default `end`); `DrawerClose` closes it. Side drawers leave a 3rem strip of page to press on narrow screens.
 
 #### 20. Popover
 
@@ -458,6 +463,8 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: positioning, collision handling, Escape, focus policy, outside-click behavior, and trigger relationship are documented.
 - Responsive: prevent viewport overflow; placement may flip when necessary.
 - A11y: interaction semantics depend on content; do not assign `role=menu` unless it is a menu.
+- V1 API: required `trigger`, `title` (or `aria-label`), `children`, `placement` (`top`, `bottom`, `start`, `end`), `align` (`start`, `center`, `end`), `open`/`defaultOpen`/`onOpenChange`, `classNames.title`, and native div attributes.
+- Specified behavior: `role="dialog"` without a focus trap. Focus moves to the first focusable child, or the surface when there is none. Escape closes it and returns focus to the trigger. A press outside or tabbing away closes it without moving focus. It uses the native Popover API, so parents never clip it.
 
 #### 21. Tooltip
 
@@ -466,6 +473,8 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: open on appropriate hover/focus interactions; remain dismissible; avoid interactive content.
 - Responsive: avoid clipping and support touch contexts without making hover the only way to obtain information.
 - A11y: link content to trigger where appropriate; ensure content is not the sole source of essential information.
+- V1 API: required `content` and one focusable child, `delay` (hover only, default 400ms), `placement`, and native div attributes.
+- Specified behavior: shows on mouse hover after `delay`, at once on keyboard focus, and on a touch tap. It stays open while hovered, and Escape hides it without closing a surrounding overlay. It stays in the DOM so `aria-describedby` always resolves.
 
 #### 22. DropdownMenu
 
@@ -474,6 +483,8 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: arrow-key navigation, Home/End where specified, Escape, focus return, and disabled action handling.
 - Responsive: collision-aware positioning and scroll handling.
 - A11y: follow the WAI-ARIA menu button pattern; do not confuse action menus with listboxes.
+- V1 API: required `trigger` and `items` (`{ label, onSelect?, href?, icon?, disabled?, tone? }`, `{ separator: true }`, or `{ label, items }` groups), `placement`, `align`, `open`/`defaultOpen`/`onOpenChange`, and native div attributes. Submenus are not in V1.
+- Specified behavior: Enter, Space, and ArrowDown open on the first item, ArrowUp on the last, and a pointer on the menu itself. Arrows wrap, Home and End jump, and typing moves by label. Disabled items stay focusable, as the pattern recommends, but can't be chosen. Choosing an item closes the menu and returns focus before `onSelect` runs, so `onSelect` can open a Dialog. Tab closes it and continues from the trigger.
 
 #### 23. Tabs
 
@@ -482,6 +493,8 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: document automatic versus manual activation; keyboard navigation matches the chosen pattern.
 - Responsive: tab labels can scroll or adapt without making controls unreachable.
 - A11y: correct tablist/tab/tabpanel associations and selected state.
+- V1 API: `Tabs` (`value` or `defaultValue`, `onValueChange`, `activation`: `automatic` by default or `manual`, `orientation`), `TabList` (name it with `aria-label`), `Tab` (`value`, `icon`, `disabled`), and `TabPanel` (`value`).
+- Specified behavior: roving tabindex; arrow keys wrap and skip disabled tabs (left and right mirror in RTL, up and down when vertical); Home and End jump. Tabs scroll instead of wrapping. Inactive panels stay mounted and `hidden`, so they keep their state.
 
 #### 24. Accordion
 
@@ -490,6 +503,8 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: predictable expansion and collapse; no hidden focusable content remains interactive.
 - Responsive: content wraps and respects available width.
 - A11y: button-based headings, expanded state, panel association.
+- V1 API: `Accordion` (`multiple`, `value`/`defaultValue`/`onValueChange` as `string[]`, `headingLevel`: 2 to 6, default 3) and `AccordionItem` (`value`, `title`, `disabled`). Opening an item closes the others unless `multiple`; an open item can always be collapsed.
+- Specified behavior: up and down arrows, Home, and End move between headers. A closed panel has `visibility: hidden`, which removes it from the tab order and the accessibility tree.
 
 #### 25. Toast
 
@@ -498,6 +513,9 @@ The 25 core components below are the target catalog. The three layout primitives
 - Behavior: timer control and pause/dismiss rules must be documented; important errors must not disappear before users can perceive them.
 - Responsive: container stays within viewport safe areas; long messages wrap and actions remain accessible.
 - A11y: live region semantics appropriate to urgency, accessible dismissal, and no repeated intrusive announcements.
+- V1 API: one `<Toaster placement? />` near the app root; `toast({ id?, title?, description?, tone?, action?, duration? })` returns an id, and reusing an id updates that toast in place; `dismissToast(id?)` dismisses one toast or all of them.
+- Specified behavior: `duration` defaults to 5000ms, 10000ms with an `action`, and `Infinity` for `danger`, which stays until dismissed. Timers pause while the stack is hovered or focused and while the tab is hidden, and keep the time they had left. Announcements go through always-present live regions (`status`, or `alert` for `danger`), so visible toasts aren't read twice.
+- Known limit: a modal Dialog makes the page outside it inert, so a Toaster outside the Dialog shows above it but can't be pressed or announced until it closes. Render a Toaster inside the Dialog when that matters.
 
 ### 9.4 Layout primitives
 
@@ -505,17 +523,20 @@ The 25 core components below are the target catalog. The three layout primitives
 
 - Centers and constrains content when appropriate, applies responsive inline padding, and supports documented width variants or CSS variable overrides.
 - Must not impose a max width where the consumer explicitly requests fluid width.
+- V1 API: `size` (`sm`, `md`, `lg` by default, `xl`, `fluid`), `as`, native attributes; `--prava-container-max` sets a custom width.
 
 #### Stack
 
 - Arranges children vertically or horizontally with consistent gaps and alignment.
 - Supports wrapping where appropriate and preserves semantic children without unnecessary wrappers.
+- V1 API: `orientation`, `gap` (4px steps: 0, 1, 2, 3, 4, 5, 6, 8, 10, 12), `align`, `justify`, `wrap`, `as`, native attributes.
 
 #### Grid
 
 - Provides responsive columns/gaps using CSS Grid and intrinsic/minmax patterns.
 - Defaults to a safe one-column layout when the available width is narrow; consumers may configure columns intentionally.
 - Does not require consumer Tailwind configuration.
+- V1 API: `columns` (the most to show; they still drop when narrower than the minimum, with no breakpoints), `minColumnWidth` (default 16rem, or 10rem with `columns`), `gap`, `as`, native attributes.
 
 ## 10. Package architecture and compatibility
 
@@ -829,8 +850,13 @@ V1 is ready only when all conditions below are true:
 | Auto-growing Textarea                                             | Approved (2026-11-02): grows between `rows` and `maxRows` by default; the drag handle is opt-in through `resize`.                                                                                                                                                                                                                                        |
 | Form library binding                                              | Approved (2026-11-02): every input control takes `field`, a shape-typed binding that accepts `register()` output or `Controller`'s `field` with no form-library dependency; Checkbox and Switch map its value to `checked`. Spreading `register()` stays supported.                                                                                      |
 | V1 additions                                                      | Approved (2026-11-02): Badge renders standalone when it has no child; Avatar fallback gets a deterministic tone from the name; Progress `showValue` shows the label and a locale-formatted percentage; Select `placeholder`; RadioGroup takes `options` and `onValueChange`.                                                                             |
+| Native overlays, no dependency                                    | Approved (2026-11-03): the overlay spike concluded with no positioning or focus dependency. Dialog and Drawer use native `<dialog>`; Popover, Tooltip, and DropdownMenu use the Popover API and one shared placement helper; no portals, so provider direction, theme, and tokens inherit through the DOM. Exit transitions use `allow-discrete`; browsers without it close without animating. |
+| Overlay API additions                                             | Approved (2026-11-03, owner delegated additions beyond this document): `DialogClose`/`DrawerClose`, `data-autofocus`, `dismissible`, `hideClose`, Toast `id` updates, and `--prava-color-scrim` in the theme contract; `--prava-shadow-overlay` gains the glaze rim. `BuiltInMessages` adds `close`, `dismiss`, and `notifications`. |
+| Motion budget                                                     | Approved (2026-11-03): minimal and state-explaining only. The dialog settles from just below, the drawer slides from its edge, popups rise from their anchor, the tab indicator glides between tabs, accordion rows and toasts animate their height, and toasts arrive from the edge they live on. Exits are faster than entrances. Reduced motion removes all spatial movement and keeps fades. No looping or decorative motion. |
 | V2 customer theme builder                                         | Future direction: user picks a color; we generate a complete semantic-token CSS file (light and dark) that overrides Prava defaults; not part of V1.                                                                                                                                                                                                     |
-| Public npm name and license                                       | Must be verified/approved before first release.                                                                                                                                                                                                                                                                                                          |
+| Public npm name and license | Approved (2026-11-04): `prava-ui` was free on npm when checked, and the license is MIT. |
+| First release | Approved (2026-11-04): `1.0.0-rc.1`, published to the `next` npm tag through `publishConfig`. Remove `publishConfig` for the final `1.0.0`. See `docs/RELEASING.md`. |
+| Next.js support | Approved (2026-11-04): the build adds `"use client"` to every JavaScript module except the root re-export, so components work directly in Server Components. Verified by building, serving, and hydrating a Next.js 15 App Router app from the packed package. |
 | Package manager                                                   | Not frozen; recommended default is pnpm, with npm also acceptable.                                                                                                                                                                                                                                                                                       |
 | Icon policy                                                       | Not frozen; recommended default is no mandatory icon runtime dependency; accept consumer-provided icons through children/slots.                                                                                                                                                                                                                          |
 | Typography                                                        | Components inherit the consumer font by default; do not bundle or impose a font. Optional typography customization uses documented CSS custom properties.                                                                                                                                                                                                |
@@ -849,7 +875,7 @@ These questions are intentionally recorded so the owner can make explicit decisi
 | Should the library bundle a font?                                         | No. Components inherit the consumer's font; do not impose a system or branded font family.                                                     | Decided for V1; document optional typography CSS custom properties in Foundations. |
 | How should dark mode be selected?                                         | Support an explicit root attribute or provider option and respect inherited application theming; avoid manipulating `document` implicitly.     | Before theme-dependent components are implemented.                                 |
 | What type scale, spacing, and motion tokens should we use?                | Define these in Foundations as component work needs them; colors and basic radii are defined in `DESIGN.md`.                                   | Before broader component implementation.                                           |
-| Which overlay/positioning dependency should be used?                      | None until the Dialog/Popover/DropdownMenu spike compares native behavior, accessibility, package size, and maintenance.                       | Before complex overlay implementation.                                             |
+| Which overlay/positioning dependency should be used?                      | None. Decided 2026-11-03: native `<dialog>` and the Popover API cover V1 (see decision log).                                                   | Decided.                                                                           |
 | Which browsers are officially supported?                                  | Target maintained evergreen browsers; write an explicit support matrix before the first stable release.                                        | Before V1 release.                                                                 |
 | Which docs hosting/marketing site should be used?                         | Use Storybook as the initial living component documentation; add a separate marketing/docs site only if it adds real value.                    | Before first public beta.                                                          |
 | What is the bundle-size budget?                                           | Measure Button and the overlay spike first, then set enforceable budgets for simple components, full JS, aggregate CSS, and per-component CSS. | After the first build spike and before many components are added.                  |

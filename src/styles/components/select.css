@@ -105,16 +105,20 @@
 
   /* The popup rises out of the field's edge; it leaves faster than it arrives so it never delays the next action. */
   .prava-select__popup {
+    --prava-select-from: 0 -0.25rem;
     @apply m-0 box-border flex-col overflow-hidden rounded-(--prava-radius-control) border-0 bg-(--prava-color-surface) p-0 text-(length:--prava-font-size-3) text-(--prava-color-text);
     position: fixed;
     inset: auto;
+    /* At least the field's width (set in JS); long options can widen it this far. */
+    inline-size: max-content;
+    max-inline-size: min(24rem, 100vw - 1rem);
     box-shadow: var(--prava-shadow-overlay);
     /* The shadow disappears on dark surfaces; a hairline keeps the edge in every theme. */
     outline: 1px solid var(--prava-color-border);
     outline-offset: -1px;
     opacity: 0;
     scale: 0.97;
-    translate: 0 -0.25rem;
+    translate: var(--prava-select-from);
     transform-origin: top;
     transition:
       opacity var(--prava-duration-fast) var(--prava-ease-standard),
@@ -124,8 +128,16 @@
       overlay var(--prava-duration-fast) allow-discrete;
   }
   .prava-select__popup[data-side="top"] {
-    translate: 0 0.25rem;
+    --prava-select-from: 0 0.25rem;
     transform-origin: bottom;
+  }
+  .prava-select__popup[data-side="left"] {
+    --prava-select-from: 0.25rem 0;
+    transform-origin: right;
+  }
+  .prava-select__popup[data-side="right"] {
+    --prava-select-from: -0.25rem 0;
+    transform-origin: left;
   }
   .prava-select__popup:not([data-open]) {
     display: none;
@@ -143,10 +155,7 @@
     .prava-select__popup[data-open] {
       opacity: 0;
       scale: 0.97;
-      translate: 0 -0.25rem;
-    }
-    .prava-select__popup[data-open][data-side="top"] {
-      translate: 0 0.25rem;
+      translate: var(--prava-select-from);
     }
   }
 
@@ -235,9 +244,9 @@
   /* Reduced motion keeps the fade but drops movement, scale, and drawing. */
   @media (prefers-reduced-motion: reduce) {
     .prava-select__popup,
-    .prava-select__popup[data-side="top"] {
+    .prava-select__popup[data-side] {
+      --prava-select-from: 0 0;
       scale: 1;
-      translate: 0 0;
     }
     .prava-select__chevron,
     .prava-select__check,

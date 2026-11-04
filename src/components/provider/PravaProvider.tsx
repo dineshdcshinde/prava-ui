@@ -6,6 +6,12 @@ export type BuiltInMessages = {
   required: string;
   /** Announced while a component is busy. */
   loading: string;
+  /** Close buttons on Dialog and Drawer. */
+  close: string;
+  /** Dismiss buttons on Alert and Toast. */
+  dismiss: string;
+  /** Accessible name of the Toast region. */
+  notifications: string;
   /** Select search box label and placeholder. */
   search: string;
   /** Select list when nothing matches the search. */
@@ -35,6 +41,9 @@ export type BuiltInMessages = {
 const defaultMessages: BuiltInMessages = {
   required: "Required",
   loading: "Loading",
+  close: "Close",
+  dismiss: "Dismiss",
+  notifications: "Notifications",
   search: "Search",
   noResults: "No results",
   removeOption: "Remove {label}",

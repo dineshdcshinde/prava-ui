@@ -1,0 +1,16 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-popover {
+    @apply rounded-(--prava-radius-card) p-4;
+    inline-size: max-content;
+    max-inline-size: min(22rem, 100vw - 1rem);
+  }
+  .prava-popover:focus {
+    outline-color: var(--prava-color-border);
+  }
+  .prava-popover__title {
+    @apply mb-2 text-(length:--prava-font-size-4) font-(--prava-font-weight-semibold);
+    line-height: var(--prava-line-height-tight);
+  }
+}

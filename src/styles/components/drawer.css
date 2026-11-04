@@ -1,0 +1,83 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  /* Layered on Dialog's rules; the extra attribute wins regardless of stylesheet order. */
+  .prava-dialog.prava-drawer[data-placement] {
+    --prava-drawer-size: 24rem;
+    --prava-dialog-scale: 1;
+    @apply fixed inset-0 m-0 max-w-none rounded-none;
+  }
+  .prava-dialog.prava-drawer[data-placement][data-size="sm"] {
+    --prava-drawer-size: 20rem;
+  }
+  .prava-dialog.prava-drawer[data-placement][data-size="lg"] {
+    --prava-drawer-size: 32rem;
+  }
+
+  /* Side drawers leave a strip of page showing, so there's always somewhere to press to close. */
+  .prava-dialog.prava-drawer:is(
+      [data-placement="start"],
+      [data-placement="end"]
+    ) {
+    inline-size: min(var(--prava-drawer-size), 100vw - 3rem);
+    block-size: 100dvh;
+    max-block-size: 100dvh;
+  }
+  .prava-dialog.prava-drawer[data-placement="start"] {
+    margin-inline-end: auto;
+    border-start-end-radius: var(--prava-radius-card);
+    border-end-end-radius: var(--prava-radius-card);
+  }
+  .prava-dialog.prava-drawer[data-placement="end"] {
+    margin-inline-start: auto;
+    border-start-start-radius: var(--prava-radius-card);
+    border-end-start-radius: var(--prava-radius-card);
+  }
+
+  .prava-dialog.prava-drawer:is(
+      [data-placement="top"],
+      [data-placement="bottom"]
+    ) {
+    inline-size: 100%;
+    max-inline-size: 100%;
+    block-size: fit-content;
+    max-block-size: 85dvh;
+  }
+  .prava-dialog.prava-drawer[data-placement="top"] {
+    margin-block-end: auto;
+    border-end-start-radius: var(--prava-radius-card);
+    border-end-end-radius: var(--prava-radius-card);
+  }
+  .prava-dialog.prava-drawer[data-placement="bottom"] {
+    margin-block-start: auto;
+    border-start-start-radius: var(--prava-radius-card);
+    border-start-end-radius: var(--prava-radius-card);
+  }
+
+  /* Clears the home indicator on phones. */
+  .prava-drawer .prava-dialog__footer {
+    padding-block-end: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  /* `translate` is physical, so the slide has to mirror with the direction. */
+  @media (prefers-reduced-motion: no-preference) {
+    .prava-dialog.prava-drawer[data-placement="start"] {
+      --prava-dialog-from: -100% 0;
+    }
+    .prava-dialog.prava-drawer[data-placement="end"] {
+      --prava-dialog-from: 100% 0;
+    }
+    .prava-dialog.prava-drawer[data-placement="start"]:dir(rtl) {
+      --prava-dialog-from: 100% 0;
+    }
+    .prava-dialog.prava-drawer[data-placement="end"]:dir(rtl) {
+      --prava-dialog-from: -100% 0;
+    }
+    .prava-dialog.prava-drawer[data-placement="top"] {
+      --prava-dialog-from: 0 -100%;
+    }
+    .prava-dialog.prava-drawer[data-placement="bottom"] {
+      --prava-dialog-from: 0 100%;
+    }
+  }
+}

@@ -1,0 +1,147 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  /* The panel settles into place from just below; it leaves faster than it arrives. */
+  .prava-dialog {
+    @apply box-border overflow-hidden rounded-(--prava-radius-card) border-0 bg-(--prava-color-surface) p-0 text-(length:--prava-font-size-3) text-(--prava-color-text);
+    --prava-dialog-width: 32rem;
+    --prava-dialog-from: 0 0.5rem;
+    --prava-dialog-scale: var(--prava-dialog-scale);
+    inline-size: min(var(--prava-dialog-width), 100vw - 2rem);
+    max-inline-size: calc(100vw - 2rem);
+    max-block-size: calc(100dvh - 2rem);
+    line-height: var(--prava-line-height-normal);
+    box-shadow: var(--prava-shadow-overlay);
+    /* The shadow disappears on dark surfaces; a hairline keeps the edge in every theme. */
+    outline: 1px solid var(--prava-color-border);
+    outline-offset: -1px;
+    opacity: 0;
+    scale: var(--prava-dialog-scale);
+    translate: var(--prava-dialog-from);
+    transition:
+      opacity var(--prava-duration-fast) var(--prava-ease-standard),
+      scale var(--prava-duration-fast) var(--prava-ease-standard),
+      translate var(--prava-duration-fast) var(--prava-ease-standard),
+      display var(--prava-duration-fast) allow-discrete,
+      overlay var(--prava-duration-fast) allow-discrete;
+  }
+  .prava-dialog[data-size="sm"] {
+    --prava-dialog-width: 24rem;
+  }
+  .prava-dialog[data-size="lg"] {
+    --prava-dialog-width: 48rem;
+  }
+  /* A non-modal dialog isn't in the top layer: keep it in view while the page scrolls under it. */
+  .prava-dialog:not([data-modal]) {
+    @apply fixed inset-0 z-50 m-auto h-fit;
+  }
+  .prava-dialog[open] {
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+    transition-duration: var(--prava-duration-slow);
+  }
+  @starting-style {
+    .prava-dialog[open] {
+      opacity: 0;
+      scale: var(--prava-dialog-scale);
+      translate: var(--prava-dialog-from);
+    }
+  }
+
+  .prava-dialog::backdrop {
+    background: var(--prava-color-scrim);
+    opacity: 0;
+    transition:
+      opacity var(--prava-duration-fast) var(--prava-ease-standard),
+      display var(--prava-duration-fast) allow-discrete,
+      overlay var(--prava-duration-fast) allow-discrete;
+  }
+  .prava-dialog[open]::backdrop {
+    opacity: 1;
+    transition-duration: var(--prava-duration-slow);
+  }
+  @starting-style {
+    .prava-dialog[open]::backdrop {
+      opacity: 0;
+    }
+  }
+
+  /* Header and footer stay put; only the content scrolls. */
+  .prava-dialog__panel {
+    @apply relative box-border flex flex-col;
+    max-block-size: inherit;
+    block-size: inherit;
+  }
+  .prava-dialog__header {
+    @apply grid flex-none gap-1 ps-6 pe-14 pt-5 pb-2;
+  }
+  .prava-dialog__title {
+    @apply m-0 text-(length:--prava-font-size-5) font-(--prava-font-weight-semibold);
+    line-height: var(--prava-line-height-tight);
+    text-wrap: balance;
+  }
+  .prava-dialog__description {
+    @apply m-0 text-(--prava-color-text-muted);
+  }
+  .prava-dialog__body {
+    /* Top padding keeps a floating label and focus ring from being clipped by the scroller. */
+    @apply min-h-0 flex-1 overflow-y-auto px-6 pt-2 pb-5;
+    overscroll-behavior: contain;
+    scrollbar-color: var(--prava-color-border-strong) transparent;
+    scrollbar-width: thin;
+  }
+  .prava-dialog__footer {
+    @apply flex flex-none flex-wrap items-center justify-end gap-2 border-t border-(--prava-color-border) bg-(--prava-color-canvas) px-6 py-3;
+  }
+
+  .prava-dialog__close {
+    @apply absolute end-3 top-3 grid size-8 cursor-pointer place-items-center rounded-(--prava-radius-control) border-0 bg-transparent p-0 text-(--prava-color-text-muted);
+    outline: var(--prava-stroke) solid transparent;
+    transition:
+      background-color var(--prava-duration-fast) var(--prava-ease-standard),
+      color var(--prava-duration-fast) var(--prava-ease-standard),
+      outline-color var(--prava-duration-fast) var(--prava-ease-standard);
+  }
+  .prava-dialog__close:focus-visible {
+    @apply outline-(--prava-color-focus);
+  }
+  @media (hover: hover) {
+    .prava-dialog__close:hover {
+      @apply bg-(--prava-color-surface-hover) text-(--prava-color-text);
+    }
+  }
+  .prava-dialog__close svg {
+    @apply size-4;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  @media (pointer: coarse) {
+    .prava-dialog__close {
+      @apply end-1 top-1 size-11;
+    }
+  }
+
+  @media (max-width: 30rem) {
+    .prava-dialog__header {
+      @apply ps-4;
+    }
+    .prava-dialog__body,
+    .prava-dialog__footer {
+      @apply px-4;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prava-dialog,
+    .prava-dialog[open] {
+      scale: 1;
+      translate: 0 0;
+    }
+    .prava-dialog__close {
+      transition: none;
+    }
+  }
+}

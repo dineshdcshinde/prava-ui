@@ -1,0 +1,73 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  /* Holds trigger and popup together for events; adds no box to the consumer's layout. */
+  .prava-floating-root {
+    display: contents;
+  }
+
+  /* Floats out of the anchor's edge, and leaves faster than it arrives so it never delays the next action. */
+  .prava-floating {
+    --prava-floating-from: 0 -0.25rem;
+    @apply m-0 box-border overflow-auto border-0 bg-(--prava-color-surface) p-0 text-(length:--prava-font-size-3) text-(--prava-color-text);
+    position: fixed;
+    inset: auto;
+    max-inline-size: calc(100vw - 1rem);
+    line-height: var(--prava-line-height-normal);
+    box-shadow: var(--prava-shadow-overlay);
+    /* The shadow disappears on dark surfaces; a hairline keeps the edge in every theme. */
+    outline: 1px solid var(--prava-color-border);
+    outline-offset: -1px;
+    opacity: 0;
+    scale: 0.97;
+    translate: var(--prava-floating-from);
+    transition:
+      opacity var(--prava-duration-fast) var(--prava-ease-standard),
+      scale var(--prava-duration-fast) var(--prava-ease-standard),
+      translate var(--prava-duration-fast) var(--prava-ease-standard),
+      display var(--prava-duration-fast) allow-discrete,
+      overlay var(--prava-duration-fast) allow-discrete;
+  }
+  .prava-floating[data-side="bottom"] {
+    transform-origin: top;
+  }
+  .prava-floating[data-side="top"] {
+    --prava-floating-from: 0 0.25rem;
+    transform-origin: bottom;
+  }
+  .prava-floating[data-side="left"] {
+    --prava-floating-from: 0.25rem 0;
+    transform-origin: right;
+  }
+  .prava-floating[data-side="right"] {
+    --prava-floating-from: -0.25rem 0;
+    transform-origin: left;
+  }
+  .prava-floating:not([data-open]) {
+    display: none;
+  }
+  .prava-floating[data-open] {
+    display: block;
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+    /* display flips at once on open: a popup mid-transition can't take focus. */
+    transition-property: opacity, scale, translate;
+    transition-duration: var(--prava-duration-normal);
+  }
+  @starting-style {
+    .prava-floating[data-open] {
+      opacity: 0;
+      scale: 0.97;
+      translate: var(--prava-floating-from);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prava-floating,
+    .prava-floating[data-open] {
+      scale: 1;
+      translate: 0 0;
+    }
+  }
+}

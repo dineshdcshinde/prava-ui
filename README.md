@@ -1,165 +1,143 @@
 # Prava UI
 
-Prava UI is a lightweight, accessible, responsive, and customizable React component library built with TypeScript and Tailwind CSS v4. It will ship compiled CSS, tree-shakable exports, TypeScript types, design tokens, and documentation, with no Tailwind setup required for consumers.
+Accessible, responsive React components that look finished the moment you install them. No Tailwind setup, no CSS-in-JS runtime, and no runtime dependencies.
 
-This component catalog is being built incrementally against the product requirements in [docs/Prava-UI-PRD.md](docs/Prava-UI-PRD.md). The visual foundation is documented in [DESIGN.md](DESIGN.md); components use shared color and shape tokens so themes can override values without changing class names.
+[![npm version](https://img.shields.io/npm/v/prava-ui/next?label=npm%40next)](https://www.npmjs.com/package/prava-ui?activeTab=versions)
+[![license: MIT](https://img.shields.io/npm/l/prava-ui)](./LICENSE)
+[![CI](https://github.com/dineshdcshinde/prava-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/dineshdcshinde/prava-ui/actions/workflows/ci.yml)
 
-## Development
+> **Release candidate.** The API is close to final, but it can still change before `1.0.0`. Please try it and [report what you find](https://github.com/dineshdcshinde/prava-ui/issues).
 
-Use Node.js 20 or newer. The repository uses npm for its initial scaffold.
+## Why Prava UI
+
+- **No design work.** Polished defaults for every state, in light and dark.
+- **No setup.** Styles are compiled and load automatically. You don't need Tailwind or a provider.
+- **Keyboard, screen reader, and RTL support built in.** They're part of each component, not an add-on.
+- **Fits any screen.** Components adapt to their container with no breakpoint props.
+- **Easy to theme.** One CSS file of tokens restyles everything, and your CSS always wins.
+- **Only what you import.** Each component brings its own JavaScript and CSS.
+
+## Getting started
+
+Prava UI needs React 18.2 or newer, including React 19.
 
 ```sh
-npm install
-npm run dev          # Storybook
-npm run build        # Library JavaScript, declarations, and CSS
-npm run typecheck
-npm test
+npm install prava-ui@next
 ```
 
-See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for current implementation and packaging status.
-
-## Button
-
-Importing a component automatically includes its compiled styles. The root entry includes styles for components your bundler keeps; a component entry loads only that component and its styles:
+Import a component and use it. Its styles come with it:
 
 ```tsx
-import { Button } from "prava-ui/button";
+import { Button, Dialog, DialogClose, Input } from "prava-ui";
 
-<Button variant="primary" size="md">
-  Save
-</Button>;
-```
-
-Button supports native button attributes, `variant` (`primary`, `secondary`, `outline`, `ghost`, `destructive`), `size` (`sm`, `md`, `lg`), `type="icon"`, and `loading`. Icon-only buttons default to the transparent `ghost` treatment; set a `variant` to choose another treatment. Loading sets `aria-busy`, disables the native button, hides its content without changing its width, and centers the loading indicator. Choose the indicator with `loadingVariant` (`spinner`, `dots`, `bars`, `pulse`, `bounce`). Use native accessible naming such as visible text or `aria-label` for icon-only content. `className` and `style` are forwarded; styles inherit the consumer font and use the shared `--prava-*` tokens.
-
-## Input
-
-```tsx
-import { Input } from 'prava-ui/input';
-
-<label htmlFor="email">Email</label>
-<Input id="email" name="email" type="email" autoComplete="email" required />
-```
-
-Input forwards native input attributes, fills its parent width, and supports `size` (`sm`, `md`, `lg`), `invalid`, an optional floating `label`, and `leftIcon`/`rightIcon`. The label floats above the field on focus and stays floated when a value is present; it remains associated with the input for assistive technology. Set `invalid` to apply invalid styling and `aria-invalid`; descriptions and error text remain consumer markup and can be associated with `aria-describedby`. A `disabledReason` is shown and associated accessibly when the native `disabled` prop is true. A numeric `size` preserves the native HTML attribute. If `label` is omitted, provide a visible external label or an accessible name; a placeholder is not a label.
-
-## Textarea, Label, and FormField
-
-```tsx
-import { FormField } from "prava-ui/form-field";
-import { Input } from "prava-ui/input";
-import { Textarea } from "prava-ui/textarea";
-
-<FormField
-  label="Work email"
-  required
-  description="Used for account updates and sign-in."
-  error="Enter a valid email address."
-  control={<Input type="email" />}
-/>
-<FormField label="Message" control={<Textarea rows={4} resize="vertical" />} />
-```
-
-`FormField` accepts one control, creates a stable ID when needed, carries existing `aria-describedby` IDs forward, and associates description/error text. It adds the required state and invalid state when requested. Use `Label` directly for other native controls, or `Textarea` directly when you need native multiline attributes/ref and an explicit resize policy. Textarea height remains controlled by `rows`; it does not auto-resize.
-
-Pass decorative icons through `leftIcon` and `rightIcon`; they follow text direction and do not replace the label. The ref points to the native `<input>`, and native `name`, `disabled`, `onChange`, and `onBlur` props are forwarded, so React Hook Form registration works directly:
-
-```tsx
-import { useForm } from "react-hook-form";
-import { Input } from "prava-ui/input";
-
-function EmailForm() {
-  const { register } = useForm<{ email: string }>();
-  return <Input label="Email" type="email" {...register("email")} />;
+export function InviteTeammate() {
+  return (
+    <Dialog
+      trigger={<Button>Invite</Button>}
+      title="Invite a teammate"
+      description="They get an email with a link to join."
+      footer={
+        <>
+          <DialogClose>
+            <Button variant="outline">Cancel</Button>
+          </DialogClose>
+          <Button>Send invite</Button>
+        </>
+      }
+    >
+      <Input label="Work email" type="email" />
+    </Dialog>
+  );
 }
 ```
 
-## Card
+You can also import one component at a time, such as `import { Button } from "prava-ui/button"`.
+
+Components inherit your app's font. Prava UI never loads a font or adds global styles to your page.
+
+### Next.js
+
+Works in the App Router: you can use components directly in Server Components, because the package marks its own client code. Functions such as `onClick` still have to be passed from a Client Component, as with any React component. Call `toast()` from client code too.
+
+## Components
+
+| Group      | Components                                                                              |
+| ---------- | --------------------------------------------------------------------------------------- |
+| Actions    | `Button`                                                                                |
+| Forms      | `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Label`, `FormField` |
+| Display    | `Avatar`, `Badge`, `Card`, `Separator`, `Skeleton`, `Spinner`, `Progress`               |
+| Feedback   | `Alert`, `Toaster` with `toast()`                                                       |
+| Overlays   | `Dialog`, `Drawer`, `Popover`, `Tooltip`, `DropdownMenu`                                |
+| Navigation | `Tabs`, `Accordion`                                                                     |
+| Layout     | `Container`, `Stack`, `Grid`                                                            |
+| Setup      | `PravaProvider` (optional: direction, locale, messages, and theme for part of your app) |
+
+Form controls connect to [react-hook-form](https://react-hook-form.com/) through a `field` prop, with no extra dependency:
 
 ```tsx
-import { Card, CardContent, CardFooter, CardHeader } from "prava-ui/card";
-
-<Card>
-  <CardHeader>
-    <h2>Account</h2>
-    <p>Manage your profile.</p>
-  </CardHeader>
-  <CardContent>Account details go here.</CardContent>
-  <CardFooter>
-    <button type="button">Edit</button>
-  </CardFooter>
-</Card>;
+<Input label="Email" field={register("email")} error={errors.email?.message} />
 ```
 
-Card provides optional `CardHeader`, `CardContent`, and `CardFooter` parts. It adds no click behavior; consumers choose headings and actions. Each part forwards its native element attributes and supports `className` and `style`.
+## Documentation
 
-## Separator
+Every component has live examples and an API reference in Storybook. A hosted version isn't available yet, so run it locally:
+
+```sh
+git clone https://github.com/dineshdcshinde/prava-ui.git
+cd prava-ui
+npm install
+npm run dev
+```
+
+Your editor also shows the docs: each prop and component has a description and an example inline.
+
+## Theming
+
+Light is the default. Choose a theme for the whole page or any part of it:
+
+```html
+<body data-prava-theme="dark">
+  ...
+</body>
+<section data-prava-theme="system">...</section>
+```
+
+To use your brand's colors, override the tokens in your own CSS. Prava UI's styles sit in a cascade layer, so yours win whatever the import order:
+
+```css
+:root {
+  --prava-color-primary: #7c3aed;
+  --prava-color-primary-hover: #6d28d9;
+  --prava-color-primary-active: #5b21b6;
+}
+```
+
+Every component also takes `className` and `style`, and compound ones take `classNames` for their inner parts. See [DESIGN.md](./DESIGN.md) for all the tokens.
+
+## Right-to-left and translations
+
+Prava UI has no translation dependency, so it works alongside whichever library you already use. `PravaProvider` sets direction, locale, and the library's own text for its subtree:
 
 ```tsx
-import { Separator } from 'prava-ui/separator';
+import { PravaProvider } from "prava-ui";
 
-<Separator />
-<Separator decorative={false} orientation="vertical" />
+<PravaProvider direction="rtl" locale="ar" messages={{ close: "إغلاق" }}>
+  <App />
+</PravaProvider>;
 ```
 
-Separator is decorative by default. Set `decorative={false}` when it marks a meaningful boundary for assistive technology. Its orientation defaults to horizontal.
+It only affects what's inside it. To change the whole page, set `<html dir="rtl">` yourself as well.
 
-## Skeleton
+## Browser support
 
-```tsx
-import { Skeleton } from 'prava-ui/skeleton';
+Tests run on current Chromium, Firefox, and WebKit, plus emulated phones. Overlays use the native `<dialog>` element and Popover API, so they need Chrome or Edge 114, Firefox 125, or Safari 17 and newer. Browsers that don't support the newest animation features still work, and overlays just close without animating.
 
-<Skeleton shape="circle" style={{ width: 44 }} />
-<Skeleton shape="text" style={{ width: '60%' }} />
-```
+## Contributing
 
-Skeleton reserves space for content and is hidden from assistive technology. Set dimensions through `style` to match the content being replaced. Its restrained opacity animation stops for reduced-motion users.
+Bug reports, ideas, and pull requests are all welcome. Start with the [contributing guide](./CONTRIBUTING.md), and please follow the [code of conduct](./CODE_OF_CONDUCT.md). To report a security problem, see the [security policy](./SECURITY.md).
 
-## Progress
+Changes in each version are listed in the [changelog](./CHANGELOG.md).
 
-```tsx
-import { Progress } from 'prava-ui/progress';
+## License
 
-<Progress label="File upload" value={64} />
-<Progress label="Preparing report" />
-```
-
-Progress supports a determinate `value` with optional `min`/`max` (defaults 0/100) or an indeterminate state when `value` is omitted. Values are clamped, invalid ranges are rejected, and `label` provides the accessible name.
-
-## Themes and colors
-
-Light tokens are the default. Set `data-prava-theme="dark"` or `data-prava-theme="light"` on the document root or a subtree to select a theme. Buttons, inputs, cards, and badges use the shared palette from `DESIGN.md`; components keep their styles in component CSS and use shared tokens rather than inline static styles.
-
-## Badge
-
-```tsx
-import { Badge } from "prava-ui/badge";
-import { Button } from "prava-ui/button";
-
-<Badge content="3">
-  <Button>Inbox</Button>
-</Badge>;
-```
-
-Badge anchors a compact, non-interactive indicator over a child element such as a Button. It requires `content` and the element as `children`; it supports `tone` (`neutral`, `primary`, `success`, `warning`, `danger`, `info`), `size` (`sm`, `md`), native span attributes, `className`, and `style`. Its visible content must communicate the status; color is only a visual treatment. Component imports include their styles automatically. The root import includes styles for components kept by the consumer's bundler; component entry imports include only that component's styles. For manual CSS imports, include shared `styles/tokens.css` with the selected component stylesheet.
-
-## Avatar
-
-```tsx
-import { Avatar } from 'prava-ui/avatar';
-
-<Avatar firstName="Fatima" lastName="Lovelace" />
-<Avatar src="/people/fatima.jpg" firstName="Fatima" lastName="Lovelace" />
-```
-
-Avatar displays an image when `src` loads, and otherwise shows the first letters of `firstName` and `lastName` (`FL` in this example). A failed image uses the same fallback. Pass `alt` for an entity image or a custom accessible name; `fallback` replaces the initials. It supports `size` (`sm`, `md`, `lg`), native span attributes, `className`, and `style`.
-
-## Spinner
-
-```tsx
-import { Spinner } from "prava-ui/spinner";
-
-<Spinner label="Loading results" />;
-```
-
-Spinner indicates an ongoing process and supports `variant` (`spinner`, `dots`, `bars`, `pulse`, `bounce`), `size` (`sm`, `md`, `lg`), and `theme` (`primary`, `neutral`, `success`, `warning`, `danger`, `info`). Themes use Prava color tokens and follow the active light or dark theme. Pass `color` for a CSS color or custom property such as `var(--my-accent)` to override the semantic theme. The indicator is decorative by default; pass `label` when the loading status should be announced to assistive technology. Its animation stops for reduced-motion preferences.
+[MIT](./LICENSE)

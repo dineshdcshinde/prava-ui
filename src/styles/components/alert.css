@@ -1,0 +1,101 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-alert {
+    @apply relative box-border flex max-w-full min-w-0 flex-wrap items-start gap-x-3 gap-y-2 rounded-(--prava-radius-control) px-4 py-3 text-(length:--prava-font-size-3);
+    line-height: var(--prava-line-height-normal);
+    animation: prava-alert-in var(--prava-duration-normal)
+      var(--prava-ease-standard);
+  }
+  @keyframes prava-alert-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  .prava-alert[data-tone="neutral"] {
+    @apply bg-(--prava-color-surface-sunken) text-(--prava-color-text);
+  }
+  .prava-alert[data-tone="info"] {
+    @apply bg-(--prava-color-info) text-(--prava-color-on-info);
+  }
+  .prava-alert[data-tone="success"] {
+    @apply bg-(--prava-color-success) text-(--prava-color-on-success);
+  }
+  .prava-alert[data-tone="warning"] {
+    @apply bg-(--prava-color-warning) text-(--prava-color-on-warning);
+  }
+  .prava-alert[data-tone="danger"] {
+    @apply bg-(--prava-color-danger-container) text-(--prava-color-on-danger-container);
+  }
+
+  .prava-alert__icon {
+    @apply flex h-5 flex-none items-center;
+  }
+  .prava-alert__icon svg,
+  .prava-alert__dismiss svg {
+    @apply size-4;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .prava-alert[data-dismissible] {
+    @apply pe-11;
+  }
+
+  /* Text keeps a readable width; the action drops to its own line before squeezing it. */
+  .prava-alert__body {
+    @apply grid min-w-0 gap-0.5;
+    flex: 1 1 11rem;
+  }
+  .prava-alert__title {
+    @apply font-(--prava-font-weight-semibold);
+  }
+  .prava-alert__action {
+    @apply ms-auto flex flex-wrap items-center gap-2;
+  }
+
+  /* Text and fill are a paired token, so the button inherits a color that already meets contrast. */
+  .prava-alert__dismiss {
+    @apply absolute end-2 top-2 grid size-7 cursor-pointer place-items-center rounded-(--prava-radius-sm) border-0 bg-transparent p-0;
+    color: inherit;
+    outline: var(--prava-stroke) solid transparent;
+    transition: outline-color var(--prava-duration-fast)
+      var(--prava-ease-standard);
+  }
+  /* The hover layer is the tone's own text color, so it works on every fill in both themes. */
+  .prava-alert__dismiss::before {
+    @apply absolute inset-0;
+    content: "";
+    border-radius: inherit;
+    background: currentColor;
+    opacity: 0;
+    transition: opacity var(--prava-duration-fast) var(--prava-ease-standard);
+  }
+  .prava-alert__dismiss:focus-visible {
+    @apply outline-(--prava-color-focus);
+  }
+  @media (hover: hover) {
+    .prava-alert__dismiss:hover::before {
+      opacity: 0.12;
+    }
+  }
+  @media (pointer: coarse) {
+    .prava-alert[data-dismissible] {
+      @apply pe-13;
+    }
+    .prava-alert__dismiss {
+      @apply end-0.5 top-0.5 size-11;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prava-alert__dismiss,
+    .prava-alert__dismiss::before {
+      transition: none;
+    }
+  }
+}

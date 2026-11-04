@@ -1,0 +1,73 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-stack {
+    @apply flex max-w-full min-w-0 flex-col;
+  }
+  .prava-stack[data-orientation="horizontal"] {
+    @apply flex-row items-center;
+  }
+  .prava-stack[data-wrap] {
+    @apply flex-wrap;
+  }
+
+  .prava-stack[data-gap="0"] {
+    @apply gap-0;
+  }
+  .prava-stack[data-gap="1"] {
+    @apply gap-1;
+  }
+  .prava-stack[data-gap="2"] {
+    @apply gap-2;
+  }
+  .prava-stack[data-gap="3"] {
+    @apply gap-3;
+  }
+  .prava-stack[data-gap="4"] {
+    @apply gap-4;
+  }
+  .prava-stack[data-gap="5"] {
+    @apply gap-5;
+  }
+  .prava-stack[data-gap="6"] {
+    @apply gap-6;
+  }
+  .prava-stack[data-gap="8"] {
+    @apply gap-8;
+  }
+  .prava-stack[data-gap="10"] {
+    @apply gap-10;
+  }
+  .prava-stack[data-gap="12"] {
+    @apply gap-12;
+  }
+
+  .prava-stack[data-align="start"] {
+    @apply items-start;
+  }
+  .prava-stack[data-align="center"] {
+    @apply items-center;
+  }
+  .prava-stack[data-align="end"] {
+    @apply items-end;
+  }
+  .prava-stack[data-align="stretch"] {
+    @apply items-stretch;
+  }
+  .prava-stack[data-align="baseline"] {
+    @apply items-baseline;
+  }
+
+  .prava-stack[data-justify="start"] {
+    @apply justify-start;
+  }
+  .prava-stack[data-justify="center"] {
+    @apply justify-center;
+  }
+  .prava-stack[data-justify="end"] {
+    @apply justify-end;
+  }
+  .prava-stack[data-justify="between"] {
+    @apply justify-between;
+  }
+}

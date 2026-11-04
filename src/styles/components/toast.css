@@ -1,0 +1,104 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-toaster__announce {
+    @apply sr-only;
+  }
+
+  /* Not hit-testable itself, so the page stays clickable between toasts. */
+  .prava-toaster {
+    @apply m-0 box-border overflow-visible border-0 bg-transparent p-0;
+    position: fixed;
+    inset: auto;
+    inline-size: min(24rem, 100vw - 2rem);
+    max-block-size: calc(100dvh - 2rem);
+    pointer-events: none;
+  }
+  .prava-toaster:not(:popover-open) {
+    display: none;
+  }
+  .prava-toaster:popover-open {
+    @apply flex;
+    --prava-toast-from: 0 0.75rem;
+  }
+  .prava-toaster[data-placement^="bottom"] {
+    bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  .prava-toaster[data-placement^="top"] {
+    top: max(1rem, env(safe-area-inset-top));
+    --prava-toast-from: 0 -0.75rem;
+  }
+  .prava-toaster[data-placement$="start"] {
+    inset-inline-start: 1rem;
+  }
+  .prava-toaster[data-placement$="end"] {
+    inset-inline-end: 1rem;
+  }
+  .prava-toaster[data-placement$="center"] {
+    inset-inline: 0;
+    margin-inline: auto;
+  }
+
+  /* Newest sits nearest the screen edge, so older toasts keep their reading order. */
+  .prava-toaster__list {
+    @apply flex min-w-0 list-none flex-col justify-end;
+    /* A scroller clips its contents: the extra padding keeps the shadows inside it. */
+    margin: -2rem;
+    padding: 2rem;
+    inline-size: calc(100% + 4rem);
+    max-block-size: 100dvh;
+    overflow-y: auto;
+    scrollbar-width: none;
+  }
+  .prava-toaster[data-placement^="top"] .prava-toaster__list {
+    @apply flex-col-reverse;
+  }
+
+  /* Arrives from the edge it lives on. Leaving also collapses its row, so the stack closes up smoothly. */
+  .prava-toast {
+    @apply grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    translate: var(--prava-toast-from);
+    transition:
+      opacity var(--prava-duration-normal) var(--prava-ease-standard),
+      translate var(--prava-duration-normal) var(--prava-ease-standard),
+      grid-template-rows var(--prava-duration-normal) var(--prava-ease-standard);
+  }
+  .prava-toast[data-open] {
+    grid-template-rows: 1fr;
+    opacity: 1;
+    translate: 0 0;
+    transition-duration: var(--prava-duration-slow);
+  }
+  @starting-style {
+    .prava-toast[data-open] {
+      grid-template-rows: 0fr;
+      opacity: 0;
+      translate: var(--prava-toast-from);
+    }
+  }
+  /* Clips only as far as the shadow reaches, so a settled toast shows no hard edge. */
+  .prava-toast__clip {
+    @apply min-h-0 pb-2;
+    overflow: clip;
+    overflow-clip-margin: 2.5rem;
+  }
+  .prava-toast .prava-alert {
+    pointer-events: auto;
+    box-shadow: var(--prava-shadow-overlay);
+    outline: 1px solid var(--prava-color-border);
+    outline-offset: -1px;
+  }
+  .prava-toast .prava-alert[data-tone="neutral"] {
+    @apply bg-(--prava-color-surface);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prava-toast,
+    .prava-toast[data-open] {
+      translate: 0 0;
+      transition-property: opacity;
+    }
+  }
+}

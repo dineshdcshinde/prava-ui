@@ -10,7 +10,7 @@ import {
 import { tmpdir } from "node:os";
 import { join, resolve, sep } from "node:path";
 import { build } from "vite";
-import { components, fieldControls } from "./components.mjs";
+import { components, fieldControls, floatingControls } from "./components.mjs";
 
 const npmCommand = process.platform === "win32" ? process.execPath : "npm";
 const npmPrefixArgs =
@@ -18,8 +18,11 @@ const npmPrefixArgs =
 if (process.platform === "win32" && npmPrefixArgs[0] === undefined) {
   throw new Error("Run this check through npm so npm can locate its CLI.");
 }
+// `npm publish --dry-run` passes its flag down, which would stop this check packing a real tarball.
+const env = { ...process.env };
+delete env.npm_config_dry_run;
 const runNpm = (args, options) =>
-  execFileSync(npmCommand, [...npmPrefixArgs, ...args], options);
+  execFileSync(npmCommand, [...npmPrefixArgs, ...args], { env, ...options });
 const output = runNpm(["pack", "--dry-run", "--json"], { encoding: "utf8" });
 const [pack] = JSON.parse(output);
 if (!pack.files.some(({ path }) => path === "dist/index.js")) {
@@ -53,11 +56,17 @@ for (const { name } of components) {
     );
   }
   const js = await readFile(entry, "utf8");
+  if (!js.startsWith('"use client";'))
+    throw new Error(
+      `The ${name} entry must start with "use client" for Next.js.`,
+    );
   if (
     !js.includes(`import './tokens.css';`) ||
     !js.includes(`import './styles/components/${name}.css';`) ||
     (fieldControls.has(name) &&
-      !js.includes(`import './styles/components/field.css';`))
+      !js.includes(`import './styles/components/field.css';`)) ||
+    (floatingControls.has(name) &&
+      !js.includes(`import './styles/components/floating.css';`))
   ) {
     throw new Error(
       `The ${name} JavaScript entry does not automatically import its stylesheets.`,
@@ -73,6 +82,17 @@ for (const { name } of components) {
     throw new Error(
       `The package root entry is missing ${name} exports with automatic styles.`,
     );
+  }
+}
+// The registry can't vouch for itself: every path package.json promises must really ship.
+for (const [subpath, target] of Object.entries(manifest.exports)) {
+  const paths = typeof target === "string" ? [target] : Object.values(target);
+  for (const path of paths) {
+    if (path.includes("*") || path === "./package.json") continue;
+    if (!pack.files.some((file) => file.path === path.slice(2)))
+      throw new Error(
+        `The ${subpath} export points to ${path}, which is not packed.`,
+      );
   }
 }
 if (manifest.peerDependencies.react !== ">=18.2.0 <20.0.0") {
@@ -142,6 +162,10 @@ try {
         emptyOutDir: true,
         rollupOptions: {
           input,
+          // Our entries start with "use client" for Next.js, which plain Rollup reports and ignores.
+          onwarn(warning, warn) {
+            if (warning.code !== "MODULE_LEVEL_DIRECTIVE") warn(warning);
+          },
           external: ["react", "react-dom", "react/jsx-runtime"],
         },
       },
@@ -167,10 +191,18 @@ try {
         );
       if (fieldControls.has(name) && !css.includes(".prava-field__error{"))
         throw new Error(`The ${out} consumer build is missing field styles.`);
+      if (floatingControls.has(name) && !css.includes(".prava-floating{"))
+        throw new Error(
+          `The ${out} consumer build is missing floating styles.`,
+        );
     }
   }
   const aggregateCss = await readFile("dist/styles.css", "utf8");
-  for (const { name } of [...components, { name: "field__error" }]) {
+  for (const { name } of [
+    ...components,
+    { name: "field__error" },
+    { name: "floating" },
+  ]) {
     if (!hasSelector(aggregateCss, name))
       throw new Error(`The aggregate stylesheet is missing .prava-${name}.`);
   }

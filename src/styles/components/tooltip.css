@@ -1,0 +1,11 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  /* Inverted text-on-surface pair: it reads as an annotation, not a control, in both themes. */
+  .prava-floating.prava-tooltip {
+    @apply overflow-visible rounded-(--prava-radius-sm) bg-(--prava-color-text) px-2 py-1 text-(length:--prava-font-size-2) text-(--prava-color-surface);
+    inline-size: max-content;
+    max-inline-size: min(18rem, 100vw - 1rem);
+    outline: none;
+  }
+}

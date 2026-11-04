@@ -1,0 +1,127 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-tabs {
+    @apply min-w-0 text-(length:--prava-font-size-3) text-(--prava-color-text);
+    line-height: var(--prava-line-height-normal);
+  }
+  .prava-tabs[data-orientation="vertical"] {
+    @apply flex gap-4;
+  }
+
+  /* Tabs never wrap or squeeze: they scroll, and focus scrolls them into view. */
+  .prava-tabs__list {
+    @apply relative flex gap-1 overflow-auto;
+    box-shadow: inset 0 -1px 0 var(--prava-color-border);
+    scrollbar-width: none;
+  }
+  .prava-tabs[data-orientation="vertical"] .prava-tabs__list {
+    @apply flex-none flex-col;
+    box-shadow: inset -1px 0 0 var(--prava-color-border);
+  }
+  .prava-tabs[data-orientation="vertical"]:dir(rtl) .prava-tabs__list {
+    box-shadow: inset 1px 0 0 var(--prava-color-border);
+  }
+
+  .prava-tabs__tab {
+    @apply box-border inline-flex h-(--prava-control-height-md) flex-none cursor-pointer items-center gap-2 border-0 bg-transparent px-3 whitespace-nowrap text-(--prava-color-text-muted);
+    font: inherit;
+    /* One weight in every state, so selecting a tab never shifts its neighbors. */
+    font-weight: var(--prava-font-weight-medium);
+    outline: var(--prava-stroke) solid transparent;
+    outline-offset: calc(var(--prava-stroke) * -1);
+    border-radius: var(--prava-radius-sm);
+    transition:
+      color var(--prava-duration-fast) var(--prava-ease-standard),
+      background-color var(--prava-duration-fast) var(--prava-ease-standard);
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (pointer: coarse) {
+    .prava-tabs__tab {
+      @apply h-(--prava-control-height-lg);
+    }
+  }
+  @media (hover: hover) {
+    .prava-tabs__tab:not(:disabled):hover {
+      @apply bg-(--prava-color-surface-hover);
+    }
+    .prava-tabs__tab:not(:disabled, [aria-selected="true"]):hover {
+      @apply text-(--prava-color-text);
+    }
+  }
+  .prava-tabs__tab:focus-visible {
+    @apply outline-(--prava-color-focus);
+  }
+  .prava-tabs__tab[aria-selected="true"] {
+    @apply text-(--prava-color-primary);
+  }
+  .prava-tabs__tab:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+  .prava-tabs__icon {
+    @apply flex size-4 flex-none items-center justify-center;
+  }
+  .prava-tabs__icon svg {
+    @apply size-full;
+  }
+
+  /* A 1px bar scaled by JS, so the slide stays on the compositor. Physical left is what offsetLeft measures. */
+  .prava-tabs__indicator {
+    @apply pointer-events-none absolute bottom-0 bg-(--prava-color-primary);
+    left: 0;
+    right: auto;
+    width: 1px;
+    height: var(--prava-stroke);
+    transform-origin: 0 0;
+  }
+  .prava-tabs[data-orientation="vertical"] .prava-tabs__indicator {
+    width: var(--prava-stroke);
+    height: 1px;
+    top: 0;
+    bottom: auto;
+  }
+  .prava-tabs[data-orientation="vertical"]:dir(rtl) .prava-tabs__indicator {
+    left: 0;
+  }
+  .prava-tabs[data-orientation="vertical"]:dir(ltr) .prava-tabs__indicator {
+    left: auto;
+    right: 0;
+    transform-origin: 100% 0;
+  }
+  .prava-tabs__indicator[data-ready] {
+    transition:
+      translate var(--prava-duration-normal) var(--prava-ease-standard),
+      scale var(--prava-duration-normal) var(--prava-ease-standard);
+  }
+  @media (forced-colors: active) {
+    .prava-tabs__indicator {
+      background: Highlight;
+    }
+  }
+
+  .prava-tabs__panel {
+    @apply min-w-0 flex-1 rounded-(--prava-radius-sm) pt-4;
+    outline: var(--prava-stroke) solid transparent;
+    outline-offset: 2px;
+    opacity: 1;
+    transition: opacity var(--prava-duration-normal) var(--prava-ease-standard);
+  }
+  .prava-tabs[data-orientation="vertical"] .prava-tabs__panel {
+    @apply pt-0;
+  }
+  .prava-tabs__panel:focus-visible {
+    @apply outline-(--prava-color-focus);
+  }
+  @starting-style {
+    .prava-tabs__panel {
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prava-tabs__tab,
+    .prava-tabs__indicator[data-ready] {
+      transition: none;
+    }
+  }
+}

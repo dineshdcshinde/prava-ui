@@ -1,0 +1,86 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-accordion {
+    @apply min-w-0 text-(length:--prava-font-size-3) text-(--prava-color-text);
+    line-height: var(--prava-line-height-normal);
+  }
+  .prava-accordion__item {
+    @apply border-b border-(--prava-color-border);
+  }
+  .prava-accordion__item:first-child {
+    @apply border-t;
+  }
+  .prava-accordion__heading {
+    @apply m-0;
+    font: inherit;
+  }
+
+  .prava-accordion__trigger {
+    @apply box-border flex min-h-12 w-full cursor-pointer items-center justify-between gap-3 border-0 bg-transparent px-2 py-3 text-start text-(--prava-color-text);
+    font: inherit;
+    font-weight: var(--prava-font-weight-medium);
+    outline: var(--prava-stroke) solid transparent;
+    outline-offset: calc(var(--prava-stroke) * -1);
+    border-radius: var(--prava-radius-sm);
+    transition: background-color var(--prava-duration-fast)
+      var(--prava-ease-standard);
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (hover: hover) {
+    .prava-accordion__trigger:not(:disabled):hover {
+      @apply bg-(--prava-color-surface-hover);
+    }
+  }
+  .prava-accordion__trigger:focus-visible {
+    @apply outline-(--prava-color-focus);
+  }
+  .prava-accordion__trigger:disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+  .prava-accordion__title {
+    @apply min-w-0;
+    overflow-wrap: anywhere;
+  }
+
+  .prava-accordion__chevron {
+    @apply size-4 flex-none text-(--prava-color-text-muted);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: rotate var(--prava-duration-normal) var(--prava-ease-standard);
+  }
+  .prava-accordion__item[data-open] > * > * > .prava-accordion__chevron {
+    rotate: 180deg;
+  }
+
+  /* Rows animate to the content's real height with no measuring. Hidden visibility keeps closed content out of Tab and screen readers. */
+  .prava-accordion__panel {
+    @apply grid;
+    grid-template-rows: 0fr;
+    visibility: hidden;
+    transition:
+      grid-template-rows var(--prava-duration-normal) var(--prava-ease-standard),
+      visibility var(--prava-duration-normal) allow-discrete;
+  }
+  .prava-accordion__item[data-open] > .prava-accordion__panel {
+    grid-template-rows: 1fr;
+    visibility: visible;
+  }
+  .prava-accordion__clip {
+    @apply min-h-0 overflow-hidden;
+  }
+  .prava-accordion__content {
+    @apply px-2 pb-4 text-(--prava-color-text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prava-accordion__trigger,
+    .prava-accordion__chevron,
+    .prava-accordion__panel {
+      transition: none;
+    }
+  }
+}

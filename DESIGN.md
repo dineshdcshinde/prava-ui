@@ -41,7 +41,9 @@ To replace the theme, load a plain unlayered stylesheet that sets every `--prava
 | Danger soft fill / text   | `color-(on-)danger-container`             | `#FFE8E6` / `#8D2521`             | `#551F1D` / `#FFD5D1`             |
 | Info fill / text          | `color-(on-)info`                         | `#DDF3FF` / `#005581`             | `#163347` / `#A8DCFC`             |
 
-Shadows: `shadow-control`, `shadow-control-hover`, `shadow-control-filled` (glaze rim on filled controls), `shadow-pressed`, `shadow-raised` (cards, panels) and `shadow-overlay` (popovers, dialogs). Every text, status and focus pair meets WCAG AA in both themes, and `foundations.test.ts` checks this.
+Scrim behind modal overlays: `color-scrim` (`rgb(23 30 44 / 0.4)` light, `rgb(4 6 12 / 0.6)` dark).
+
+Shadows: `shadow-control`, `shadow-control-hover`, `shadow-control-filled` (glaze rim on filled controls), `shadow-pressed`, `shadow-raised` (cards, panels) and `shadow-overlay` (popovers, menus, dialogs, drawers, toasts; it carries the glaze rim too). Every text, status and focus pair meets WCAG AA in both themes, and `foundations.test.ts` checks this.
 
 ## Scales
 
@@ -50,7 +52,22 @@ Shadows: `shadow-control`, `shadow-control-hover`, `shadow-control-filled` (glaz
 - **Control heights:** `--prava-control-height-sm|md|lg` (32, 40, 48px).
 - **Radii:** `--prava-radius-sm` (4px; checkbox and badge-scale elements), `--prava-radius-control` (8px), `--prava-radius-card` (14px), `--prava-radius-full`.
 - **Stroke:** `--prava-stroke` (2px).
-- **Motion:** `--prava-duration-fast|normal|slow` (120, 200, 320ms), `--prava-ease-standard` (exponential ease-out) and `--prava-ease-press`. All motion turns off under `prefers-reduced-motion`.
+- **Motion:** `--prava-duration-fast|normal|slow` (120, 200, 320ms), `--prava-ease-standard` (exponential ease-out) and `--prava-ease-press`. Reduced motion removes all spatial movement and keeps fades, so state changes stay visible.
+
+## Motion
+
+Motion explains a state change; nothing moves for decoration and nothing loops. Entrances use `duration-normal` or `duration-slow` with `ease-standard`; exits use `duration-fast`, so closing never delays the next action.
+
+| Component     | Motion                                                               | Why                                    |
+| ------------- | -------------------------------------------------------------------- | -------------------------------------- |
+| Dialog        | Settles from 0.5rem below at 98% scale; the scrim fades              | A new layer arrives without a jump     |
+| Drawer        | Slides from its edge, mirrored in RTL                                | Shows where it lives and where it goes |
+| Popover, Menu | Rises 0.25rem out of the anchor's edge                               | Ties the popup to what opened it       |
+| Tooltip       | The same rise, at a small size                                       | Never competes with what it describes  |
+| Tabs          | One indicator glides between tabs (transforms only); the panel fades | Shows where selection came from        |
+| Accordion     | Rows animate to the content's real height; the chevron turns         | Keeps the reader's place in the list   |
+| Toast         | Arrives from the edge it lives on; leaving also collapses its row    | The stack closes up instead of jumping |
+| Alert         | Fades in                                                             | Appears without pulling focus          |
 
 ## Authoring rules
 

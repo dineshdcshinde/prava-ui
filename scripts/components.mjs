@@ -16,6 +16,18 @@ export const components = [
   ["switch", "Switch"],
   ["radio-group", "RadioGroup"],
   ["select", "Select"],
+  ["alert", "Alert"],
+  ["container", "Container"],
+  ["stack", "Stack"],
+  ["grid", "Grid"],
+  ["dialog", "Dialog"],
+  ["drawer", "Drawer"],
+  ["popover", "Popover"],
+  ["tooltip", "Tooltip"],
+  ["dropdown-menu", "DropdownMenu"],
+  ["tabs", "Tabs"],
+  ["accordion", "Accordion"],
+  ["toast", "Toaster"],
   ["provider", "PravaProvider"],
 ].map(([name, component]) => ({ name, component }));
 
@@ -29,4 +41,11 @@ export const fieldControls = new Set([
   "switch",
   "radio-group",
   "select",
+]);
+
+// Anchored popups also load the shared floating stylesheet.
+export const floatingControls = new Set([
+  "popover",
+  "tooltip",
+  "dropdown-menu",
 ]);

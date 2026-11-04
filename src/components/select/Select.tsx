@@ -27,7 +27,11 @@ import {
   type FieldBinding,
   type FieldProps,
 } from "../field/field";
+import { placeFloating } from "../../internal/overlay";
 import { usePravaConfig } from "../provider/PravaProvider";
+
+// About three rows and a bit, so a shorter space opens beside the field instead.
+const MIN_LIST_ROOM = 144;
 
 export type SelectOption = {
   /** Stable value the form submits. Keep it the same in every language. */
@@ -67,6 +71,11 @@ type SelectBase<T extends SelectOption> = Omit<
     /** Shown until a choice is made. */
     placeholder?: ReactNode;
     size?: "sm" | "md" | "lg";
+    /**
+     * Where the list opens. `auto` picks from the space available. Another side is kept while it
+     * leaves about three rows of room (or fits, beside the field); otherwise `auto` takes over.
+     */
+    placement?: "auto" | "top" | "bottom" | "start" | "end";
     name?: string;
     form?: string;
     required?: boolean;
@@ -138,6 +147,7 @@ function SelectImpl<T extends SelectOption>(
     label,
     placeholder,
     size = "md",
+    placement = "auto",
     multiple = false,
     searchable = false,
     renderOption,
@@ -278,29 +288,38 @@ function SelectImpl<T extends SelectOption>(
   const optionId = (optionValue: string) =>
     `${triggerId}-option-${flat.findIndex((o) => o.value === optionValue)}`;
 
-  const place = useCallback(() => {
+  // Long options widen the popup past the field. Holding that as a minimum stops filtering from shrinking it.
+  const fitWidth = useCallback(() => {
     const popup = popupRef.current;
     const well = wellRef.current;
     if (!popup || !well) return;
-    const rect = well.getBoundingClientRect();
-    const gap = 4;
-    const margin = 8;
-    const below = window.innerHeight - rect.bottom - gap - margin;
-    const above = rect.top - gap - margin;
-    popup.style.maxBlockSize = "";
-    const fitsBelow = popup.offsetHeight <= below || below >= above;
-    popup.dataset.side = fitsBelow ? "bottom" : "top";
-    popup.style.maxBlockSize = `${Math.max(fitsBelow ? below : above, 0)}px`;
-    popup.style.top = fitsBelow ? `${rect.bottom + gap}px` : "auto";
-    popup.style.bottom = fitsBelow
-      ? "auto"
-      : `${window.innerHeight - rect.top + gap}px`;
-    popup.style.width = `${rect.width}px`;
-    popup.style.left = `${Math.min(
-      Math.max(rect.left, margin),
-      Math.max(window.innerWidth - rect.width - margin, margin),
-    )}px`;
+    popup.style.minInlineSize = `${well.getBoundingClientRect().width}px`;
+    popup.style.minInlineSize = getComputedStyle(popup).inlineSize;
   }, []);
+
+  const place = useCallback(() => {
+    const popup = popupRef.current;
+    const well = wellRef.current;
+    const list = popup?.querySelector<HTMLElement>(".prava-select__list");
+    if (!popup || !well || !list) return;
+    // The list shrinks with the popup, so its real height comes from its content and its own limit.
+    const limit = parseFloat(getComputedStyle(list).maxBlockSize) || Infinity;
+    placeFloating(
+      well,
+      popup,
+      placement === "auto" ? "bottom" : placement,
+      "start",
+      {
+        gap: 4,
+        contentHeight:
+          popup.offsetHeight -
+          list.offsetHeight +
+          Math.min(list.scrollHeight, limit),
+        minBlockRoom: MIN_LIST_ROOM,
+        strict: placement !== "auto",
+      },
+    );
+  }, [placement]);
 
   const close = useCallback((refocus = false) => {
     setOpen(false);
@@ -310,6 +329,8 @@ function SelectImpl<T extends SelectOption>(
 
   const openList = () => {
     if (disabled) return;
+    // Safari doesn't focus a button on click, and keyboard handling lives on the trigger.
+    triggerRef.current?.focus();
     setEverOpened(true);
     setOpen(true);
     setActive(
@@ -326,20 +347,29 @@ function SelectImpl<T extends SelectOption>(
       return;
     }
     popup.showPopover?.(); // top layer: never clipped by a Card or scroll container
+    fitWidth();
     place();
     if (searchable) searchRef.current?.focus();
     const outside = (event: PointerEvent) => {
       if (!rootRef.current?.contains(event.target as Node)) close();
     };
-    window.addEventListener("resize", place);
-    window.addEventListener("scroll", place, true);
+    const onResize = () => {
+      fitWidth();
+      place();
+    };
+    // Scrolling the list itself doesn't move the field.
+    const onScroll = (event: Event) => {
+      if (!popup.contains(event.target as Node)) place();
+    };
+    window.addEventListener("resize", onResize);
+    window.addEventListener("scroll", onScroll, true);
     document.addEventListener("pointerdown", outside);
     return () => {
-      window.removeEventListener("resize", place);
-      window.removeEventListener("scroll", place, true);
+      window.removeEventListener("resize", onResize);
+      window.removeEventListener("scroll", onScroll, true);
       document.removeEventListener("pointerdown", outside);
     };
-  }, [open, searchable, place, close]);
+  }, [open, searchable, fitWidth, place, close]);
 
   // The list can change height while filtering or wrapping.
   useEffect(() => {

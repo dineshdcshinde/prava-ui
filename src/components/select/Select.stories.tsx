@@ -222,6 +222,133 @@ export const InsideCard: Story = {
 };
 
 /** Labels, headings, and built-in text all come translated from the app and `PravaProvider` `messages`. */
+const longRoles = [
+  { value: "owner", label: "Workspace owner" },
+  { value: "admin", label: "Billing and compliance administrator" },
+  { value: "manager", label: "Regional project manager" },
+  { value: "editor", label: "Editor" },
+  { value: "analyst", label: "Analyst" },
+  { value: "support", label: "Customer support specialist" },
+  { value: "contractor", label: "External contractor" },
+  { value: "guest", label: "Guest" },
+];
+const placedSelect = (label: string, justify: string, align: string) => (
+  <div
+    key={label}
+    style={{
+      justifySelf: justify,
+      alignSelf: align,
+      width: "min(10rem, 100%)",
+    }}
+  >
+    <Select label={label} placeholder="Open me" options={longRoles} />
+  </div>
+);
+const edges = ["start", "center", "end"] as const;
+const rowNames = { start: "Top", center: "Middle", end: "Bottom" };
+
+/**
+ * Open each field: the list picks its side from the space available, with no props. Below is the
+ * default, above when below is too small, and it widens for long options without leaving the
+ * screen. The framed short screen has no room above or below, so the list opens beside the field.
+ */
+export const AutoPlacement: Story = {
+  parameters: {
+    layout: "fullscreen",
+    docs: { story: { inline: false, iframeHeight: 640 } },
+  },
+  render: (_args, { globals }) => {
+    const short = new URLSearchParams(location.search).has("short");
+    const cells = {
+      display: "grid",
+      gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+      gap: "0.5rem",
+      padding: "1rem",
+      boxSizing: "border-box",
+    } as const;
+    if (short)
+      return (
+        <div
+          style={{
+            ...cells,
+            height: "100dvh",
+            alignItems: "center",
+            overflow: "hidden",
+          }}
+        >
+          {edges.map((edge) => placedSelect(`Short, ${edge}`, edge, "center"))}
+        </div>
+      );
+    return (
+      <div
+        style={{
+          display: "grid",
+          gridTemplateRows: "minmax(0, 1fr) auto",
+          height: "100dvh",
+        }}
+      >
+        <div style={{ ...cells, gridTemplateRows: "repeat(3, 1fr)" }}>
+          {edges.flatMap((row) =>
+            edges.map((column) =>
+              placedSelect(`${rowNames[row]} ${column}`, column, row),
+            ),
+          )}
+        </div>
+        <div style={{ padding: "0 1rem 1rem" }}>
+          <p style={{ margin: "0 0 0.5rem" }}>
+            A short screen: no room above or below, so the list opens beside the
+            field.
+          </p>
+          <iframe
+            title="Select on a short screen"
+            src={`${location.pathname}?id=forms-select--auto-placement&viewMode=story&short=1&globals=theme:${globals.theme};direction:${globals.direction}`}
+            style={{
+              display: "block",
+              width: "100%",
+              height: "11rem",
+              border: "1px solid var(--prava-color-border)",
+              borderRadius: "var(--prava-radius-control)",
+            }}
+          />
+        </div>
+      </div>
+    );
+  },
+};
+
+/**
+ * `placement` asks for a side. It's kept while that side leaves about three rows of room, or fits
+ * when beside the field; otherwise automatic placement takes over, so the list stays usable.
+ */
+export const ForcedPlacement: Story = {
+  parameters: { layout: "fullscreen" },
+  render: () => (
+    <div
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: "1rem",
+        minHeight: "100dvh",
+        padding: "1rem",
+        boxSizing: "border-box",
+      }}
+    >
+      {(["top", "bottom", "start", "end"] as const).map((placement) => (
+        <div key={placement} style={{ width: "min(10rem, 100%)" }}>
+          <Select
+            label={`Opens ${placement}`}
+            placeholder="Open me"
+            placement={placement}
+            options={roles}
+          />
+        </div>
+      ))}
+    </div>
+  ),
+};
+
 export const RTL: Story = {
   render: () => (
     <PravaProvider

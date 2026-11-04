@@ -1,6 +1,6 @@
 # V1 Progress
 
-**16 of 28 done, 12 left.** Catalog from [PRD section 9](./Prava-UI-PRD.md#9-v1-component-catalog-and-requirements).
+**28 of 28 built.** Catalog from [PRD section 9](./Prava-UI-PRD.md#9-v1-component-catalog-and-requirements).
 
 ✅ means built and exported, with a story and tests. Final sign-off still needs the full [PRD section 11](./Prava-UI-PRD.md#quality-gates-for-each-component) quality gate.
 
@@ -22,17 +22,17 @@
 | 14  | RadioGroup   | Forms       | ✅   |
 | 15  | Switch       | Forms       | ✅   |
 | 16  | Select       | Forms       | ✅   |
-| 17  | Alert        | Forms       | ⬜   |
-| 18  | Dialog       | Interaction | ⬜   |
-| 19  | Drawer       | Interaction | ⬜   |
-| 20  | Popover      | Interaction | ⬜   |
-| 21  | Tooltip      | Interaction | ⬜   |
-| 22  | DropdownMenu | Interaction | ⬜   |
-| 23  | Tabs         | Interaction | ⬜   |
-| 24  | Accordion    | Interaction | ⬜   |
-| 25  | Toast        | Interaction | ⬜   |
-| 26  | Container    | Layout      | ⬜   |
-| 27  | Stack        | Layout      | ⬜   |
-| 28  | Grid         | Layout      | ⬜   |
+| 17  | Alert        | Forms       | ✅   |
+| 18  | Dialog       | Interaction | ✅   |
+| 19  | Drawer       | Interaction | ✅   |
+| 20  | Popover      | Interaction | ✅   |
+| 21  | Tooltip      | Interaction | ✅   |
+| 22  | DropdownMenu | Interaction | ✅   |
+| 23  | Tabs         | Interaction | ✅   |
+| 24  | Accordion    | Interaction | ✅   |
+| 25  | Toast        | Interaction | ✅   |
+| 26  | Container    | Layout      | ✅   |
+| 27  | Stack        | Layout      | ✅   |
+| 28  | Grid         | Layout      | ✅   |
 
-**Build order for what's left** ([PRD section 14.7](./Prava-UI-PRD.md#147-implement-one-component-at-a-time)): Alert → Container, Stack, Grid → Dialog, Drawer → Popover, Tooltip, DropdownMenu → Tabs, Accordion → Toast.
+Browser tests run in Chromium, Firefox, and WebKit, and cover overlays, focus, RTL, reduced motion, and 320px layouts; emulated phones cover touch (`npm run test:e2e:all`). Still open for V1 sign-off: the React 18.2 consumer check, a manual screen reader pass on the interactive components, and a check on real touch devices.

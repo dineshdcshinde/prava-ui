@@ -41,7 +41,7 @@ const preview: Preview = {
   parameters: {
     options: {
       storySort: {
-        order: ['Overview', 'Foundations', 'Actions', 'Forms', 'Display', 'Feedback'],
+        order: ['Overview', 'Foundations', 'Actions', 'Forms', 'Display', 'Feedback', 'Overlays', 'Navigation', 'Layout'],
       },
     },
     controls: { matchers: { color: /(background|color)$/i, date: /Date$/i } },

@@ -1,0 +1,73 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-dropdown-menu {
+    @apply rounded-(--prava-radius-control) p-1;
+    inline-size: max-content;
+    min-inline-size: 10rem;
+    max-inline-size: min(20rem, 100vw - 1rem);
+    overscroll-behavior: contain;
+    scrollbar-color: var(--prava-color-border-strong) transparent;
+    scrollbar-width: thin;
+  }
+  .prava-dropdown-menu:focus {
+    outline-color: var(--prava-color-border);
+  }
+
+  .prava-dropdown-menu__item {
+    @apply box-border flex min-h-9 w-full cursor-pointer items-center gap-2 rounded-(--prava-radius-sm) border-0 bg-transparent px-2 py-1.5 text-start text-(--prava-color-text) no-underline;
+    font: inherit;
+    line-height: var(--prava-line-height-tight);
+    outline: none;
+    transition: background-color var(--prava-duration-fast)
+      var(--prava-ease-standard);
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (pointer: coarse) {
+    .prava-dropdown-menu__item {
+      @apply min-h-11;
+    }
+  }
+  .prava-dropdown-menu__item:focus {
+    @apply bg-(--prava-color-surface-hover);
+  }
+  .prava-dropdown-menu__item:focus-visible {
+    outline: var(--prava-stroke) solid var(--prava-color-focus);
+    outline-offset: calc(var(--prava-stroke) * -1);
+  }
+  .prava-dropdown-menu__item:active {
+    @apply bg-(--prava-color-surface-raised);
+  }
+  .prava-dropdown-menu__item[data-tone="danger"] {
+    @apply text-(--prava-color-on-danger-container);
+  }
+  .prava-dropdown-menu__item[data-tone="danger"]:focus {
+    @apply bg-(--prava-color-danger-container);
+  }
+  .prava-dropdown-menu__item[aria-disabled="true"] {
+    @apply cursor-not-allowed bg-transparent text-(--prava-color-text-muted);
+  }
+
+  .prava-dropdown-menu__icon {
+    @apply flex size-4 flex-none items-center justify-center;
+  }
+  .prava-dropdown-menu__icon svg {
+    @apply size-full;
+  }
+  .prava-dropdown-menu__label {
+    @apply min-w-0;
+    overflow-wrap: anywhere;
+  }
+  .prava-dropdown-menu__group-label {
+    @apply px-2 pt-2.5 pb-1 text-(length:--prava-font-size-1) font-(--prava-font-weight-semibold) text-(--prava-color-text-muted);
+  }
+  .prava-dropdown-menu__separator {
+    @apply -mx-1 my-1 h-px bg-(--prava-color-border);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .prava-dropdown-menu__item {
+      transition: none;
+    }
+  }
+}
