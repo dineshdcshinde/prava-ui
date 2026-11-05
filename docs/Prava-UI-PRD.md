@@ -1,6 +1,6 @@
 # Prava UI — Product Requirements Document (PRD)
 
-**Document status:** V1 product and engineering baseline  
+**Document status:** Part I: V1 product and engineering baseline. Part II: V2 draft for owner review  
 **Working product name:** Prava UI (temporary; may be renamed before public release)  
 **Package name in scaffold:** `prava-ui` (temporary; availability and branding are not verified)  
 **Product type:** Open-source React component library and design system  
@@ -853,10 +853,14 @@ V1 is ready only when all conditions below are true:
 | Native overlays, no dependency                                    | Approved (2026-11-03): the overlay spike concluded with no positioning or focus dependency. Dialog and Drawer use native `<dialog>`; Popover, Tooltip, and DropdownMenu use the Popover API and one shared placement helper; no portals, so provider direction, theme, and tokens inherit through the DOM. Exit transitions use `allow-discrete`; browsers without it close without animating. |
 | Overlay API additions                                             | Approved (2026-11-03, owner delegated additions beyond this document): `DialogClose`/`DrawerClose`, `data-autofocus`, `dismissible`, `hideClose`, Toast `id` updates, and `--prava-color-scrim` in the theme contract; `--prava-shadow-overlay` gains the glaze rim. `BuiltInMessages` adds `close`, `dismiss`, and `notifications`. |
 | Motion budget                                                     | Approved (2026-11-03): minimal and state-explaining only. The dialog settles from just below, the drawer slides from its edge, popups rise from their anchor, the tab indicator glides between tabs, accordion rows and toasts animate their height, and toasts arrive from the edge they live on. Exits are faster than entrances. Reduced motion removes all spatial movement and keeps fades. No looping or decorative motion. |
-| V2 customer theme builder                                         | Future direction: user picks a color; we generate a complete semantic-token CSS file (light and dark) that overrides Prava defaults; not part of V1.                                                                                                                                                                                                     |
+| V2 customer theme builder | Approved for V2 scope (2026-11-05), specified in section 23: user picks a color; we generate a complete semantic-token CSS file (light and dark) that overrides Prava defaults; not part of V1. |
 | Public npm name and license | Approved (2026-11-04): `prava-ui` was free on npm when checked, and the license is MIT. |
 | First release | Approved (2026-11-04): `1.0.0-rc.1`, published to the `next` npm tag through `publishConfig`. Remove `publishConfig` for the final `1.0.0`. See `docs/RELEASING.md`. |
 | Next.js support | Approved (2026-11-04): the build adds `"use client"` to every JavaScript module except the root re-export, so components work directly in Server Components. Verified by building, serving, and hydrating a Next.js 15 App Router app from the packed package. |
+| Theme file connection | Approved (2026-11-05): fixed name `prava.theme.css`, connected by one import that the CLI can add, with bundler plugins as an extra. Next.js plugin only if proven. |
+| AI colour suggestions | Approved (2026-11-05): engine first with no AI; hosted suggestions later, run and paid for by Prava. AI proposes inputs only. |
+| V2 new components | Approved (2026-11-05): 16 components in two waves. Rich text and charts stay out. |
+| V2 design | Approved (2026-11-05): the name stays Prava UI and all V2 work follows Cobalt Porcelain in `DESIGN.md`. |
 | Package manager                                                   | Not frozen; recommended default is pnpm, with npm also acceptable.                                                                                                                                                                                                                                                                                       |
 | Icon policy                                                       | Not frozen; recommended default is no mandatory icon runtime dependency; accept consumer-provided icons through children/slots.                                                                                                                                                                                                                          |
 | Typography                                                        | Components inherit the consumer font by default; do not bundle or impose a font. Optional typography customization uses documented CSS custom properties.                                                                                                                                                                                                |
@@ -907,3 +911,410 @@ The references below are used for technical verification and conceptual inspirat
 - Vercel Geist: <https://vercel.com/geist>
 - WAI-ARIA Authoring Practices: <https://www.w3.org/WAI/ARIA/apg/>
 - WCAG 2.2 Quick Reference: <https://www.w3.org/WAI/WCAG22/quickref/>
+
+---
+
+# Part II: V2
+
+**Status:** Draft for owner review. Nothing in Part II is implemented.
+**Depends on:** Part I (sections 1 to 19), which still applies unless a section below says otherwise.
+
+## 20. Summary
+
+V2 removes the two reasons a developer would leave Prava UI for another library:
+
+1. **"I don't like the colours."** They choose a ready-made option or generate their own. The result is one file, `prava.theme.css`. When it is in use, its colours appear and Prava's do not.
+2. **"It doesn't have the component or prop I need."** V2 closes API gaps in the existing 28 building blocks and adds 16 new components, for 44 in total.
+
+## 21. Goals and non-goals
+
+### V2 goals
+
+- Generate a complete, accessible light and dark theme from one colour.
+- Offer ready-made colour options and a builder page with a live preview.
+- Respect the theme file: when it defines the full contract, no Prava colour is painted.
+- Add components and props without breaking existing code.
+- Keep every Part I requirement: accessibility, keyboard, RTL, compiled CSS, tree-shaking, no Tailwind setup for consumers, and no imposed fonts or global styles.
+
+### V2 non-goals
+
+- Rich text editor and charts, which need heavy dependencies.
+- MUI prop compatibility. Prava keeps its own API (decision log, 2026-11-01).
+- Theming anything other than colours and shadows. Radius, type and spacing tokens remain overridable by hand, but the generator does not produce them.
+- AI at library runtime. The package and CLI never call an AI service.
+- Non-Gregorian calendars in DatePicker.
+- Virtualized rows in DataTable.
+
+### Amendments to Part I
+
+- **Section 3:** date picker, free-text and server-backed combobox, command palette, and data table move from V1 non-goals into V2 scope. Rich text and charts stay out.
+- **Section 5.2:** the theme builder moves from future direction into V2 scope.
+- **Section 12:** a hosted Storybook becomes required for the builder page.
+
+## 22. Rules for all V2 work
+
+- **Additive only.** Existing props, exports, token names and default behavior keep working.
+- **Defaults remain.** With no theme file, Cobalt Porcelain applies as it does today, which keeps the "looks finished on install" promise.
+- **Themes change values, never the design.** Layered surfaces, one accent for action and selection, status colours only where they carry meaning, the single-hairline glaze rim, the 4px spacing grid and the motion rules in `DESIGN.md` stay. All new components follow Cobalt Porcelain.
+- **Accessibility wins over brand accuracy.** If a colour fails a required contrast pair, the engine changes it and says so. It never adjusts silently and never ships a failing theme.
+
+## 23. Theme system
+
+### 23.1 Theme contract changes
+
+The contract is the semantic `--prava-color-*` and `--prava-shadow-*` tokens in `src/styles/tokens.css`. That file remains the only definition of the token list; tools read from it instead of keeping a second copy.
+
+1. **Add `--prava-color-primary-text`,** defaulting to `var(--prava-color-primary)`. It is used wherever primary is text, currently `input.css` and `tabs.css`. The 4.5:1 requirement on surfaces moves from `primary` to this token.
+2. **New tokens must default to an existing token through `var()`.** An older theme file then keeps showing its own colours after an upgrade. A test enforces this for every token added after the contract version is frozen.
+3. **Version the contract.** It starts at `1` and increases when tokens are added. Removing or renaming a token is a breaking change.
+
+### 23.2 Colour engine: `prava-ui/theme`
+
+A pure TypeScript module with no dependencies and no DOM or Node APIs, so the builder and CLI share it.
+
+```ts
+type ThemeInput = {
+  primary: string; // hex
+  neutral?: string; // tints surfaces and text; derived from primary if omitted
+  success?: string;
+  warning?: string;
+  danger?: string;
+  info?: string;
+};
+
+type ThemeAdjustment = {
+  token: string;
+  mode: "light" | "dark";
+  from: string;
+  to: string;
+  reason: string;
+};
+
+generateTheme(input: ThemeInput): {
+  light: Record<string, string>;
+  dark: Record<string, string>;
+  adjustments: ThemeAdjustment[];
+};
+themeToCss(theme): string;
+checkThemeCss(css: string): ThemeReport;
+presets: Record<string, ThemeInput>;
+```
+
+Requirements:
+
+- **Input:** 3 or 6 digit hex only. Anything else throws an error that names the invalid value.
+- **Output:** every contract token, for both modes. Colours are hex. `color-scrim` and shadows use `rgb()` with alpha, tinted from the theme's neutral, and shadows keep the glaze rim.
+- **Determinism:** the same input always produces the same output.
+- **Contrast:** the pair list in `src/foundations/foundations.test.ts` and its `contrast()` helper move to shared code. The test and the engine use the same list, so they cannot disagree. It must resolve `var()` values such as the `primary-text` default.
+- **Status colours keep their meaning.** A consumer-supplied `danger` can shift in lightness to pass contrast, but the engine does not generate a danger colour from the primary hue.
+
+### 23.3 Very light and very dark brand colours
+
+`primary-text` solves text. Button, Checkbox, Switch, Radio, Progress and the Tabs indicator also paint `primary` as a fill, and state fills need 3:1 against the surface.
+
+**Recommended default, for owner confirmation:** when `primary` fails 3:1, the engine shifts its lightness until it passes, reports the change, and the builder shows before and after. The button changes too, so exact brand matching for very light colours such as yellow is not offered in V2.0.
+
+### 23.4 The theme file: `prava.theme.css`
+
+The name is fixed. The generator writes:
+
+```css
+/* prava-theme contract=1 primary=#7c3aed neutral=auto */
+:root,
+[data-prava-theme="light"],
+[data-prava-theme="system"] {
+  /* every token, light values */
+}
+[data-prava-theme="dark"] {
+  /* every token, dark values */
+}
+@media (prefers-color-scheme: dark) {
+  [data-prava-theme="system"] {
+    /* identical to the dark block */
+  }
+}
+```
+
+- The selectors mirror `tokens.css`, so nested themes, `system` and `PravaProvider`'s `theme` prop keep working.
+- The rules are unlayered, so they beat `@layer prava.tokens` whatever the import order.
+- The file is plain CSS. It needs no JavaScript and has no colour flash on load, and it is safe with SSR.
+- The file belongs to the user. Prava tools never change it unless the user asks with `--force`.
+- A hand-edited file is valid. `theme check` reports what it cannot verify instead of rejecting it.
+- A partial file still works, but Prava's colours fill the missing tokens, as they do today. `theme check` lists them.
+
+### 23.5 Connecting the file
+
+A package in `node_modules` cannot discover a project file by itself, so one connecting step is required. Two routes are offered, and using both is harmless.
+
+**Route 1: import (works with every bundler; the supported default)**
+
+```ts
+import "./prava.theme.css";
+```
+
+**Route 2: bundler plugin (optional)**
+
+```ts
+// vite.config.ts
+import { pravaTheme } from "prava-ui/vite";
+export default { plugins: [pravaTheme()] };
+```
+
+- It finds `prava.theme.css` in the Vite root and has no options.
+- Editing the file updates the page during development.
+- With no file, Prava's defaults apply and nothing fails.
+- A file with problems produces a build warning, not a failure.
+- `vite` is an optional peer dependency.
+- The injection mechanism is chosen in a spike. Dependency pre-bundling and SSR builds must both be tested.
+
+**Next.js:** a plugin ships only if a spike proves it on both webpack and Turbopack. Otherwise, the documented route is the import line in the root layout. Documentation must not claim otherwise.
+
+### 23.6 CLI: `npx prava-ui theme`
+
+Uses Node built-ins only.
+
+```sh
+npx prava-ui theme --primary "#7c3aed"   # generate from a colour
+npx prava-ui theme --preset teal         # generate from a preset
+npx prava-ui theme check                 # validate the existing file
+```
+
+- Writes `prava.theme.css` to the current directory, or to the folder given by `--dir`.
+- **Never overwrites an existing file without `--force`.** Without it, the command exits with an error and changes nothing.
+- Adds the import to a recognized entry (`src/main.*`, `src/index.*`, `app/layout.*`, `src/app/layout.*`). If there is no clear single entry, it prints the line to add instead of guessing. It never adds the line twice.
+- Prints every adjustment in plain language.
+- `theme check` exits non-zero on a missing token, an outdated contract version, or a failed contrast pair, so it can run in CI. Values it cannot evaluate are listed as unverified.
+
+### 23.7 Ready-made colour options
+
+- 8 presets are stored as `ThemeInput` data and generated by the engine. No extra CSS files ship.
+- Proposed colour families: blue, indigo, violet, teal, green, amber, rose, slate. Names and values are original to Prava, and the final list is confirmed in review.
+- Preset values must not be copied from another design system.
+
+### 23.8 Builder page
+
+A Storybook page, hosted on a static host such as GitHub Pages. Part I section 12 already makes Storybook the first docs surface, so no separate site is needed.
+
+- **Inputs:** presets, a primary colour picker, and optional neutral and status colours.
+- **Preview:** real Prava components, including open overlays, in light, dark and RTL, side by side. No mock-ups.
+- **Report:** contrast results, and each adjustment with before and after.
+- **Output:** copy or download `prava.theme.css`, shown with the one import line.
+- **Reopen:** pasting an existing file restores its inputs from the header comment.
+- **Privacy:** everything runs in the browser and nothing is uploaded.
+- The page itself meets Part I section 8, including keyboard use and labelled controls.
+
+### 23.9 AI suggestions (after the first V2 release)
+
+A "describe your brand" box on the hosted builder page.
+
+- AI proposes a `ThemeInput` only. The engine still produces the file, so a bad suggestion cannot produce an unreadable theme.
+- Requests go through a Prava-run server, because a static page cannot hold an API key.
+- Before launch, the following must be defined: a monthly spend cap, per-visitor rate limits, the provider, and what is logged. **Recommended default:** do not store descriptions.
+- The description is untrusted input. The response is accepted only if it validates as a `ThemeInput`.
+- If the service is down or over its limit, the box says so and the colour picker keeps working.
+- Never required for any other V2 feature.
+
+## 24. API gap audit of the existing 28
+
+Before new components, audit each existing component by the jobs developers need it for. Do not copy another library's prop list. The audit produces a table here with component, job, gap, proposed additive change, and decision. Implementation follows only after owner review of the table.
+
+Known candidate: DropdownMenu submenus, excluded in section 9.3.
+
+## 25. New component catalog
+
+APIs below are proposals. Each component's section is finalized before its implementation and recorded here, as with V1. All components accept `className` and `style`, forward native attributes and refs where meaningful, read only theme tokens, and use logical properties. New library-owned text is added to `BuiltInMessages`.
+
+**Spike first:** Combobox, DatePicker and DataTable each need an API and accessibility spike, because their contracts are the hardest to change later.
+
+### 25.1 Wave 1
+
+#### 29. Table
+
+- Purpose: present structured data with native table semantics.
+- API: `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell`, `TableCaption`, plus `density` (`compact`, `comfortable`) and `stickyHeader`.
+- Responsive: scrolls inline inside its own region. The page never overflows.
+- A11y: native `<table>`. The scrolling region is named and keyboard-focusable.
+
+#### 30. Pagination
+
+- Purpose: move through paged content.
+- API: `page`/`defaultPage`/`onPageChange`, `pageCount`, `siblingCount`, `getHref` (renders links instead of buttons).
+- Responsive: reduces visible page numbers on narrow widths, while previous and next stay reachable.
+- A11y: `<nav>` with a localized name and `aria-current="page"`. Previous and next arrows mirror in RTL.
+
+#### 31. Breadcrumb
+
+- Purpose: show location in a hierarchy.
+- API: `items` (`{ label, href?, icon? }`), `separator`, `maxItems` (collapses the middle into a DropdownMenu).
+- Responsive: collapses instead of overflowing.
+- A11y: `<nav>` containing an ordered list; the last item has `aria-current="page"`. The separator is decorative and mirrors in RTL.
+
+#### 32. Combobox
+
+- Purpose: choose from a list by typing, including from server results.
+- API: Select's `options` shape, `value`/`defaultValue`/`onValueChange`, `inputValue`/`onInputValueChange`, `filter` (`false` when the server filters), `loading`, `multiple`, `allowCustomValue`, `field`, `error`, `description`.
+- Behavior: reuses Select's placement rules through `placeFloating`. Search in Select stays as it is; Combobox is the choice for free text and server data.
+- A11y: WAI-ARIA editable combobox pattern. Result counts and loading are announced through localized messages.
+
+#### 33. DatePicker with Calendar
+
+- Purpose: choose a date or date range.
+- API: `Calendar` and `DatePicker` with `value`/`defaultValue`/`onValueChange` as ISO `YYYY-MM-DD` strings, `min`, `max`, `isDateDisabled`, `mode` (`single`, `range`), `field`, `error`, `description`. ISO strings avoid time zone shifts and a date library dependency.
+- Behavior: month names, weekdays and first day of the week come from `Intl` using the provider's locale. Gregorian only. A native picker is not used, for the same reasons as Select. Typed entry is supported.
+- Responsive: fits a 320px viewport.
+- A11y: WAI-ARIA date picker dialog and grid pattern. Arrow keys mirror in RTL.
+
+#### 34. Slider
+
+- Purpose: choose a value or range along a scale.
+- API: `value`/`defaultValue`/`onValueChange` (`number`, or `[number, number]` for a range), `min`, `max`, `step`, `label`, `showValue`, `disabled`, `field`.
+- Behavior: built on native range inputs where possible; thumbs cannot cross.
+- A11y: native keyboard behavior, a label on each thumb, and correct direction in RTL. Touch targets meet Part I section 8.
+
+#### 35. NumberInput
+
+- Purpose: enter a number precisely.
+- API: `value`/`defaultValue`/`onValueChange` (`number | null`), `min`, `max`, `step`, `formatOptions` (`Intl.NumberFormat`), `size`, `field`, `error`, `description`.
+- Behavior: text input with `inputmode`, with increment and decrement buttons. Values are clamped on blur, never mid-typing. Empty is `null`, not `0`.
+- A11y: spinbutton semantics with arrow keys, Home and End. Buttons have localized names.
+
+#### 36. FileUpload
+
+- Purpose: choose files, including by drag and drop.
+- API: `accept`, `multiple`, `maxSize`, `maxFiles`, `value`/`onFilesChange`, `onReject`, `field`, `error`, `description`. The consumer performs the upload.
+- Behavior: real file input underneath. The list has a remove button per file. Documentation states that client checks are a convenience, and the server must validate files.
+- A11y: fully usable without drag and drop. Rejections are announced.
+
+### 25.2 Wave 2
+
+#### 37. DataTable
+
+- Purpose: sort, select and page through records. Built on Table and Pagination.
+- API: `columns`, `rows`, `getRowId`, `sort`/`onSortChange`, `selection`/`onSelectionChange`, `page`/`onPageChange`, `loading`, `emptyState`. Every state can be controlled, so sorting and paging can happen on a server.
+- Limit: no virtualization. Documentation says when to page instead.
+- A11y: `aria-sort` on sortable headers, which are real buttons. Row selection uses Checkbox, with a labelled select-all.
+
+#### 38. CommandPalette
+
+- Purpose: find and run actions from the keyboard.
+- API: `commands` (`{ label, onSelect, icon?, keywords?, shortcut? }` and groups), `open`/`defaultOpen`/`onOpenChange`, `hotkey`.
+- Behavior: built on Dialog and Combobox. No global shortcut is registered unless `hotkey` is set. Focus returns before `onSelect` runs, as in DropdownMenu.
+- A11y: dialog plus combobox pattern. Results are announced.
+
+#### 39. ToggleGroup
+
+- Purpose: choose one or several related options, shown as joined buttons.
+- API: `multiple`, `value`/`defaultValue`/`onValueChange`, `items` (`{ value, label, icon?, disabled? }`), `size`, `orientation`.
+- A11y: radio semantics for single choice and `aria-pressed` for multiple. Arrow keys follow direction, and icon-only items require a label.
+
+#### 40. Stepper
+
+- Purpose: show progress through a multi-step flow.
+- API: `steps` (`{ label, description?, status? }`), `current`, `orientation`, `onStepSelect`.
+- Responsive: switches to vertical by container width, with no breakpoint props.
+- A11y: ordered list with `aria-current="step"`. Status is not conveyed by colour alone.
+
+#### 41. Tag
+
+- Purpose: a compact label the user can remove or select. Badge remains non-interactive.
+- API: `tone`, `size`, `icon`, `onRemove`, `selected`/`onSelectedChange`.
+- A11y: the remove control has a localized name that includes the tag text.
+
+#### 42. Link
+
+- Purpose: styled navigation with correct semantics.
+- API: native anchor attributes, `tone`, `underline`, `external`. Works with router links through `as`, matching layout primitives.
+- A11y: real `<a>`. `external` adds a localized hidden hint. Links are distinguishable by more than colour.
+
+#### 43. EmptyState
+
+- Purpose: explain an empty view and offer the next step.
+- API: `icon`, `title`, `description`, `action`, `headingLevel`.
+- A11y: heading level is consumer-controlled and the icon is decorative.
+
+#### 44. Sidebar
+
+- Purpose: main application navigation.
+- API: `items` (`{ label, href?, icon?, current?, items? }`), `collapsed`/`defaultCollapsed`/`onCollapsedChange`, `header`, `footer`.
+- Responsive: becomes a Drawer on narrow containers, with no breakpoint props. Collapsed items show a Tooltip.
+- A11y: `<nav>` with a name, `aria-current="page"`, and working in RTL at the inline-start edge.
+
+## 26. Packaging
+
+- New public entries: `prava-ui/theme`, `prava-ui/vite`, and one per new component. `bin` adds `prava-ui`.
+- New components register in `scripts/components.mjs`. Theme and plugin entries are not components and import no CSS.
+- Importing a component must not pull in the engine or plugin. Importing the engine must not pull in CSS or React. Packed consumer tests verify both.
+- No new runtime dependencies are planned. Any exception needs the justification required by Part I section 10.2.
+
+## 27. Quality gates
+
+Every V2 component passes Part I section 11, plus:
+
+1. **Theme proof:** a full generated theme leaves no Prava colour on the component in light, dark or RTL, with overlays open.
+2. **New stories render correctly in the builder preview** where the component is part of it.
+
+The theme system also requires:
+
+- **Engine:** a property test over thousands of random colours. Every result passes the shared contrast list in both modes, and the same input gives the same output.
+- **Coverage:** `tests/e2e/theme.spec.ts` currently covers only what is visible on the Overview screen. It must extend to every component with overlays open.
+- **Parity:** generated dark and system-dark blocks are identical.
+- **Consumer:** `scripts/package-check.mjs` tests the import route, CLI, and Vite plugin against the packed package, and Next.js 15 by import, with no consumer Tailwind.
+- **CLI safety:** tests prove it refuses to overwrite without `--force` and never adds the import twice.
+
+## 28. Implementation sequence
+
+| # | Phase | Done when |
+| --- | --- | --- |
+| 0 | Finish V1: React 18.2 consumer check, manual screen reader pass, real touch devices (`docs/V1-PROGRESS.md`), then `1.0.0` | Section 15 list is checked |
+| 1 | Contract changes (23.1) and wider theme test | Extended test passes |
+| 2 | Colour engine (23.2, 23.3) | Property test passes |
+| 3 | Theme file, CLI, Vite plugin, Next.js spike (23.4 to 23.6) | Consumer tests pass |
+| 4 | Presets, builder, hosted Storybook (23.7, 23.8) | A builder theme works in a real consumer app |
+| 5 | API gap audit and fixes (24) | Table is reviewed and closed |
+| 6 | Wave 1, one component at a time | Section 27 gates pass |
+| 7 | Wave 2, one component at a time | Section 27 gates pass |
+| 8 | Hosted AI (23.9) | Spend cap and limits are in place |
+
+Theme work comes first so that every new component is built against the finished contract. Progress is tracked in a new `docs/V2-PROGRESS.md`. When each phase lands, update `docs/ARCHITECTURE.md`, `DESIGN.md`, `PRODUCT.md`, `README.md` and `CHANGELOG.md`.
+
+## 29. V2 acceptance criteria
+
+- [ ] `npx prava-ui theme --primary <hex>` plus one import restyles a packed consumer app with no Prava colour left.
+- [ ] A theme file made in the builder does the same.
+- [ ] Every generated theme passes the shared contrast list in both modes, and every adjustment is reported.
+- [ ] With no theme file, the app looks and behaves as V1 does.
+- [ ] Existing V1 code runs unchanged.
+- [ ] Vite plugin behavior is verified, and Next.js support is documented only as far as it was proven.
+- [ ] The API gap table is closed, and all 16 new components pass section 27.
+- [ ] No new runtime dependency exists without a recorded justification.
+- [ ] Documentation covers the theme flow, its limits, and each new component.
+
+## 30. Risks and open questions
+
+| Risk | Mitigation |
+| --- | --- |
+| Generated themes look correct but unattractive | Contrast rules don't guarantee taste. Review presets and sample colours by eye before release. |
+| Very light brand colours get visibly changed | Report every change and show before and after (23.3). |
+| Later tokens bring back Prava's colours in old theme files | `var()` default rule, contract version, `theme check` (23.1). |
+| Plugin breaks with bundler updates | Import stays the supported default; plugin coverage is limited to what's tested. |
+| 16 components outrun the quality gates | One at a time; the count is a target and gates can't be waived, as in V1. |
+| AI spend or abuse | Ships later, with a spend cap and rate limits, and is never required. |
+
+| Open question | Recommended default | Decide by |
+| --- | --- | --- |
+| How should very light brand colours be handled? | Darken and report (23.3) | Phase 2 |
+| Is "V2" a product label or npm `2.0.0`? | Additive changes mean `1.x` under semver; use "V2" as the product label | Before first V2 release |
+| Must `1.0.0` ship before V2 starts? | Yes | Now |
+| Which 8 presets, and does the default stay blue? | Families in 23.7; the default stays Cobalt Porcelain | Phase 4 |
+| Which static host for Storybook? | GitHub Pages | Phase 4 |
+| Should DataTable include filtering and column resizing? | Not in the first version; decide in its spike | Phase 7 |
+
+## 31. Decision log additions
+
+| Decision | Status |
+| --- | --- |
+| Theme file connection | Approved (2026-11-05): fixed name `prava.theme.css`, connected by one import that the CLI can add, with bundler plugins as an extra. Next.js plugin only if proven. |
+| AI colour suggestions | Approved (2026-11-05): engine first with no AI; hosted suggestions later, run and paid for by Prava. AI proposes inputs only. |
+| V2 new components | Approved (2026-11-05): 16 components in two waves. Rich text and charts stay out. |
+| V2 design | Approved (2026-11-05): the name stays Prava UI and all V2 work follows Cobalt Porcelain in `DESIGN.md`. |
+| V2 customer theme builder | Updates the earlier future-direction row: now in V2 scope, specified in section 23. |

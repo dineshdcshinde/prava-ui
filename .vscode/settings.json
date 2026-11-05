@@ -4,5 +4,10 @@
   },
   "tailwindCSS.experimental.configFile": {
     "src/styles/index.css": "src/**"
-  }
+  },
+  "branchSync.watchedBranches": [
+    "feat/cobalt-porcelain-redesign",
+    "main"
+  ],
+  "branchSync.remote": "origin"
 }
