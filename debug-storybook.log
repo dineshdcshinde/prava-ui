@@ -1,0 +1,50 @@
+[23:35:43.126] [INFO] storybook v10.6.5
+[23:35:44.352] [DEBUG] Command "yarn.cmd" not found, trying next variation...
+[23:35:44.529] [DEBUG] Command "yarn.exe" not found, trying next variation...
+[23:35:44.692] [DEBUG] Command "yarn.ps1" not found, trying next variation...
+[23:35:45.041] [DEBUG] Command "pnpm.cmd" not found, trying next variation...
+[23:35:45.329] [DEBUG] Command "pnpm.exe" not found, trying next variation...
+[23:35:45.508] [DEBUG] Command "pnpm.ps1" not found, trying next variation...
+[23:35:47.592] [DEBUG] Getting package.json info for C:/prava-ui/package.json...
+[23:35:49.252] [DEBUG] Could not determine @babel/preset-env version in use. In case of runtime errors with @babel/preset-env, you may need to set the babelRemoveBugfixes feature flag in your `main.ts` file.
+[23:35:50.358] [INFO] Starting...
+[23:35:52.399] [DEBUG] Starting preview..
+[23:36:01.197] [DEBUG] Change detection enabled.
+[23:36:01.202] [DEBUG] Change detection: snapshotting Vite resolve config (restart required if vite.config.ts changes)
+[23:36:01.205] [DEBUG] Change detection: ignored 12 regex alias(es); related modules tracked as opaque-leaf.
+[23:36:01.205] [DEBUG] ChangeDetectionResolverFactory: skipped regex aliases [/^@storybook\/global$/, /^storybook\/test$/, /^storybook\/actions$/, /^storybook\/preview-api$/, /^storybook\/internal\/channels$/, /^storybook\/internal\/client-logger$/, /^storybook\/internal\/core-events$/, /^storybook\/internal\/preview-errors$/, /^storybook\/internal\/types$/, /^storybook\/internal\/preview-api$/, /^\/?@vite\/env/, /^\/?@vite\/client/]
+[23:36:01.239] [ERROR] [38;2;241;97;97mError: listen EADDRINUSE: address already in use 127.0.0.1:6006[39m
+    at Server.setupListenHandle [as _listen2] (node:net:2390:16)
+    at listenInCluster (node:net:2499:12)
+    at node:net:2728:7
+    at process.processTicksAndRejections (node:internal/process/task_queues:90:21)
+[23:36:01.244] [WARN] Broken build, fix the error above.
+You may need to refresh the browser.
+[23:36:01.571] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/checkbox/Checkbox.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:36:01.571] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/checkbox/Checkbox.stories.tsx
+[23:36:01.576] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/button/Button.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:36:01.576] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/button/Button.stories.tsx
+[23:36:01.580] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/form-field/FormField.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:36:01.580] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/form-field/FormField.stories.tsx
+[23:36:01.584] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/input/Input.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:36:01.584] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/input/Input.stories.tsx
+[23:36:01.593] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/radio-group/RadioGroup.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:36:01.593] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/radio-group/RadioGroup.stories.tsx
+[23:36:01.599] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/select/Select.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:36:01.599] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/select/Select.stories.tsx
+[23:36:01.600] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/switch/Switch.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:36:01.600] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/switch/Switch.stories.tsx
+[23:36:01.604] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/textarea/Textarea.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:36:01.604] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/textarea/Textarea.stories.tsx
+[23:36:01.605] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/overview/Overview.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:36:01.605] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/overview/Overview.stories.tsx
+[23:36:01.636] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/field/HookFormStory.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:36:01.636] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/field/HookFormStory.tsx
+[23:36:02.049] [DEBUG] Change detection graph built: 36 stories, 106 deps tracked, 835ms
+[23:37:16.953] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/date-picker/DatePicker.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:37:16.953] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/date-picker/DatePicker.stories.tsx
+[23:38:02.843] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/slider/Slider.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:38:02.843] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/slider/Slider.stories.tsx
+[23:39:23.818] [DEBUG] ChangeDetectionResolverFactory: 'react-hook-form' from 'C:/prava-ui/src/components/number-input/NumberInput.stories.tsx' unresolved ("." is not exported under the conditions ["storybook", "stories", "test", "module", "browser", "development|production"] from package C:/prava-ui\node_modules\react-hook-form (see exports field in C:/prava-ui\node_modules\react-hook-form\package.json))
+[23:39:23.818] [DEBUG] Could not resolve react-hook-form from C:/prava-ui/src/components/number-input/NumberInput.stories.tsx
+[23:43:21.640] [PROMPT] Would you like to send anonymous crash reports to improve Storybook and fix bugs faster? {"choice":true}

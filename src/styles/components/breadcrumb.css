@@ -1,0 +1,92 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-breadcrumb {
+    @apply block min-w-0 text-(length:--prava-font-size-3) text-(--prava-color-text-muted);
+    line-height: var(--prava-line-height-normal);
+  }
+
+  /* Rows wrap and long labels break, so nothing overflows however narrow the space. */
+  .prava-breadcrumb__list {
+    @apply m-0 flex min-w-0 list-none flex-wrap items-center gap-1 p-0;
+  }
+  .prava-breadcrumb__item {
+    @apply flex max-w-full min-w-0 items-center gap-1;
+  }
+
+  .prava-breadcrumb__label {
+    @apply inline-flex min-h-6 min-w-0 items-center gap-1 rounded-(--prava-radius-sm);
+    overflow-wrap: anywhere;
+  }
+  a.prava-breadcrumb__label {
+    @apply text-(--prava-color-text-muted) no-underline;
+    outline: var(--prava-stroke) solid transparent;
+    transition: color var(--prava-duration-fast) var(--prava-ease-standard);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .prava-breadcrumb__label[aria-current="page"] {
+    @apply text-(--prava-color-text);
+    font-weight: var(--prava-font-weight-medium);
+  }
+  @media (hover: hover) {
+    a.prava-breadcrumb__label:hover {
+      @apply text-(--prava-color-text) underline;
+    }
+  }
+  a.prava-breadcrumb__label:focus-visible,
+  .prava-breadcrumb__trigger:focus-visible {
+    @apply outline-(--prava-color-focus);
+  }
+
+  .prava-breadcrumb__icon {
+    @apply inline-flex flex-none;
+  }
+
+  .prava-breadcrumb__separator {
+    @apply inline-flex flex-none items-center;
+  }
+  /* Only the default chevron points a direction; a consumer's text separator must stay readable. */
+  .prava-breadcrumb__chevron:dir(rtl) {
+    transform: scaleX(-1);
+  }
+
+  .prava-breadcrumb__separator svg,
+  .prava-breadcrumb__trigger svg {
+    @apply size-4 fill-none stroke-current;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .prava-breadcrumb__separator svg {
+    stroke-width: 1.5;
+  }
+  .prava-breadcrumb__trigger svg {
+    stroke-width: var(--prava-stroke);
+  }
+
+  .prava-breadcrumb__trigger {
+    @apply box-border inline-flex size-6 cursor-pointer items-center justify-center rounded-(--prava-radius-sm) border-0 bg-transparent p-0 text-(--prava-color-text-muted);
+    outline: var(--prava-stroke) solid transparent;
+    transition:
+      color var(--prava-duration-fast) var(--prava-ease-standard),
+      background-color var(--prava-duration-fast) var(--prava-ease-standard);
+    -webkit-tap-highlight-color: transparent;
+  }
+  @media (hover: hover) {
+    .prava-breadcrumb__trigger:hover {
+      @apply bg-(--prava-color-surface-hover) text-(--prava-color-text);
+    }
+  }
+  .prava-breadcrumb__trigger:active,
+  .prava-breadcrumb__trigger[aria-expanded="true"] {
+    @apply bg-(--prava-color-surface-raised) text-(--prava-color-text);
+  }
+
+  @media (pointer: coarse) {
+    a.prava-breadcrumb__label {
+      @apply min-h-11;
+    }
+    .prava-breadcrumb__trigger {
+      @apply size-11;
+    }
+  }
+}

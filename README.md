@@ -61,16 +61,16 @@ Works in the App Router: you can use components directly in Server Components, b
 
 ## Components
 
-| Group      | Components                                                                              |
-| ---------- | --------------------------------------------------------------------------------------- |
-| Actions    | `Button`                                                                                |
-| Forms      | `Input`, `Textarea`, `Select`, `Checkbox`, `RadioGroup`, `Switch`, `Label`, `FormField` |
-| Display    | `Avatar`, `Badge`, `Card`, `Separator`, `Skeleton`, `Spinner`, `Progress`               |
-| Feedback   | `Alert`, `Toaster` with `toast()`                                                       |
-| Overlays   | `Dialog`, `Drawer`, `Popover`, `Tooltip`, `DropdownMenu`                                |
-| Navigation | `Tabs`, `Accordion`                                                                     |
-| Layout     | `Container`, `Stack`, `Grid`                                                            |
-| Setup      | `PravaProvider` (optional: direction, locale, messages, and theme for part of your app) |
+| Group      | Components                                                                                                                                                           |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Actions    | `Button`                                                                                                                                                             |
+| Forms      | `Input`, `Textarea`, `Select`, `Combobox`, `NumberInput`, `DatePicker`, `Calendar`, `Slider`, `FileUpload`, `Checkbox`, `RadioGroup`, `Switch`, `Label`, `FormField` |
+| Display    | `Avatar`, `Badge`, `Tag`, `Card`, `Table`, `Separator`, `Skeleton`, `Spinner`, `Progress`                                                                            |
+| Feedback   | `Alert`, `EmptyState`, `Toaster` with `toast()`                                                                                                                      |
+| Overlays   | `Dialog`, `Drawer`, `Popover`, `Tooltip`, `DropdownMenu`                                                                                                             |
+| Navigation | `Tabs`, `Accordion`, `Pagination`, `Breadcrumb`                                                                                                                      |
+| Layout     | `Container`, `Stack`, `Grid`                                                                                                                                         |
+| Setup      | `PravaProvider` (optional: direction, locale, messages, and theme for part of your app)                                                                              |
 
 Form controls connect to [react-hook-form](https://react-hook-form.com/) through a `field` prop, with no extra dependency:
 
@@ -127,6 +127,35 @@ import { PravaProvider } from "prava-ui";
 ```
 
 It only affects what's inside it. To change the whole page, set `<html dir="rtl">` yourself as well.
+
+### Using react-i18next, Lingui, or another library
+
+Prava UI doesn't include `<Trans>`. Use the one from your translation library, and pass it anywhere a component takes text:
+
+```tsx
+import { Trans, useTranslation } from "react-i18next";
+import { Button, Input, PravaProvider, Progress } from "prava-ui";
+
+function Profile() {
+  const { t, i18n } = useTranslation();
+
+  return (
+    <PravaProvider locale={i18n.language} messages={{ close: t("close") }}>
+      <Input label={<Trans i18nKey="email" />} />
+      <Progress label={<Trans i18nKey="uploading" />} value={40} />
+      <Button>
+        <Trans i18nKey="save" />
+      </Button>
+    </PravaProvider>
+  );
+}
+```
+
+- **Component text:** props such as `label`, `title`, and `description` accept `<Trans>` or `t("...")`.
+- **Prava's own text:** `messages` takes plain strings, so use `t("...")`. Many of these become `aria-label`s, which can't hold a component.
+- **Attributes:** `placeholder`, `aria-label`, and `Avatar`'s `alt` are plain strings too, so use `t("...")`.
+- **Language changes:** call `useTranslation` in the component, so it re-renders when the language changes. Set `locale` from your library, so dates and numbers follow it.
+- **Searchable options:** if a `Select` or `Combobox` option's `label` is an element, also pass the translated text as `searchText`, so typing can find it.
 
 ## Browser support
 

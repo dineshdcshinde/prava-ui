@@ -1,0 +1,74 @@
+@reference 'tailwindcss';
+
+/* The field itself is Input; this overlays the two step buttons on its inline end. */
+@layer prava.components {
+  .prava-number-input {
+    --prava-number-input-button: 2.25rem;
+    --prava-number-input-height: var(--prava-control-height-md);
+    @apply relative block w-full min-w-0;
+  }
+  .prava-number-input[data-size="sm"] {
+    --prava-number-input-button: 2rem;
+    --prava-number-input-height: var(--prava-control-height-sm);
+  }
+  .prava-number-input[data-size="lg"] {
+    --prava-number-input-button: 2.5rem;
+    --prava-number-input-height: var(--prava-control-height-lg);
+  }
+  @media (pointer: coarse) {
+    .prava-number-input,
+    .prava-number-input[data-size] {
+      --prava-number-input-button: 2.75rem;
+    }
+  }
+
+  .prava-number-input .prava-input {
+    padding-inline-end: calc(2 * var(--prava-number-input-button) + 0.5rem);
+  }
+  .prava-number-input .prava-input__label {
+    max-inline-size: calc(100% - 2 * var(--prava-number-input-button) - 1.5rem);
+  }
+
+  /* The floating label's padding pushes a small field past its token height; the buttons need the token to hold. */
+  .prava-number-input[data-size="sm"] .prava-input[data-has-label="true"] {
+    padding-block: 0.5rem 0.125rem;
+  }
+
+  /* Inset by the well's border, so hover fills never cover it. */
+  .prava-number-input__buttons {
+    @apply absolute flex overflow-hidden rounded-(--prava-radius-control);
+    inset-block-start: 1px;
+    inset-inline-end: 1px;
+    block-size: calc(var(--prava-number-input-height) - 2px);
+  }
+  .prava-number-input__button {
+    @apply m-0 grid cursor-pointer place-items-center border-0 border-s border-solid border-(--prava-color-border) bg-transparent p-0 text-(--prava-color-text-muted);
+    inline-size: var(--prava-number-input-button);
+    -webkit-tap-highlight-color: transparent;
+    transition:
+      background-color var(--prava-duration-fast) var(--prava-ease-standard),
+      color var(--prava-duration-fast) var(--prava-ease-standard);
+  }
+  .prava-number-input__button svg {
+    @apply size-4;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  @media (hover: hover) {
+    .prava-number-input__button:hover:not(:disabled) {
+      @apply bg-(--prava-color-surface-hover) text-(--prava-color-text);
+    }
+  }
+  .prava-number-input__button:active:not(:disabled) {
+    @apply bg-(--prava-color-surface-raised) text-(--prava-color-text);
+  }
+  .prava-number-input__button:focus-visible {
+    outline: var(--prava-stroke) solid var(--prava-color-focus);
+    outline-offset: calc(var(--prava-stroke) * -1);
+  }
+  .prava-number-input__button:disabled {
+    @apply cursor-not-allowed text-(--prava-color-border-strong);
+  }
+}

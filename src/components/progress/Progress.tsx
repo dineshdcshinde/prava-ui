@@ -1,4 +1,5 @@
-import type { CSSProperties, HTMLAttributes } from "react";
+import { useId } from "react";
+import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 import { usePravaConfig } from "../provider/PravaProvider";
 
 export type ProgressProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
@@ -8,8 +9,8 @@ export type ProgressProps = Omit<HTMLAttributes<HTMLDivElement>, "children"> & {
   min?: number;
   /** End of the progress range; must be greater than `min`. */
   max?: number;
-  /** Accessible name describing the task being measured. */
-  label: string;
+  /** Accessible name describing the task being measured; accepts translated elements such as `<Trans>`. */
+  label: ReactNode;
   /** Shows the label and the percentage (formatted for the provider locale) above the bar. */
   showValue?: boolean;
 };
@@ -25,6 +26,9 @@ export function Progress({
   style,
   ...props
 }: ProgressProps) {
+  const labelId = useId();
+  // aria-label only takes text, so an element label names the bar by reference.
+  const isText = typeof label === "string";
   if (!Number.isFinite(min) || !Number.isFinite(max) || max <= min) {
     throw new RangeError(
       "Progress max must be a finite number greater than min.",
@@ -48,7 +52,8 @@ export function Progress({
       {...props}
       className={["prava-progress", className].filter(Boolean).join(" ")}
       role="progressbar"
-      aria-label={label}
+      aria-label={isText ? label : undefined}
+      aria-labelledby={isText ? props["aria-labelledby"] : labelId}
       aria-valuemin={min}
       aria-valuemax={max}
       aria-valuenow={clampedValue}
@@ -60,9 +65,14 @@ export function Progress({
       }}
       data-indeterminate={value === undefined ? "" : undefined}
     >
+      {!isText && !showValue && (
+        <span id={labelId} hidden>
+          {label}
+        </span>
+      )}
       {showValue && (
         <span className="prava-progress__header" aria-hidden="true">
-          <span>{label}</span>
+          <span id={labelId}>{label}</span>
           {percentage !== undefined && (
             <span className="prava-progress__value">
               {new Intl.NumberFormat(locale, {

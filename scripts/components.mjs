@@ -29,6 +29,16 @@ export const components = [
   ["accordion", "Accordion"],
   ["toast", "Toaster"],
   ["provider", "PravaProvider"],
+  ["table", "Table"],
+  ["pagination", "Pagination"],
+  ["breadcrumb", "Breadcrumb"],
+  ["combobox", "Combobox"],
+  ["date-picker", "DatePicker"],
+  ["slider", "Slider"],
+  ["number-input", "NumberInput"],
+  ["file-upload", "FileUpload"],
+  ["tag", "Tag"],
+  ["empty-state", "EmptyState"],
 ].map(([name, component]) => ({ name, component }));
 
 // Controls that render labels, descriptions, or errors also load the shared field stylesheet.
@@ -41,6 +51,11 @@ export const fieldControls = new Set([
   "switch",
   "radio-group",
   "select",
+  "combobox",
+  "date-picker",
+  "slider",
+  "number-input",
+  "file-upload",
 ]);
 
 // Anchored popups also load the shared floating stylesheet.
@@ -48,4 +63,6 @@ export const floatingControls = new Set([
   "popover",
   "tooltip",
   "dropdown-menu",
+  "combobox",
+  "date-picker",
 ]);

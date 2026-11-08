@@ -861,6 +861,11 @@ V1 is ready only when all conditions below are true:
 | AI colour suggestions | Approved (2026-11-05): engine first with no AI; hosted suggestions later, run and paid for by Prava. AI proposes inputs only. |
 | V2 new components | Approved (2026-11-05): 16 components in two waves. Rich text and charts stay out. |
 | V2 design | Approved (2026-11-05): the name stays Prava UI and all V2 work follows Cobalt Porcelain in `DESIGN.md`. |
+| V2 build order | Approved (2026-11-05, owner instruction): components start before the theme engine and alongside the remaining V1 sign-off, and this batch was built in parallel. This overrides section 28's order and its one-at-a-time rule for this batch. |
+| `primary-text` token | Implemented (2026-11-05): added with a default of `var(--prava-color-primary)`, and used by Input's floating label and the selected Tab. |
+| Translated text in Progress, Spinner, and Badge | Implemented (2026-11-06): `Progress` and `Spinner` `label` accept `ReactNode`, and element labels name the control through `aria-labelledby`. Badge's `content` type no longer collides with the native attribute. |
+| i18n verification | Implemented (2026-11-06): `react-i18next` and `i18next` are dev dependencies only, used by an integration test covering `<Trans>`, language changes, and `t()` in `messages`. Prava still has no translation runtime dependency. |
+| V2 messages | Implemented (2026-11-06): beyond section 25, `BuiltInMessages` adds `scrollableTable`, `oneResult`, `oneFileOnly`, `changeDate`, `previousYear`, `nextYear`, and `dateUnavailable`. |
 | Package manager                                                   | Not frozen; recommended default is pnpm, with npm also acceptable.                                                                                                                                                                                                                                                                                       |
 | Icon policy                                                       | Not frozen; recommended default is no mandatory icon runtime dependency; accept consumer-provided icons through children/slots.                                                                                                                                                                                                                          |
 | Typography                                                        | Components inherit the consumer font by default; do not bundle or impose a font. Optional typography customization uses documented CSS custom properties.                                                                                                                                                                                                |
@@ -916,7 +921,7 @@ The references below are used for technical verification and conceptual inspirat
 
 # Part II: V2
 
-**Status:** Draft for owner review. Nothing in Part II is implemented.
+**Status:** In progress. See [V2-PROGRESS.md](./V2-PROGRESS.md) for what is built.
 **Depends on:** Part I (sections 1 to 19), which still applies unless a section below says otherwise.
 
 ## 20. Summary
@@ -1134,6 +1139,7 @@ APIs below are proposals. Each component's section is finalized before its imple
 - API: `Table`, `TableHeader`, `TableBody`, `TableRow`, `TableHead`, `TableCell`, `TableCaption`, plus `density` (`compact`, `comfortable`) and `stickyHeader`.
 - Responsive: scrolls inline inside its own region. The page never overflows.
 - A11y: native `<table>`. The scrolling region is named and keyboard-focusable.
+- V2 API (built): `Table` (`density`: `compact` or `comfortable`, the default; `stickyHeader`; `classNames.table`), `TableHeader`, `TableBody`, `TableRow`, `TableHead` (default `scope="col"`), `TableCell`, `TableCaption`; all forward refs. `className` and `style` go on the scroll region, other attributes and `ref` on `<table>`. The region's name comes from `aria-labelledby`, `aria-label`, `TableCaption`, then the `scrollableTable` message.
 
 #### 30. Pagination
 
@@ -1141,6 +1147,7 @@ APIs below are proposals. Each component's section is finalized before its imple
 - API: `page`/`defaultPage`/`onPageChange`, `pageCount`, `siblingCount`, `getHref` (renders links instead of buttons).
 - Responsive: reduces visible page numbers on narrow widths, while previous and next stay reachable.
 - A11y: `<nav>` with a localized name and `aria-current="page"`. Previous and next arrows mirror in RTL.
+- V2 API (built): `page`/`defaultPage`/`onPageChange`, `pageCount`, `siblingCount` (default 1), `getHref`, `classNames` (`list`, `item`, `link`, `ellipsis`), native nav attributes, ref to the nav. A `pageCount` below 1 renders nothing. An out-of-range `page` displays clamped without calling `onPageChange`. Previous and next use `aria-disabled`, so focus survives at either end.
 
 #### 31. Breadcrumb
 
@@ -1148,6 +1155,7 @@ APIs below are proposals. Each component's section is finalized before its imple
 - API: `items` (`{ label, href?, icon? }`), `separator`, `maxItems` (collapses the middle into a DropdownMenu).
 - Responsive: collapses instead of overflowing.
 - A11y: `<nav>` containing an ordered list; the last item has `aria-current="page"`. The separator is decorative and mirrors in RTL.
+- V2 API (built): `items` (`{ label, href?, icon? }`), `separator`, `maxItems`, `classNames` (`list`, `item`, `label`, `separator`, `trigger`), native nav attributes, ref to the nav. `maxItems` shows the first item, the menu, and the last n-1 items. Collapse happens only through `maxItems`; without it, rows wrap and long labels break, which replaces the proposed automatic collapse because that needs measuring. Only the default chevron mirrors in RTL.
 
 #### 32. Combobox
 
@@ -1155,6 +1163,7 @@ APIs below are proposals. Each component's section is finalized before its imple
 - API: Select's `options` shape, `value`/`defaultValue`/`onValueChange`, `inputValue`/`onInputValueChange`, `filter` (`false` when the server filters), `loading`, `multiple`, `allowCustomValue`, `field`, `error`, `description`.
 - Behavior: reuses Select's placement rules through `placeFloating`. Search in Select stays as it is; Combobox is the choice for free text and server data.
 - A11y: WAI-ARIA editable combobox pattern. Result counts and loading are announced through localized messages.
+- V2 API (built): `options`, `value`/`defaultValue`/`onValueChange`, `inputValue`/`onInputValueChange`, `filter`, `loading`, `multiple`, `allowCustomValue`, `field`, `error`, `description`, `invalid`, `label`, `size`, `name`, `form`, `required`, `classNames` (`input`, `popup`, `list`, `option`, `chip`), native input attributes. No auto-highlight; Enter with no active option settles the text. Tab accepts the active option in single mode.
 
 #### 33. DatePicker with Calendar
 
@@ -1163,6 +1172,7 @@ APIs below are proposals. Each component's section is finalized before its imple
 - Behavior: month names, weekdays and first day of the week come from `Intl` using the provider's locale. Gregorian only. A native picker is not used, for the same reasons as Select. Typed entry is supported.
 - Responsive: fits a 320px viewport.
 - A11y: WAI-ARIA date picker dialog and grid pattern. Arrow keys mirror in RTL.
+- V2 API (built): `Calendar` and `DatePicker`: `mode` (`single`, `range`), `value`/`defaultValue`/`onValueChange` (ISO string or `[start, end]`), `min`, `max`, `isDateDisabled`, `className`, `style`, `classNames`. DatePicker adds `label`, `name`, `form`, `required`, `disabled`, `readOnly`, `field`, `error`, `invalid`, `description`. A range submits `start/end`. The popup is a native modal `<dialog>`, so the background is inert. The APG's OK and Cancel are dropped: Enter or Space chooses and Escape cancels. Year buttons are added. Week start comes from `Intl`, with a CLDR region fallback. Only a range's ends are checked against disabled dates.
 
 #### 34. Slider
 
@@ -1170,6 +1180,7 @@ APIs below are proposals. Each component's section is finalized before its imple
 - API: `value`/`defaultValue`/`onValueChange` (`number`, or `[number, number]` for a range), `min`, `max`, `step`, `label`, `showValue`, `disabled`, `field`.
 - Behavior: built on native range inputs where possible; thumbs cannot cross.
 - A11y: native keyboard behavior, a label on each thumb, and correct direction in RTL. Touch targets meet Part I section 8.
+- V2 API (built): `value`/`defaultValue`/`onValueChange` (`number` or `[number, number]`), `min` (0), `max` (100), `step` (1), `label`, `showValue`, `disabled`, `field`, `description`, `error`, `invalid`, native input attributes; `className` and `style` go on the root. A range submits two entries under `name` and its ref is the low thumb. A press on the track moves the nearest thumb (WCAG 2.5.7). Known limit: a range with `register()` ignores `setValue` and `reset(values)`; use `Controller`.
 
 #### 35. NumberInput
 
@@ -1177,6 +1188,7 @@ APIs below are proposals. Each component's section is finalized before its imple
 - API: `value`/`defaultValue`/`onValueChange` (`number | null`), `min`, `max`, `step`, `formatOptions` (`Intl.NumberFormat`), `size`, `field`, `error`, `description`.
 - Behavior: text input with `inputmode`, with increment and decrement buttons. Values are clamped on blur, never mid-typing. Empty is `null`, not `0`.
 - A11y: spinbutton semantics with arrow keys, Home and End. Buttons have localized names.
+- V2 API (built): `value`/`defaultValue`/`onValueChange` (`number | null`), `min`, `max`, `step`, `formatOptions`, `size`, `field`, `error`, `description`, `invalid`, `label`, `startIcon`, `disabledReason`, `classNames` (`input`, `buttons`, `button`), native input attributes. A hidden input submits plain digits under `name`, and `field` delivers a number or `null`. Buttons are outside the tab order and arrow keys do the same job. Home and End go to limits only when defined. Unparseable text reverts on blur. Known limit: `notation: "compact"` text does not parse.
 
 #### 36. FileUpload
 
@@ -1184,6 +1196,7 @@ APIs below are proposals. Each component's section is finalized before its imple
 - API: `accept`, `multiple`, `maxSize`, `maxFiles`, `value`/`onFilesChange`, `onReject`, `field`, `error`, `description`. The consumer performs the upload.
 - Behavior: real file input underneath. The list has a remove button per file. Documentation states that client checks are a convenience, and the server must validate files.
 - A11y: fully usable without drag and drop. Rejections are announced.
+- V2 API (built): `label`, `accept`, `multiple`, `maxSize` (bytes), `maxFiles`, `value`/`onFilesChange`, `onReject(file, reason)` (`type`, `size`, `count`), `name`, `form`, `required`, `disabled`, `field`, `error`, `invalid`, `description`, `classNames` (`dropzone`, `list`, `item`, `remove`). The ref goes to the named input, other native attributes to the button. Native submit sends exactly the listed files, through `DataTransfer`. Without `multiple`, a new file replaces the current one. Known limit: choosing the same file again with `multiple` adds a second row.
 
 ### 25.2 Wave 2
 
@@ -1219,6 +1232,7 @@ APIs below are proposals. Each component's section is finalized before its imple
 - Purpose: a compact label the user can remove or select. Badge remains non-interactive.
 - API: `tone`, `size`, `icon`, `onRemove`, `selected`/`onSelectedChange`.
 - A11y: the remove control has a localized name that includes the tag text.
+- V2 API (built): native span attributes and ref, `children`, `tone` (Badge's six, default `neutral`), `size` (`sm`, `md`), `icon`, `onRemove`, `selected`/`onSelectedChange`; `--prava-tag-bg` and `--prava-tag-fg`. With `onSelectedChange` but no `selected`, the tag tracks its own state. With both remove and select, the two buttons are siblings. Focus after removal is the consumer's job.
 
 #### 42. Link
 
@@ -1231,6 +1245,7 @@ APIs below are proposals. Each component's section is finalized before its imple
 - Purpose: explain an empty view and offer the next step.
 - API: `icon`, `title`, `description`, `action`, `headingLevel`.
 - A11y: heading level is consumer-controlled and the icon is decorative.
+- V2 API (built): `icon` (decorative), required `title`, `description`, `action`, `headingLevel` (2 to 6, default 3), native div attributes, ref. It is not a live region by default; pass `role="status"` when it appears dynamically.
 
 #### 44. Sidebar
 

@@ -1,0 +1,30 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-empty-state {
+    @apply box-border flex max-w-full min-w-0 flex-col items-center gap-2 px-4 py-8 text-center text-(length:--prava-font-size-3) text-(--prava-color-text);
+    line-height: var(--prava-line-height-normal);
+    overflow-wrap: anywhere;
+  }
+
+  .prava-empty-state__icon {
+    @apply mb-2 flex text-(--prava-color-text-muted);
+  }
+  .prava-empty-state__icon svg {
+    @apply size-8;
+  }
+
+  .prava-empty-state__title {
+    @apply m-0 text-(length:--prava-font-size-5) font-(--prava-font-weight-semibold) text-balance;
+    line-height: var(--prava-line-height-tight);
+  }
+
+  /* Caps the line length only; the text still narrows with its container. */
+  .prava-empty-state__description {
+    @apply max-w-prose text-(--prava-color-text-muted);
+  }
+
+  .prava-empty-state__action {
+    @apply mt-2 flex max-w-full flex-wrap justify-center gap-2;
+  }
+}

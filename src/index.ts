@@ -86,3 +86,57 @@ export type {
 export { dismissToast, toast, Toaster } from "./components/toast";
 export type { ToasterProps, ToastOptions } from "./components/toast";
 export type { FieldBinding, FieldProps } from "./components/field/field";
+export {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "./components/table";
+export type {
+  TableBodyProps,
+  TableCaptionProps,
+  TableCellProps,
+  TableHeaderProps,
+  TableHeadProps,
+  TableProps,
+  TableRowProps,
+} from "./components/table";
+export { Pagination } from "./components/pagination";
+export type { PaginationProps } from "./components/pagination";
+export { Breadcrumb } from "./components/breadcrumb";
+export type { BreadcrumbItem, BreadcrumbProps } from "./components/breadcrumb";
+export { Combobox } from "./components/combobox";
+export type {
+  ComboboxOption,
+  ComboboxOptionGroup,
+  ComboboxProps,
+} from "./components/combobox";
+export { Calendar, DatePicker } from "./components/date-picker";
+export type {
+  CalendarProps,
+  DatePickerProps,
+  DateRange,
+} from "./components/date-picker";
+export { Slider } from "./components/slider";
+export type {
+  SliderProps,
+  SliderRangeProps,
+  SliderSingleProps,
+} from "./components/slider";
+export { NumberInput } from "./components/number-input";
+export type {
+  NumberInputClassNames,
+  NumberInputProps,
+} from "./components/number-input";
+export { FileUpload } from "./components/file-upload";
+export type {
+  FileRejectReason,
+  FileUploadProps,
+} from "./components/file-upload";
+export { Tag } from "./components/tag";
+export type { TagProps } from "./components/tag";
+export { EmptyState } from "./components/empty-state";
+export type { EmptyStateProps } from "./components/empty-state";

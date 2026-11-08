@@ -59,7 +59,7 @@
     @apply top-0 bg-(--prava-color-surface) px-1 text-(length:--prava-font-size-1);
   }
   .prava-input:focus ~ .prava-input__label {
-    @apply text-(--prava-color-primary);
+    @apply text-(--prava-color-primary-text);
   }
   .prava-input[aria-invalid="true"] ~ .prava-input__label {
     @apply text-(--prava-color-danger);

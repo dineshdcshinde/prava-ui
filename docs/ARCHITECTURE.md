@@ -29,6 +29,8 @@ The package is an ESM-first React library built with Vite. React and React DOM a
 - Toast is a small store (`toast`, `dismissToast`) read by `<Toaster />` through `useSyncExternalStore`; visible toasts render through Alert. A modal Dialog makes a Toaster outside it inert; see the PRD for the limit.
 - Root exports re-export style-bearing component entries, allowing consumer bundlers to include only styles for used components. Direct component imports include their matching compiled Tailwind CSS automatically.
 
+V2 components (Table, Pagination, Breadcrumb, Combobox, DatePicker, Slider, NumberInput, FileUpload, Tag, EmptyState) follow the same structure. DatePicker's popup is a native modal `<dialog>`; Combobox reuses `placeFloating` and duplicates a few small Select helpers instead of sharing them. `react-i18next` is a dev dependency used only by `src/components/provider/i18n.test.tsx`. See [V2-PROGRESS.md](./V2-PROGRESS.md).
+
 ## Before component work
 
 The package check installs the packed package in a temporary consumer and verifies root JavaScript tree-shaking, automatic CSS imports, and per-component style selection without consumer Tailwind setup. JavaScript ESM tree-shaking and CSS selection are checked separately. Shared theme tokens let future customer themes override colors and shape without changing component classes or APIs; a theme builder is a V2 direction, not implemented here.

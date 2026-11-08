@@ -67,8 +67,13 @@ describe("foundation tokens", () => {
 
   it("meets WCAG AA contrast for text, actions, status pairs, focus and control borders", () => {
     for (const tokens of [light, dark]) {
-      const c = (fg: string, bg: string) =>
-        contrast(tokens[`color-${fg}`]!, tokens[`color-${bg}`]!);
+      // A token may default to another token through var(), so follow the reference.
+      const hex = (name: string): string => {
+        const value = tokens[`color-${name}`]!;
+        const ref = value.match(/^var\(--prava-color-([\w-]+)\)$/);
+        return ref ? hex(ref[1]!) : value;
+      };
+      const c = (fg: string, bg: string) => contrast(hex(fg), hex(bg));
       for (const bg of ["surface", "canvas", "surface-sunken"]) {
         expect(c("text", bg)).toBeGreaterThanOrEqual(4.5);
         expect(c("text-muted", bg)).toBeGreaterThanOrEqual(4.5);
@@ -96,7 +101,8 @@ describe("foundation tokens", () => {
       expect(c("text", "surface-raised")).toBeGreaterThanOrEqual(4.5);
       expect(c("text", "surface-hover")).toBeGreaterThanOrEqual(4.5);
       expect(c("danger", "canvas")).toBeGreaterThanOrEqual(4.5);
-      expect(c("primary", "surface")).toBeGreaterThanOrEqual(4.5);
+      expect(c("primary-text", "surface")).toBeGreaterThanOrEqual(4.5);
+      expect(c("primary", "surface")).toBeGreaterThanOrEqual(3);
       expect(c("on-primary", "primary-active")).toBeGreaterThanOrEqual(4.5);
       expect(c("on-danger", "danger-hover")).toBeGreaterThanOrEqual(4.5);
       expect(c("text-muted", "surface-raised")).toBeGreaterThanOrEqual(3);
@@ -106,6 +112,12 @@ describe("foundation tokens", () => {
 });
 
 describe("theme contract", () => {
+  it("defaults tokens added after contract 1 to an existing token, so older theme files keep their own colors", () => {
+    for (const tokens of [light, dark]) {
+      expect(tokens["color-primary-text"]).toBe("var(--prava-color-primary)");
+    }
+  });
+
   it("keeps raw colors out of component stylesheets", () => {
     for (const [file, source] of componentCss) {
       expect(source, file).not.toMatch(

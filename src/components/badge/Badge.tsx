@@ -1,6 +1,6 @@
 import type { HTMLAttributes, ReactNode } from "react";
 
-export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
+export type BadgeProps = Omit<HTMLAttributes<HTMLSpanElement>, "content"> & {
   /** Visible badge text or count. Status meaning must be in this text, not only the tone. */
   content: ReactNode;
   /** Element the badge is anchored to. Omit to render a standalone status label. */

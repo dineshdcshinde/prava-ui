@@ -1,0 +1,62 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  /* The scroll region: wide data scrolls here, so the page never overflows. */
+  .prava-table {
+    @apply box-border max-w-full min-w-0 overflow-auto rounded-(--prava-radius-card) border border-(--prava-color-border) bg-(--prava-color-surface) text-(length:--prava-font-size-3) text-(--prava-color-text);
+    line-height: var(--prava-line-height-normal);
+    outline: var(--prava-stroke) solid transparent;
+    outline-offset: calc(var(--prava-stroke) * -1);
+  }
+  .prava-table:focus-visible {
+    @apply outline-(--prava-color-focus);
+  }
+
+  /* Separate borders: collapsed ones scroll away from sticky header cells. */
+  .prava-table__table {
+    @apply w-full border-separate border-spacing-0;
+  }
+
+  .prava-table__caption {
+    @apply px-4 py-3 text-start text-(length:--prava-font-size-2) text-(--prava-color-text-muted);
+  }
+
+  .prava-table__head,
+  .prava-table__cell {
+    @apply px-4 py-3 text-start align-top;
+    border-block-end: 1px solid var(--prava-color-border);
+  }
+  .prava-table[data-density="compact"] {
+    @apply text-(length:--prava-font-size-2);
+  }
+  .prava-table[data-density="compact"] .prava-table__caption,
+  .prava-table[data-density="compact"] .prava-table__head,
+  .prava-table[data-density="compact"] .prava-table__cell {
+    @apply px-3 py-1.5;
+  }
+
+  .prava-table__head {
+    font-weight: var(--prava-font-weight-medium);
+  }
+  .prava-table__header .prava-table__head {
+    @apply bg-(--prava-color-surface-sunken) text-(length:--prava-font-size-2) whitespace-nowrap text-(--prava-color-text-muted);
+  }
+
+  .prava-table__body .prava-table__row:last-child > * {
+    border-block-end: 0;
+  }
+  @media (hover: hover) {
+    .prava-table__body .prava-table__row:hover {
+      @apply bg-(--prava-color-surface-hover);
+    }
+  }
+
+  .prava-table[data-sticky-header] {
+    /* Keeps a focused control clear of the pinned header when it scrolls into view. */
+    @apply scroll-pt-12;
+  }
+  .prava-table[data-sticky-header] .prava-table__header .prava-table__head {
+    @apply sticky z-1;
+    inset-block-start: 0;
+  }
+}

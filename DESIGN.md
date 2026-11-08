@@ -32,6 +32,7 @@ To replace the theme, load a plain unlayered stylesheet that sets every `--prava
 | Text                      | `color-text`                              | `#171E2C`                         | `#E6E9F0`                         |
 | Muted text                | `color-text-muted`                        | `#555E6F`                         | `#A8AEBB`                         |
 | Primary / hover / active  | `color-primary(-hover/-active)`           | `#2B4DB5` / `#213F9F` / `#1A358D` | `#8AACFA` / `#A0BDFF` / `#7E9FED` |
+| Primary as text           | `color-primary-text`                      | `var(primary)`                    | `var(primary)`                    |
 | On primary                | `color-on-primary`                        | `#FAFCFF`                         | `#091431`                         |
 | Primary soft fill / text  | `color-(on-)primary-container`            | `#DFEAFF` / `#1C3788`             | `#22335E` / `#D5E1FD`             |
 | Focus                     | `color-focus`                             | `#3760D8`                         | `#93B5FF`                         |

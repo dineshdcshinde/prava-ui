@@ -13,6 +13,14 @@ describe("Spinner", () => {
     expect(container.firstElementChild?.getAttribute("role")).toBeNull();
   });
 
+  it("names the status from an element label", () => {
+    const Trans = () => <>Chargement</>;
+    render(<Spinner label={<Trans />} />);
+    expect(
+      screen.getByRole("status", { name: "Chargement" }),
+    ).not.toHaveAttribute("aria-label");
+  });
+
   it("announces an optional loading label as a status", () => {
     render(<Spinner label="Loading results" size="lg" />);
     expect(

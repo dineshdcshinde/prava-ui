@@ -1,0 +1,195 @@
+@reference 'tailwindcss';
+
+/* The well's base look is .prava-control in field.css and the popup's is .prava-floating; this adds the rest. */
+@layer prava.components {
+  .prava-combobox__root {
+    @apply min-w-0;
+  }
+
+  .prava-combobox {
+    @apply relative flex cursor-text flex-wrap items-center gap-1.5;
+    padding-inline-end: 2.25rem;
+  }
+  .prava-combobox:has(.prava-combobox__input:focus-visible) {
+    @apply border-(--prava-color-focus) outline-offset-1 outline-(--prava-color-focus);
+  }
+  .prava-combobox[data-open] {
+    @apply border-(--prava-color-focus);
+  }
+  .prava-combobox[data-invalid="true"],
+  .prava-combobox[data-invalid="true"]:hover {
+    @apply border-(--prava-color-danger);
+  }
+  .prava-combobox[data-invalid="true"]:has(
+      .prava-combobox__input:focus-visible
+    ) {
+    @apply outline-(--prava-color-danger);
+  }
+  .prava-combobox[data-disabled],
+  .prava-combobox[data-disabled]:hover {
+    @apply cursor-not-allowed border-(--prava-color-border) bg-(--prava-color-surface-sunken) text-(--prava-color-text-muted);
+    box-shadow: none;
+  }
+
+  .prava-combobox__input {
+    @apply m-0 w-0 min-w-16 flex-1 border-0 bg-transparent p-0 placeholder:text-(--prava-color-text-muted);
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    caret-color: var(--prava-color-primary);
+    outline: none;
+    min-block-size: 1lh;
+  }
+  .prava-combobox__input:disabled {
+    cursor: not-allowed;
+  }
+  .prava-combobox__sr-only {
+    @apply sr-only;
+  }
+
+  .prava-combobox__icon {
+    @apply inline-flex size-4 flex-none items-center justify-center text-(--prava-color-text-muted);
+  }
+  .prava-combobox__icon svg {
+    @apply size-full;
+  }
+  .prava-combobox__chevron {
+    @apply absolute end-3 top-1/2 size-4 -translate-y-1/2 cursor-pointer text-(--prava-color-text-muted);
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: rotate var(--prava-duration-normal) var(--prava-ease-standard);
+  }
+  .prava-combobox[data-open] .prava-combobox__chevron {
+    rotate: 180deg;
+  }
+
+  .prava-combobox__chip {
+    @apply inline-flex max-w-full min-w-0 items-center gap-1 rounded-(--prava-radius-sm) bg-(--prava-color-surface-raised) text-(length:--prava-font-size-2) text-(--prava-color-text);
+    padding-block: 0.0625rem;
+    padding-inline: 0.375rem 0.125rem;
+    animation: prava-combobox-chip var(--prava-duration-fast)
+      var(--prava-ease-standard);
+  }
+  .prava-combobox__chip-label {
+    @apply min-w-0 truncate;
+  }
+  .prava-combobox__chip-remove {
+    @apply inline-flex size-5 flex-none cursor-pointer items-center justify-center rounded-(--prava-radius-sm) border-0 bg-transparent p-0 text-(--prava-color-text-muted);
+  }
+  .prava-combobox__chip-remove svg {
+    @apply size-3.5;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+  @media (hover: hover) {
+    .prava-combobox__chip-remove:hover:not(:disabled) {
+      @apply text-(--prava-color-text);
+    }
+  }
+  .prava-combobox__chip-remove:disabled {
+    cursor: not-allowed;
+  }
+  @keyframes prava-combobox-chip {
+    from {
+      opacity: 0;
+      scale: 0.92;
+    }
+  }
+
+  /* The list scrolls and the status row stays in view. Width comes from the field (JS) so typing can't resize it. */
+  .prava-floating.prava-combobox__popup {
+    @apply flex-col overflow-hidden rounded-(--prava-radius-control);
+    min-inline-size: min(12rem, 100vw - 1rem);
+  }
+  .prava-floating.prava-combobox__popup[data-open] {
+    display: flex;
+  }
+
+  .prava-combobox__list {
+    @apply min-h-0 flex-1 overflow-y-auto p-1;
+    max-block-size: 20rem;
+    overscroll-behavior: contain;
+    scrollbar-color: var(--prava-color-border-strong) transparent;
+    scrollbar-width: thin;
+  }
+  .prava-combobox__list:empty {
+    display: none;
+  }
+  .prava-combobox__group-label {
+    @apply px-2 pt-2.5 pb-1 text-(length:--prava-font-size-1) font-(--prava-font-weight-semibold) text-(--prava-color-text-muted);
+  }
+  .prava-combobox__option {
+    @apply box-border flex min-h-9 cursor-pointer items-center gap-2 rounded-(--prava-radius-sm) px-2 py-1.5;
+    line-height: var(--prava-line-height-tight);
+    transition: background-color var(--prava-duration-fast)
+      var(--prava-ease-standard);
+  }
+  @media (pointer: coarse) {
+    .prava-combobox__option {
+      @apply min-h-11;
+    }
+  }
+  @media (hover: hover) {
+    .prava-combobox__option:hover {
+      @apply bg-(--prava-color-surface-hover);
+    }
+  }
+  /* The keyboard's place in the list, apart from the pointer: Tab accepts it, so it must read as more than a tint. */
+  .prava-combobox__option[data-active] {
+    @apply bg-(--prava-color-surface-hover);
+    outline: 1px solid var(--prava-color-primary);
+    outline-offset: -1px;
+  }
+  .prava-combobox__option[aria-selected="true"] {
+    @apply bg-(--prava-color-primary-container) font-(--prava-font-weight-medium) text-(--prava-color-on-primary-container);
+  }
+  .prava-combobox__option[aria-selected="true"] .prava-combobox__icon,
+  .prava-combobox__option[aria-selected="true"] .prava-combobox__description {
+    color: inherit;
+  }
+  .prava-combobox__option[aria-disabled="true"] {
+    @apply cursor-not-allowed bg-transparent opacity-50;
+  }
+  .prava-combobox__text {
+    @apply grid min-w-0 flex-1 gap-0.5;
+    overflow-wrap: anywhere;
+  }
+  .prava-combobox__description {
+    @apply text-(length:--prava-font-size-2) font-(--prava-font-weight-regular) text-(--prava-color-text-muted);
+  }
+  .prava-combobox__check {
+    @apply size-4 flex-none;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 14;
+    stroke-dashoffset: 14;
+    transition: stroke-dashoffset var(--prava-duration-normal)
+      var(--prava-ease-standard);
+  }
+  .prava-combobox__option[aria-selected="true"] .prava-combobox__check {
+    stroke-dashoffset: 0;
+  }
+  .prava-combobox__status {
+    @apply flex-none px-2 py-3 text-center text-(--prava-color-text-muted);
+  }
+
+  /* Reduced motion keeps fades only; .prava-floating already drops its own movement. */
+  @media (prefers-reduced-motion: reduce) {
+    .prava-combobox__chevron,
+    .prava-combobox__check,
+    .prava-combobox__option {
+      transition: none;
+    }
+    .prava-combobox__chip {
+      animation: none;
+    }
+  }
+}

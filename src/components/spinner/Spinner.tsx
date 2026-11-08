@@ -1,4 +1,5 @@
-import type { CSSProperties, HTMLAttributes } from "react";
+import { useId } from "react";
+import type { CSSProperties, HTMLAttributes, ReactNode } from "react";
 
 function SpinnerArc() {
   return (
@@ -56,8 +57,8 @@ const spinnerVariants = {
 };
 
 export type SpinnerProps = HTMLAttributes<HTMLSpanElement> & {
-  /** Optional status text for assistive technology. */
-  label?: string;
+  /** Optional status text for assistive technology; accepts translated elements such as `<Trans>`. */
+  label?: ReactNode;
   /** Indicator diameter. */
   size?: "sm" | "md" | "lg";
   /** Loading indicator style. */
@@ -80,6 +81,10 @@ export function Spinner({
   ...props
 }: SpinnerProps) {
   const Indicator = spinnerVariants[variant];
+  const labelId = useId();
+  // aria-label only takes text, so an element label names the status by reference.
+  const isText = typeof label === "string";
+  const hasElementLabel = Boolean(label) && !isText;
 
   return (
     <span
@@ -90,9 +95,15 @@ export function Spinner({
       data-variant={variant}
       data-tone={tone}
       role={label ? "status" : undefined}
-      aria-label={label}
+      aria-label={isText ? label : undefined}
+      aria-labelledby={hasElementLabel ? labelId : props["aria-labelledby"]}
       aria-hidden={label ? undefined : true}
     >
+      {hasElementLabel && (
+        <span id={labelId} hidden>
+          {label}
+        </span>
+      )}
       <Indicator />
     </span>
   );

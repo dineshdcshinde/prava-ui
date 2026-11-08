@@ -1,0 +1,194 @@
+@reference 'tailwindcss';
+
+/* The well's base look is .prava-control in field.css; the popup's motion is .prava-floating in floating.css. */
+@layer prava.components {
+  .prava-date-picker__root {
+    @apply min-w-0;
+  }
+
+  .prava-date-picker {
+    @apply relative min-h-(--prava-control-height-md) p-0 text-(length:--prava-font-size-4);
+  }
+  .prava-date-picker:has(.prava-date-picker__input:focus-visible) {
+    @apply border-(--prava-color-focus) outline-offset-1 outline-(--prava-color-focus);
+  }
+  .prava-date-picker[data-open] {
+    @apply border-(--prava-color-focus);
+  }
+  .prava-date-picker[data-invalid="true"],
+  .prava-date-picker[data-invalid="true"]:hover {
+    @apply border-(--prava-color-danger);
+  }
+  .prava-date-picker[data-invalid="true"]:has(
+      .prava-date-picker__input:focus-visible
+    ) {
+    @apply outline-(--prava-color-danger);
+  }
+  .prava-date-picker[data-disabled],
+  .prava-date-picker[data-disabled]:hover {
+    @apply cursor-not-allowed border-(--prava-color-border) bg-(--prava-color-surface-sunken) text-(--prava-color-text-muted);
+    box-shadow: none;
+  }
+
+  .prava-date-picker__input {
+    @apply box-border block w-full min-w-0 border-0 bg-transparent py-2 ps-3 pe-11 placeholder:text-(--prava-color-text-muted);
+    min-block-size: calc(var(--prava-control-height-md) - 2px);
+    color: inherit;
+    font: inherit;
+    line-height: inherit;
+    outline: none;
+    caret-color: var(--prava-color-primary);
+  }
+  .prava-date-picker__input:disabled {
+    cursor: not-allowed;
+  }
+
+  .prava-date-picker__button {
+    @apply absolute inset-y-0 end-0 inline-flex w-10 cursor-pointer items-center justify-center rounded-(--prava-radius-control) border-0 bg-transparent p-0 text-(--prava-color-text-muted);
+    outline: var(--prava-stroke) solid transparent;
+    outline-offset: -2px;
+    transition-property: color, outline-color;
+    transition-duration: var(--prava-duration-fast);
+    transition-timing-function: var(--prava-ease-standard);
+  }
+  @media (pointer: coarse) {
+    .prava-date-picker__button {
+      @apply w-11;
+    }
+  }
+  .prava-date-picker__button svg,
+  .prava-calendar__nav svg {
+    @apply size-4;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  @media (hover: hover) {
+    .prava-date-picker__button:hover:not(:disabled) {
+      @apply text-(--prava-color-text);
+    }
+  }
+  .prava-date-picker__button:focus-visible {
+    @apply outline-(--prava-color-focus);
+  }
+  .prava-date-picker__button:disabled {
+    cursor: not-allowed;
+  }
+
+  .prava-date-picker__popup {
+    @apply rounded-(--prava-radius-control);
+    inline-size: min(20rem, 100vw - 1rem);
+  }
+  .prava-date-picker__popup::backdrop {
+    background: transparent;
+  }
+
+  .prava-calendar {
+    @apply box-border w-full max-w-80 min-w-0 p-2 text-(length:--prava-font-size-3) text-(--prava-color-text);
+    line-height: var(--prava-line-height-tight);
+  }
+
+  .prava-calendar__header {
+    @apply mb-1 flex items-center gap-0.5;
+  }
+  .prava-calendar__title {
+    @apply min-w-0 flex-1 text-center font-(--prava-font-weight-semibold);
+    overflow-wrap: anywhere;
+  }
+  .prava-calendar__nav {
+    @apply inline-flex size-8 flex-none cursor-pointer items-center justify-center rounded-(--prava-radius-sm) border-0 bg-transparent p-0 text-(--prava-color-text-muted);
+    outline: var(--prava-stroke) solid transparent;
+    outline-offset: -2px;
+    transition-property: background-color, color, outline-color;
+    transition-duration: var(--prava-duration-fast);
+    transition-timing-function: var(--prava-ease-standard);
+  }
+  @media (pointer: coarse) {
+    .prava-calendar__nav {
+      @apply h-11 w-9;
+    }
+  }
+  /* Next and previous point the way the days run. */
+  .prava-calendar__nav:dir(rtl) svg {
+    scale: -1 1;
+  }
+  @media (hover: hover) {
+    .prava-calendar__nav:hover:not([aria-disabled="true"]) {
+      @apply bg-(--prava-color-surface-hover) text-(--prava-color-text);
+    }
+  }
+  .prava-calendar__nav:focus-visible {
+    @apply outline-(--prava-color-focus);
+  }
+  .prava-calendar__nav[aria-disabled="true"] {
+    @apply cursor-not-allowed opacity-50;
+  }
+
+  .prava-calendar__grid {
+    @apply w-full table-fixed border-collapse;
+  }
+  .prava-calendar__weekday {
+    @apply h-8 p-0 text-center text-(length:--prava-font-size-1) font-(--prava-font-weight-medium) text-(--prava-color-text-muted);
+  }
+
+  .prava-calendar__day {
+    @apply h-10 cursor-pointer p-0 text-center;
+    outline: none;
+  }
+  @media (pointer: coarse) {
+    .prava-calendar__day {
+      @apply h-11;
+    }
+  }
+  /* A soft bar joins the ends of a range, rounded at each end so it reads in both directions. */
+  .prava-calendar__day[data-in-range] {
+    @apply bg-(--prava-color-primary-container);
+  }
+  .prava-calendar__day[data-start] {
+    border-start-start-radius: var(--prava-radius-control);
+    border-end-start-radius: var(--prava-radius-control);
+  }
+  .prava-calendar__day[data-end] {
+    border-start-end-radius: var(--prava-radius-control);
+    border-end-end-radius: var(--prava-radius-control);
+  }
+  .prava-calendar__day[data-start][data-end] {
+    background: transparent;
+  }
+  .prava-calendar__day-label {
+    @apply mx-auto box-border flex size-9 items-center justify-center rounded-(--prava-radius-control);
+    outline: var(--prava-stroke) solid transparent;
+    outline-offset: 1px;
+    transition-property: background-color, color, outline-color;
+    transition-duration: var(--prava-duration-fast);
+    transition-timing-function: var(--prava-ease-standard);
+  }
+  @media (hover: hover) {
+    .prava-calendar__day:hover:not([aria-disabled="true"], [data-in-range])
+      .prava-calendar__day-label {
+      @apply bg-(--prava-color-surface-hover);
+    }
+  }
+  /* Today is told apart by a ring and weight, never by color alone. */
+  .prava-calendar__day[data-today] .prava-calendar__day-label {
+    @apply font-(--prava-font-weight-semibold);
+    box-shadow: inset 0 0 0 1px var(--prava-color-border-strong);
+  }
+  .prava-calendar__day[data-in-range] .prava-calendar__day-label {
+    @apply text-(--prava-color-on-primary-container);
+  }
+  .prava-calendar__day:is([data-start], [data-end]) .prava-calendar__day-label {
+    @apply bg-(--prava-color-primary) font-(--prava-font-weight-semibold) text-(--prava-color-on-primary);
+  }
+  .prava-calendar__day:focus-visible .prava-calendar__day-label {
+    @apply outline-(--prava-color-focus);
+  }
+  .prava-calendar__day[aria-disabled="true"] {
+    @apply cursor-not-allowed;
+  }
+  .prava-calendar__day[aria-disabled="true"] .prava-calendar__day-label {
+    @apply text-(--prava-color-text-muted) line-through;
+  }
+}

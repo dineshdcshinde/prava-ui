@@ -1,0 +1,165 @@
+@reference 'tailwindcss';
+
+/* Native range inputs sit over a painted track. The thumb box is the hit area; only its centre is painted. */
+@layer prava.components {
+  .prava-slider {
+    --prava-slider-thumb-size: 1.5rem;
+    --prava-slider-disk-size: 1rem;
+    --prava-slider-start: 0;
+    --prava-slider-end: 0;
+    --prava-slider-color: var(--prava-color-primary);
+    @apply w-full;
+  }
+  @media (pointer: coarse) {
+    .prava-slider {
+      --prava-slider-thumb-size: 2.75rem;
+      --prava-slider-disk-size: 1.25rem;
+    }
+  }
+  .prava-slider[data-invalid="true"] {
+    --prava-slider-color: var(--prava-color-danger);
+  }
+  .prava-slider[data-disabled="true"] {
+    --prava-slider-color: var(--prava-color-border-strong);
+  }
+
+  .prava-slider__header {
+    @apply flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1;
+  }
+  .prava-slider__header .prava-field__legend {
+    @apply mb-0;
+  }
+  .prava-slider__value {
+    @apply text-(length:--prava-font-size-3) font-(--prava-font-weight-medium) text-(--prava-color-text-muted) tabular-nums;
+    line-height: var(--prava-line-height-tight);
+  }
+
+  .prava-slider__control {
+    @apply relative block w-full min-w-0;
+    block-size: var(--prava-slider-thumb-size);
+  }
+  /* The track ends where the painted disk stops, so the disk sits flush at both ends. */
+  .prava-slider__track {
+    @apply absolute top-1/2 h-1 -translate-y-1/2 rounded-full bg-(--prava-color-border-strong);
+    inset-inline: calc(
+      (var(--prava-slider-thumb-size) - var(--prava-slider-disk-size)) / 2
+    );
+  }
+  .prava-slider[data-disabled="true"] .prava-slider__track {
+    @apply bg-(--prava-color-border);
+  }
+  /* Thumb centres travel disk/2 inside the track's ends; inset-inline follows direction, so RTL needs nothing more. */
+  .prava-slider__fill {
+    @apply absolute inset-y-0 rounded-full;
+    background-color: var(--prava-slider-color);
+    inset-inline-start: 0;
+    inset-inline-end: calc(
+      var(--prava-slider-disk-size) / 2 + (1 - var(--prava-slider-end)) *
+        (100% - var(--prava-slider-disk-size))
+    );
+  }
+  .prava-slider[data-range] .prava-slider__fill {
+    inset-inline-start: calc(
+      var(--prava-slider-disk-size) / 2 + var(--prava-slider-start) *
+        (100% - var(--prava-slider-disk-size))
+    );
+  }
+
+  .prava-slider__input {
+    color: inherit;
+    @apply absolute inset-0 m-0 size-full cursor-pointer bg-transparent p-0;
+    appearance: none;
+    outline: none;
+  }
+  .prava-slider__input:disabled {
+    @apply cursor-not-allowed;
+  }
+  .prava-slider[data-range] .prava-slider__input {
+    @apply pointer-events-none;
+  }
+  .prava-slider__input[data-top="true"] {
+    @apply z-1;
+  }
+  @media (hover: hover) {
+    .prava-slider__input:hover:not(:disabled) {
+      --prava-slider-color: var(--prava-color-primary-hover);
+    }
+    .prava-slider[data-invalid="true"]
+      .prava-slider__input:hover:not(:disabled) {
+      --prava-slider-color: var(--prava-color-danger-hover);
+    }
+  }
+  .prava-slider__input:active:not(:disabled) {
+    --prava-slider-color: var(--prava-color-primary-active);
+  }
+  .prava-slider[data-invalid="true"]
+    .prava-slider__input:active:not(:disabled) {
+    --prava-slider-color: var(--prava-color-danger-hover);
+  }
+
+  /* Browsers drop a whole rule on an unknown pseudo-element, so each engine needs its own copy. */
+  .prava-slider__input::-webkit-slider-runnable-track {
+    block-size: 100%;
+    background: transparent;
+  }
+  .prava-slider__input::-moz-range-track {
+    block-size: 100%;
+    background: transparent;
+  }
+  .prava-slider__input::-webkit-slider-thumb {
+    appearance: none;
+    box-sizing: border-box;
+    inline-size: var(--prava-slider-thumb-size);
+    block-size: var(--prava-slider-thumb-size);
+    padding: calc(
+      (var(--prava-slider-thumb-size) - var(--prava-slider-disk-size)) / 2 -
+        var(--prava-stroke)
+    );
+    border: var(--prava-stroke) solid transparent;
+    border-radius: 50%;
+    background: var(--prava-slider-color) content-box;
+    cursor: inherit;
+    pointer-events: auto;
+  }
+  .prava-slider__input::-moz-range-thumb {
+    box-sizing: border-box;
+    inline-size: var(--prava-slider-thumb-size);
+    block-size: var(--prava-slider-thumb-size);
+    padding: calc(
+      (var(--prava-slider-thumb-size) - var(--prava-slider-disk-size)) / 2 -
+        var(--prava-stroke)
+    );
+    border: var(--prava-stroke) solid transparent;
+    border-radius: 50%;
+    background: var(--prava-slider-color) content-box;
+    cursor: inherit;
+    pointer-events: auto;
+  }
+  .prava-slider__input:focus-visible::-webkit-slider-thumb {
+    border-color: var(--prava-color-focus);
+  }
+  .prava-slider__input:focus-visible::-moz-range-thumb {
+    border-color: var(--prava-color-focus);
+  }
+
+  /* Forced colors would erase painted backgrounds, so the same tokens point at system colors. */
+  @media (forced-colors: active) {
+    .prava-slider {
+      --prava-slider-color: Highlight;
+    }
+    .prava-slider[data-disabled="true"] {
+      --prava-slider-color: GrayText;
+    }
+    .prava-slider__control {
+      forced-color-adjust: none;
+      --prava-color-focus: CanvasText;
+      --prava-color-primary-hover: Highlight;
+      --prava-color-primary-active: Highlight;
+      --prava-color-danger-hover: Highlight;
+    }
+    .prava-slider__track,
+    .prava-slider[data-disabled="true"] .prava-slider__track {
+      background-color: CanvasText;
+    }
+  }
+}

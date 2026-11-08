@@ -22,6 +22,7 @@
     --prava-color-primary: #2b4db5;
     --prava-color-primary-hover: #213f9f;
     --prava-color-primary-active: #1a358d;
+    --prava-color-primary-text: var(--prava-color-primary);
     --prava-color-on-primary: #fafcff;
     --prava-color-primary-container: #dfeaff;
     --prava-color-on-primary-container: #1c3788;
@@ -73,6 +74,7 @@
     --prava-color-primary: #8aacfa;
     --prava-color-primary-hover: #a0bdff;
     --prava-color-primary-active: #7e9fed;
+    --prava-color-primary-text: var(--prava-color-primary);
     --prava-color-on-primary: #091431;
     --prava-color-primary-container: #22335e;
     --prava-color-on-primary-container: #d5e1fd;
@@ -121,6 +123,7 @@
       --prava-color-primary: #8aacfa;
       --prava-color-primary-hover: #a0bdff;
       --prava-color-primary-active: #7e9fed;
+      --prava-color-primary-text: var(--prava-color-primary);
       --prava-color-on-primary: #091431;
       --prava-color-primary-container: #22335e;
       --prava-color-on-primary-container: #d5e1fd;

@@ -1,0 +1,70 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-file-upload__dropzone {
+    @apply box-border flex min-w-0 flex-wrap items-center gap-3 rounded-(--prava-radius-control) border border-dashed border-(--prava-color-border-strong) bg-(--prava-color-surface-sunken) p-3;
+    transition-property: background-color, border-color;
+    transition-duration: var(--prava-duration-fast);
+    transition-timing-function: var(--prava-ease-standard);
+  }
+  .prava-file-upload[data-invalid="true"] .prava-file-upload__dropzone {
+    @apply border-(--prava-color-danger);
+  }
+  /* The solid line keeps the drag state from relying on color alone. */
+  .prava-file-upload__dropzone[data-dragging] {
+    @apply border-solid border-(--prava-color-primary) bg-(--prava-color-primary-container);
+  }
+  .prava-file-upload[data-disabled] .prava-file-upload__dropzone {
+    @apply border-(--prava-color-border);
+  }
+
+  .prava-file-upload__hint {
+    @apply min-w-0 text-(length:--prava-font-size-3) text-(--prava-color-text-muted);
+    line-height: var(--prava-line-height-normal);
+  }
+  .prava-file-upload__dropzone[data-dragging] .prava-file-upload__hint {
+    @apply text-(--prava-color-on-primary-container);
+  }
+  /* Touch screens have no file to drag in, so the hint would promise nothing. */
+  @media (hover: none) {
+    .prava-file-upload__hint {
+      @apply hidden;
+    }
+  }
+
+  .prava-file-upload__list {
+    @apply m-0 grid min-w-0 list-none gap-1 p-0;
+  }
+  .prava-file-upload__item {
+    @apply box-border flex min-w-0 items-center gap-2 rounded-(--prava-radius-control) border border-(--prava-color-border) bg-(--prava-color-surface) py-1 ps-3 pe-1 text-(length:--prava-font-size-3) text-(--prava-color-text);
+    line-height: var(--prava-line-height-normal);
+  }
+  .prava-file-upload__name {
+    @apply min-w-0 flex-1;
+    overflow-wrap: anywhere;
+  }
+  .prava-file-upload__size {
+    @apply flex-none text-(length:--prava-font-size-2) whitespace-nowrap text-(--prava-color-text-muted) tabular-nums;
+  }
+  .prava-file-upload__remove {
+    @apply flex-none;
+  }
+  .prava-file-upload__remove-icon {
+    @apply size-4;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+
+  .prava-file-upload__status {
+    @apply sr-only;
+  }
+  .prava-file-upload__rejections {
+    @apply grid min-w-0 gap-1;
+  }
+  /* Out of flow while empty, so it adds no gap but stays in the accessibility tree as a live region. */
+  .prava-file-upload__rejections:empty {
+    @apply absolute;
+  }
+}

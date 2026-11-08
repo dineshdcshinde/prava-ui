@@ -159,6 +159,46 @@
       "types": "./dist/components/toast/index.d.ts",
       "import": "./dist/toast.js"
     },
+    "./table": {
+      "types": "./dist/components/table/index.d.ts",
+      "import": "./dist/table.js"
+    },
+    "./pagination": {
+      "types": "./dist/components/pagination/index.d.ts",
+      "import": "./dist/pagination.js"
+    },
+    "./breadcrumb": {
+      "types": "./dist/components/breadcrumb/index.d.ts",
+      "import": "./dist/breadcrumb.js"
+    },
+    "./combobox": {
+      "types": "./dist/components/combobox/index.d.ts",
+      "import": "./dist/combobox.js"
+    },
+    "./date-picker": {
+      "types": "./dist/components/date-picker/index.d.ts",
+      "import": "./dist/date-picker.js"
+    },
+    "./slider": {
+      "types": "./dist/components/slider/index.d.ts",
+      "import": "./dist/slider.js"
+    },
+    "./number-input": {
+      "types": "./dist/components/number-input/index.d.ts",
+      "import": "./dist/number-input.js"
+    },
+    "./file-upload": {
+      "types": "./dist/components/file-upload/index.d.ts",
+      "import": "./dist/file-upload.js"
+    },
+    "./tag": {
+      "types": "./dist/components/tag/index.d.ts",
+      "import": "./dist/tag.js"
+    },
+    "./empty-state": {
+      "types": "./dist/components/empty-state/index.d.ts",
+      "import": "./dist/empty-state.js"
+    },
     "./styles.css": "./dist/styles.css",
     "./styles/tokens.css": "./dist/tokens.css",
     "./styles/components/*": "./dist/styles/components/*",
@@ -204,10 +244,12 @@
     "eslint": "^9.35.0",
     "eslint-config-prettier": "^10.1.0",
     "happy-dom": "^18.0.0",
+    "i18next": "^26.7.2",
     "prettier": "^3.6.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.91.0",
+    "react-i18next": "^17.1.13",
     "storybook": "^10.6.5",
     "tailwindcss": "^4.1.0",
     "typescript": "^5.9.0",

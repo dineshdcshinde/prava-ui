@@ -1,0 +1,159 @@
+@reference 'tailwindcss';
+
+@layer prava.components {
+  .prava-tag {
+    @apply relative inline-flex max-w-full items-center rounded-full bg-(--prava-tag-bg) align-middle font-(--prava-font-weight-medium) text-(--prava-tag-fg);
+    line-height: var(--prava-line-height-normal);
+    transition: background-color var(--prava-duration-fast)
+      var(--prava-ease-standard);
+  }
+  .prava-tag[data-size="sm"] {
+    @apply h-6 text-(length:--prava-font-size-1);
+  }
+  .prava-tag[data-size="md"] {
+    @apply h-8 text-(length:--prava-font-size-2);
+  }
+
+  .prava-tag[data-tone="neutral"] {
+    --prava-tag-bg: var(--prava-color-surface-raised);
+    --prava-tag-fg: var(--prava-color-text);
+  }
+  .prava-tag[data-tone="primary"],
+  .prava-tag[data-tone="neutral"][data-selected] {
+    --prava-tag-bg: var(--prava-color-primary-container);
+    --prava-tag-fg: var(--prava-color-on-primary-container);
+  }
+  .prava-tag[data-tone="success"] {
+    --prava-tag-bg: var(--prava-color-success);
+    --prava-tag-fg: var(--prava-color-on-success);
+  }
+  .prava-tag[data-tone="warning"] {
+    --prava-tag-bg: var(--prava-color-warning);
+    --prava-tag-fg: var(--prava-color-on-warning);
+  }
+  .prava-tag[data-tone="danger"] {
+    --prava-tag-bg: var(--prava-color-danger-container);
+    --prava-tag-fg: var(--prava-color-on-danger-container);
+  }
+  .prava-tag[data-tone="info"] {
+    --prava-tag-bg: var(--prava-color-info);
+    --prava-tag-fg: var(--prava-color-on-info);
+  }
+
+  .prava-tag__content {
+    @apply box-border inline-flex h-full max-w-full min-w-0 items-center gap-1.5;
+  }
+  .prava-tag[data-size="sm"] .prava-tag__content {
+    @apply px-2;
+  }
+  .prava-tag[data-size="md"] .prava-tag__content {
+    @apply px-3;
+  }
+  .prava-tag[data-removable] .prava-tag__content {
+    @apply pe-1;
+  }
+  .prava-tag__label {
+    @apply relative min-w-0 truncate;
+  }
+  .prava-tag__icon {
+    @apply relative inline-flex flex-none items-center justify-center;
+  }
+  .prava-tag__icon > svg {
+    @apply size-3.5;
+  }
+
+  .prava-tag__toggle,
+  .prava-tag__remove {
+    @apply relative cursor-pointer rounded-full border-0 bg-transparent select-none;
+    font: inherit;
+    color: inherit;
+    outline: var(--prava-stroke) solid transparent;
+    transition: outline-color var(--prava-duration-fast)
+      var(--prava-ease-standard);
+    -webkit-tap-highlight-color: transparent;
+  }
+  .prava-tag__toggle:focus-visible,
+  .prava-tag__remove:focus-visible {
+    @apply outline-(--prava-color-focus);
+    outline-offset: 0;
+  }
+
+  /* The state layer is the tone's own text color, so it works on every fill in both themes. */
+  .prava-tag__toggle::before,
+  .prava-tag__remove::before {
+    @apply absolute inset-0 rounded-full;
+    content: "";
+    background: currentColor;
+    opacity: 0;
+    transition: opacity var(--prava-duration-fast) var(--prava-ease-standard);
+  }
+  .prava-tag__remove::before {
+    @apply inset-0.5;
+  }
+  @media (hover: hover) {
+    .prava-tag__toggle:hover::before,
+    .prava-tag__remove:hover::before {
+      opacity: 0.12;
+    }
+  }
+  .prava-tag__toggle:active::before,
+  .prava-tag__remove:active::before {
+    opacity: 0.2;
+  }
+
+  /* The ring is always there and only its fill changes, so selecting never moves the text or relies on color. */
+  .prava-tag__check {
+    @apply relative box-border inline-flex size-3.5 flex-none items-center justify-center rounded-full border border-current;
+    transition: background-color var(--prava-duration-fast)
+      var(--prava-ease-standard);
+  }
+  .prava-tag__check svg {
+    @apply size-full opacity-0;
+    fill: none;
+    stroke: var(--prava-tag-bg);
+    stroke-width: var(--prava-stroke);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .prava-tag[data-selected] .prava-tag__check {
+    @apply bg-current;
+  }
+  .prava-tag[data-selected] .prava-tag__check svg {
+    @apply opacity-100;
+  }
+
+  .prava-tag__remove {
+    @apply box-border inline-flex size-6 flex-none items-center justify-center p-0;
+  }
+  .prava-tag[data-size="md"] .prava-tag__remove {
+    @apply me-1;
+  }
+  .prava-tag__remove svg {
+    @apply relative size-3.5;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+  }
+
+  /* Touch reach grows outside the box, so the tag's size does not change between pointers. */
+  @media (pointer: coarse) {
+    .prava-tag__toggle::after {
+      @apply absolute inset-x-0 top-1/2 h-11 -translate-y-1/2;
+      content: "";
+    }
+    .prava-tag__remove {
+      @apply z-1;
+    }
+    .prava-tag__remove::after {
+      @apply absolute top-1/2 left-1/2 size-11 -translate-1/2;
+      content: "";
+    }
+  }
+
+  @media (forced-colors: active) {
+    .prava-tag__check svg {
+      stroke: CanvasText;
+    }
+  }
+}

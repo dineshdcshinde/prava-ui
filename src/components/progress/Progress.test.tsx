@@ -21,6 +21,17 @@ describe("Progress", () => {
     ).not.toHaveAttribute("aria-valuenow");
   });
 
+  it.each([false, true])(
+    "names the bar from an element label with showValue %s",
+    (showValue) => {
+      const Trans = () => <>Téléversement</>;
+      render(<Progress label={<Trans />} value={5} showValue={showValue} />);
+      expect(
+        screen.getByRole("progressbar", { name: "Téléversement" }),
+      ).not.toHaveAttribute("aria-label");
+    },
+  );
+
   it("rejects an invalid range", () => {
     expect(() =>
       render(<Progress label="Upload" min={4} max={4} value={2} />),

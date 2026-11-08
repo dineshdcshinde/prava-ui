@@ -53,7 +53,7 @@
     @apply outline-(--prava-color-focus);
   }
   .prava-tabs__tab[aria-selected="true"] {
-    @apply text-(--prava-color-primary);
+    @apply text-(--prava-color-primary-text);
   }
   .prava-tabs__tab:disabled {
     @apply cursor-not-allowed opacity-50;

@@ -30,3 +30,13 @@
 @import "./components/tabs.css";
 @import "./components/accordion.css";
 @import "./components/toast.css";
+@import "./components/table.css";
+@import "./components/pagination.css";
+@import "./components/breadcrumb.css";
+@import "./components/combobox.css";
+@import "./components/date-picker.css";
+@import "./components/slider.css";
+@import "./components/number-input.css";
+@import "./components/file-upload.css";
+@import "./components/tag.css";
+@import "./components/empty-state.css";
