@@ -13,6 +13,9 @@ import { Label } from "../label";
 
 type AssociatedControlProps = {
   id?: string;
+  type?: string;
+  className?: string;
+  "data-size"?: string;
   required?: boolean;
   "aria-describedby"?: string;
   "aria-invalid"?: AriaAttributes["aria-invalid"];
@@ -22,13 +25,27 @@ type AssociatedControlProps = {
   onInvalid?: FormEventHandler<FieldControl>;
 };
 
+// Native inputs that are not text boxes keep their own look.
+const nonTextInputs = new Set([
+  "checkbox",
+  "radio",
+  "range",
+  "file",
+  "color",
+  "hidden",
+  "submit",
+  "reset",
+  "button",
+  "image",
+]);
+
 export type FormFieldProps = Omit<
   HTMLAttributes<HTMLDivElement>,
   "children"
 > & {
   /** Accessible label rendered above the control. */
   label: ReactNode;
-  /** A single native or Prava form control to associate with this field. */
+  /** A single native or Prava form control to associate with this field. Native text inputs, textareas, and selects get Prava's control styling. */
   control: ReactElement<AssociatedControlProps>;
   /** Optional explanatory text associated with the control. */
   description?: ReactNode;
@@ -61,6 +78,10 @@ export function FormField({
   ...props
 }: FormFieldProps) {
   const c = control.props;
+  const nativeText =
+    control.type === "textarea" ||
+    control.type === "select" ||
+    (control.type === "input" && !nonTextInputs.has(c.type ?? "text"));
   const field = useField({
     id: id ?? c.id,
     description,
@@ -87,6 +108,10 @@ export function FormField({
           ...field.controlProps,
           required: required || c.required,
           "aria-required": required || c["aria-required"],
+          ...(nativeText && {
+            className: ["prava-control", c.className].filter(Boolean).join(" "),
+            "data-size": c["data-size"] ?? "md",
+          }),
         })}
       </FieldContext.Provider>
       {field.messages}

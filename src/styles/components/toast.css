@@ -3,6 +3,8 @@
 @layer prava.components {
   .prava-toaster__announce {
     @apply sr-only;
+    /* sr-only's -1px margin pushes the box past the viewport edge in RTL, causing horizontal scroll. */
+    margin: 0;
   }
 
   /* Not hit-testable itself, so the page stays clickable between toasts. */

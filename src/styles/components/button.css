@@ -2,7 +2,7 @@
 
 @layer prava.components {
   .prava-button {
-    @apply relative inline-flex max-w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-(--prava-radius-control) border border-transparent text-center whitespace-nowrap no-underline select-none;
+    @apply relative box-border inline-flex max-w-full shrink-0 cursor-pointer items-center justify-center gap-2 rounded-(--prava-radius-control) border border-transparent text-center whitespace-nowrap no-underline select-none;
     font: inherit;
     font-weight: var(--prava-font-weight-semibold);
     line-height: var(--prava-line-height-tight);

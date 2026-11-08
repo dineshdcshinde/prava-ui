@@ -27,6 +27,25 @@ describe("FormField", () => {
     );
   });
 
+  it("styles native text controls like Prava's and leaves other controls alone", () => {
+    render(
+      <>
+        <FormField
+          label="Site"
+          control={<input type="url" className="own" />}
+        />
+        <FormField label="Note" control={<textarea data-size="lg" />} />
+        <FormField label="Agree" control={<input type="checkbox" />} />
+        <FormField label="Name" control={<Input />} />
+      </>,
+    );
+    expect(screen.getByLabelText("Site")).toHaveClass("prava-control", "own");
+    expect(screen.getByLabelText("Site")).toHaveAttribute("data-size", "md");
+    expect(screen.getByLabelText("Note")).toHaveAttribute("data-size", "lg");
+    expect(screen.getByLabelText("Agree")).not.toHaveClass("prava-control");
+    expect(screen.getByLabelText("Name")).toHaveAttribute("data-size", "md");
+  });
+
   it("renders multiline controls with generated IDs", () => {
     render(
       <FormField
