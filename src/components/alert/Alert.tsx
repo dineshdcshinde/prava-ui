@@ -29,7 +29,7 @@ const paths = {
  * pass `role="alert"` only when the message must interrupt.
  * @example
  * ```tsx
- * import { Alert } from 'prava-ui/alert';
+ * import { Alert } from '@prava-ui/react/alert';
  *
  * <Alert tone="warning" title="Storage almost full">Upgrade to keep uploading files.</Alert>
  * ```

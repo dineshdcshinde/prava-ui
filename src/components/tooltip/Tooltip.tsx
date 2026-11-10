@@ -35,7 +35,7 @@ const HIDE_DELAY = 100;
  * Short supplementary text shown on hover, keyboard focus, or tap, and hidden on Escape.
  * @example
  * ```tsx
- * import { Tooltip } from 'prava-ui/tooltip';
+ * import { Tooltip } from '@prava-ui/react/tooltip';
  *
  * <Tooltip content="Visible to your whole team"><Button>Publish</Button></Tooltip>
  * ```

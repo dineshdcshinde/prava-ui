@@ -1,5 +1,5 @@
 {
-  "name": "prava-ui",
+  "name": "@prava-ui/react",
   "version": "1.0.0-rc.1",
   "private": false,
   "type": "module",
@@ -27,7 +27,8 @@
     "typescript"
   ],
   "publishConfig": {
-    "tag": "next"
+    "tag": "next",
+    "access": "public"
   },
   "sideEffects": [
     "**/*.css"

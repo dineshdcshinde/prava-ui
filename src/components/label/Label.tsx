@@ -11,7 +11,7 @@ export type LabelProps = LabelHTMLAttributes<HTMLLabelElement> & {
  * Names a form control using native label association and readable required text.
  * @example
  * ```tsx
- * import { Label } from 'prava-ui/label';
+ * import { Label } from '@prava-ui/react/label';
  * <Label htmlFor="email" required>Email address</Label>
  * ```
  */

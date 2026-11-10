@@ -21,7 +21,7 @@ export type InputProps = Omit<InputHTMLAttributes<HTMLInputElement>, "size"> &
  * Connect react-hook-form with `field={register("name")}` and pass `errors.name?.message` to `error`.
  * @example
  * ```tsx
- * import { Input } from 'prava-ui/input';
+ * import { Input } from '@prava-ui/react/input';
  * <Input label="Email" type="email" required description="We never share it." />
  * ```
  */

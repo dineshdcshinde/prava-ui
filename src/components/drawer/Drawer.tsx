@@ -14,7 +14,7 @@ export const DrawerClose = DialogClose;
  * A Dialog anchored to a screen edge, with the same props, focus, and dismissal rules.
  * @example
  * ```tsx
- * import { Drawer, DrawerClose } from 'prava-ui/drawer';
+ * import { Drawer, DrawerClose } from '@prava-ui/react/drawer';
  *
  * <Drawer
  *   trigger={<Button>Filters</Button>}

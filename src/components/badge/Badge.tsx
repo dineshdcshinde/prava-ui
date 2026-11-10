@@ -16,7 +16,7 @@ export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
  * A compact, non-interactive status or count, either anchored to an element or standalone.
  * @example
  * ```tsx
- * import { Badge } from 'prava-ui/badge';
+ * import { Badge } from '@prava-ui/react/badge';
  * <Badge content="3"><Button>Inbox</Button></Badge>
  * <Badge tone="success" content="Active" />
  * ```

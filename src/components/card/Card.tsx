@@ -13,7 +13,7 @@ export type CardFooterProps = HTMLAttributes<HTMLElement>;
  * Groups related content without adding click behavior or heading semantics.
  * @example
  * ```tsx
- * import { Card, CardContent, CardHeader } from 'prava-ui/card';
+ * import { Card, CardContent, CardHeader } from '@prava-ui/react/card';
  *
  * <Card><CardHeader><h2>Account</h2></CardHeader><CardContent>Profile details</CardContent></Card>
  * ```
@@ -31,7 +31,7 @@ export function Card({ className, ...props }: CardProps) {
  * Optional top section for a Card; choose heading levels in the consuming page.
  * @example
  * ```tsx
- * import { Card, CardHeader } from 'prava-ui/card';
+ * import { Card, CardHeader } from '@prava-ui/react/card';
  *
  * <Card><CardHeader><h2>Settings</h2></CardHeader></Card>
  * ```
@@ -49,7 +49,7 @@ export function CardHeader({ className, ...props }: CardHeaderProps) {
  * Main content section for a Card.
  * @example
  * ```tsx
- * import { Card, CardContent } from 'prava-ui/card';
+ * import { Card, CardContent } from '@prava-ui/react/card';
  *
  * <Card><CardContent>Your account details appear here.</CardContent></Card>
  * ```
@@ -67,7 +67,7 @@ export function CardContent({ className, ...props }: CardContentProps) {
  * Optional bottom section for Card actions or supporting content.
  * @example
  * ```tsx
- * import { Card, CardFooter } from 'prava-ui/card';
+ * import { Card, CardFooter } from '@prava-ui/react/card';
  *
  * <Card><CardFooter><button type="button">Save</button></CardFooter></Card>
  * ```

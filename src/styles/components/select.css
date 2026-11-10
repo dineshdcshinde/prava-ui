@@ -8,8 +8,11 @@
 
   .prava-select {
     @apply flex cursor-pointer flex-wrap items-center gap-1.5;
-    padding-inline-end: 2.25rem;
     position: relative;
+  }
+  /* Must outrank .prava-control[data-size] padding so text never runs under the chevron. */
+  .prava-select.prava-control {
+    padding-inline-end: 2.25rem;
   }
   .prava-select:has(.prava-select__trigger:focus-visible) {
     @apply border-(--prava-color-focus) outline-offset-1 outline-(--prava-color-focus);

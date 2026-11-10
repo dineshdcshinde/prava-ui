@@ -24,7 +24,7 @@ const lines = (count: number) => `calc(${count} * 1lh + 1rem + 2px)`; // text + 
  * A multiline input that grows with its content between `rows` and `maxRows`, with help text and error message.
  * @example
  * ```tsx
- * import { Textarea } from 'prava-ui/textarea';
+ * import { Textarea } from '@prava-ui/react/textarea';
  * <Textarea aria-label="Message" rows={2} maxRows={6} field={register('message')} />
  * ```
  */

@@ -16,7 +16,7 @@ export type SwitchProps = Omit<
  * Use Checkbox for choices that are submitted later.
  * @example
  * ```tsx
- * import { Switch } from 'prava-ui/switch';
+ * import { Switch } from '@prava-ui/react/switch';
  * <Switch label="Dark mode" checked={dark} onChange={(e) => setDark(e.target.checked)} />
  * ```
  */

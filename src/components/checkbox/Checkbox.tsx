@@ -24,7 +24,7 @@ export type CheckboxProps = Omit<
  * `className` and `style` apply to the label row; everything else reaches the native input.
  * @example
  * ```tsx
- * import { Checkbox } from 'prava-ui/checkbox';
+ * import { Checkbox } from '@prava-ui/react/checkbox';
  * <Checkbox label="Email me product updates" field={register('updates')} />
  * ```
  */

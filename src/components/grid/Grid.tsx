@@ -19,7 +19,7 @@ export type GridProps = HTMLAttributes<HTMLElement> & {
  * Responsive CSS grid: fills the width, and collapses to one column on its own when space is narrow.
  * @example
  * ```tsx
- * import { Grid } from 'prava-ui/grid';
+ * import { Grid } from '@prava-ui/react/grid';
  *
  * <Grid columns={3} gap={4}><Card /><Card /><Card /></Grid>
  * ```

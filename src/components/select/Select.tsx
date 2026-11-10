@@ -772,7 +772,7 @@ function SelectImpl<T extends SelectOption>(
  * native select so forms, native validation, and react-hook-form keep working.
  * @example
  * ```tsx
- * import { Select } from 'prava-ui/select';
+ * import { Select } from '@prava-ui/react/select';
  * <Select
  *   label={t('role')}
  *   placeholder={t('chooseRole')}

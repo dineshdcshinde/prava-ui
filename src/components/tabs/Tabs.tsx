@@ -50,7 +50,7 @@ export type TabsProps = Omit<HTMLAttributes<HTMLDivElement>, "defaultValue"> & {
  * Switches between related panels. Inactive panels stay mounted and hidden, so they keep their state.
  * @example
  * ```tsx
- * import { Tab, TabList, TabPanel, Tabs } from 'prava-ui/tabs';
+ * import { Tab, TabList, TabPanel, Tabs } from '@prava-ui/react/tabs';
  *
  * <Tabs defaultValue="general">
  *   <TabList aria-label="Settings">

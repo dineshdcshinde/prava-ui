@@ -53,7 +53,7 @@ export type ButtonProps =
  * Renders an accessible action button, or a link styled as one when `href` is set.
  * @example
  * ```tsx
- * import { Button } from 'prava-ui/button';
+ * import { Button } from '@prava-ui/react/button';
  *
  * <Button startIcon={<PlusIcon />}>New project</Button>
  * <Button href="/billing" variant="secondary">View billing</Button>

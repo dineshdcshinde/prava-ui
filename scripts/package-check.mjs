@@ -143,11 +143,11 @@ try {
   const builds = components.flatMap(({ name, component }) => [
     {
       out: name,
-      code: `import * as m from 'prava-ui/${name}'; console.log(m);`,
+      code: `import * as m from '@prava-ui/react/${name}'; console.log(m);`,
     },
     {
       out: `root-${name}`,
-      code: `import { ${component} } from 'prava-ui'; console.log(${component});`,
+      code: `import { ${component} } from '@prava-ui/react'; console.log(${component});`,
     },
   ]);
   for (const { out, code } of builds) {

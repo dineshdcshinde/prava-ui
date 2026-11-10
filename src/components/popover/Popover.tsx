@@ -39,7 +39,7 @@ export type PopoverProps = Omit<HTMLAttributes<HTMLDivElement>, "title"> & {
  * A press outside or tabbing away closes it. It doesn't trap focus; use Dialog for that.
  * @example
  * ```tsx
- * import { Popover } from 'prava-ui/popover';
+ * import { Popover } from '@prava-ui/react/popover';
  *
  * <Popover trigger={<Button>Share</Button>} title="Share this project">
  *   <Input label="Link" readOnly value={url} />

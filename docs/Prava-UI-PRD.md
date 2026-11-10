@@ -2,7 +2,7 @@
 
 **Document status:** V1 product and engineering baseline  
 **Working product name:** Prava UI (temporary; may be renamed before public release)  
-**Package name in scaffold:** `prava-ui` (temporary; availability and branding are not verified)  
+**Package name in scaffold:** `@prava-ui/react` (temporary; availability and branding are not verified)  
 **Product type:** Open-source React component library and design system  
 **Target release:** V1  
 **Decision rule:** This document is the product source of truth. An implementation must not silently contradict it.
@@ -220,13 +220,13 @@ These primitives must not require the consumer to configure Tailwind. Their API 
 The simplest consumer experience imports components from the package root. The ESM entry re-exports components through their style-bearing modules so a consumer bundler can include the selected components' compiled CSS:
 
 ```tsx
-import { Button, Card, Input } from "prava-ui";
+import { Button, Card, Input } from "@prava-ui/react";
 ```
 
 Consumers who want only selected component styles import a component entry point; its JavaScript automatically imports its compiled CSS and shared tokens:
 
 ```tsx
-import { Button } from "prava-ui/button";
+import { Button } from "@prava-ui/react/button";
 ```
 
 The root and component entry points include styles automatically. The aggregate and granular CSS exports remain available for CSS-only integration; manual granular CSS use includes shared `tokens.css` alongside the selected component stylesheet. Documentation must warn consumers not to combine manual CSS with JavaScript entry points unless intentional. Component JavaScript entry points must be documented and tested. The `exports` map must prevent imports from unsupported internal paths.
@@ -854,7 +854,7 @@ V1 is ready only when all conditions below are true:
 | Overlay API additions                                             | Approved (2026-11-03, owner delegated additions beyond this document): `DialogClose`/`DrawerClose`, `data-autofocus`, `dismissible`, `hideClose`, Toast `id` updates, and `--prava-color-scrim` in the theme contract; `--prava-shadow-overlay` gains the glaze rim. `BuiltInMessages` adds `close`, `dismiss`, and `notifications`. |
 | Motion budget                                                     | Approved (2026-11-03): minimal and state-explaining only. The dialog settles from just below, the drawer slides from its edge, popups rise from their anchor, the tab indicator glides between tabs, accordion rows and toasts animate their height, and toasts arrive from the edge they live on. Exits are faster than entrances. Reduced motion removes all spatial movement and keeps fades. No looping or decorative motion. |
 | V2 customer theme builder                                         | Future direction: user picks a color; we generate a complete semantic-token CSS file (light and dark) that overrides Prava defaults; not part of V1.                                                                                                                                                                                                     |
-| Public npm name and license | Approved (2026-11-04): `prava-ui` was free on npm when checked, and the license is MIT. |
+| Public npm name and license | Approved (2026-11-04): MIT license. Renamed (2026-11-09) to `@prava-ui/react` under the `prava-ui` npm organization; it was unpublished and free when checked. No separate `@prava-ui/next` package: the same package works in Next.js (see Next.js support). |
 | First release | Approved (2026-11-04): `1.0.0-rc.1`, published to the `next` npm tag through `publishConfig`. Remove `publishConfig` for the final `1.0.0`. See `docs/RELEASING.md`. |
 | Next.js support | Approved (2026-11-04): the build adds `"use client"` to every JavaScript module except the root re-export, so components work directly in Server Components. Verified by building, serving, and hydrating a Next.js 15 App Router app from the packed package. |
 | Native controls in FormField | Implemented (2026-11-08): a native text `input`, `textarea`, or `select` passed as `control` gets Prava's control styling (`prava-control`, size `md` unless `data-size` is set), and the consumer's `className` is kept. Checkboxes, radios, ranges, files, and buttons keep their own look. |
@@ -868,7 +868,7 @@ These questions are intentionally recorded so the owner can make explicit decisi
 
 | Question                                                                  | Recommended default                                                                                                                            | When it must be decided                                                            |
 | ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
-| Is `prava-ui` available and suitable as the final npm name?               | Treat Prava UI and `prava-ui` as temporary; verify npm, GitHub, domain, and trademark conflicts before public release.                         | Before publishing or promoting publicly.                                           |
+| Is `@prava-ui/react` available and suitable as the final npm name?               | Treat Prava UI and `@prava-ui/react` as temporary; verify npm, GitHub, domain, and trademark conflicts before public release.                         | Before publishing or promoting publicly.                                           |
 | Which license should the project use?                                     | MIT, subject to owner approval.                                                                                                                | Before public release and before adding the license file.                          |
 | Should Container, Stack, and Grid ship alongside the 25 named components? | Yes, as three additional layout primitives; the total catalog is 25 core components plus 3 layout primitives.                                  | Confirm before implementation reaches the layout phase.                            |
 | Which package manager should be used?                                     | pnpm for lockfile/workspace ergonomics; npm is fine if simplicity is preferred.                                                                | At scaffold creation.                                                              |

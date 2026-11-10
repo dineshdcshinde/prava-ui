@@ -41,7 +41,7 @@ export type RadioGroupProps = FieldProps & {
  * Connect it with `field={register("plan")}` or Controller's `field={field}`.
  * @example
  * ```tsx
- * import { RadioGroup } from 'prava-ui/radio-group';
+ * import { RadioGroup } from '@prava-ui/react/radio-group';
  * <RadioGroup label="Plan" options={[{ value: 'free', label: 'Free' }, { value: 'pro', label: 'Pro' }]} field={register('plan')} />
  * ```
  */

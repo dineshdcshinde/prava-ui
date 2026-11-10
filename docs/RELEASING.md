@@ -5,7 +5,7 @@ This guide assumes you've never published a package. Every command runs from a t
 ## Three things to know first
 
 1. **A published version is permanent.** You can never publish `1.0.0-rc.1` twice, even after deleting it. If something's wrong, you publish `1.0.0-rc.2`. That's normal, and it's why release candidates exist.
-2. **Tags decide what people install.** `npm install prava-ui@next` gets whatever the `next` tag points to. This guide always passes `--tag next` for release candidates. `package.json` also sets `"publishConfig": { "tag": "next" }` as a backup.
+2. **Tags decide what people install.** `npm install @prava-ui/react@next` gets whatever the `next` tag points to. This guide always passes `--tag next` for release candidates. `package.json` also sets `"publishConfig": { "tag": "next" }` as a backup.
 3. **Everything in the package is public forever.** Step 4 shows you exactly what goes out, so you can check before it does.
 
 ## 1. Save your work to GitHub
@@ -32,6 +32,8 @@ Read the `git status` list before you add. Nothing secret should be in it, such 
 
    `npm whoami` should print your npm username.
 
+4. Create the `prava-ui` organization (free, public packages): click your profile picture, then **Add Organization**, and name it `prava-ui`. Only its members can publish under `@prava-ui/`, which also reserves names like `@prava-ui/next` for later.
+
 ## 3. Run the final checks
 
 Run these one at a time. Each should finish without errors:
@@ -57,7 +59,7 @@ npm pack --dry-run
 
 Check that:
 
-- `name` is `prava-ui` and `version` is `1.0.0-rc.1`.
+- `name` is `@prava-ui/react` and `version` is `1.0.0-rc.1`.
 - The list has `README.md`, `LICENSE`, `package.json`, and the `dist/` files, including `dist/dialog.js` and `dist/toast.js`.
 - There's no `src/`, `.env`, or anything private.
 
@@ -80,7 +82,7 @@ cd prava-test
 npm install
 npm install react@18.2.0 react-dom@18.2.0
 npm install -D @types/react@18 @types/react-dom@18
-npm install ..\prava-ui-1.0.0-rc.1.tgz
+npm install ..\prava-ui-react-1.0.0-rc.1.tgz
 ```
 
 Replace everything in `src/App.tsx` with this:
@@ -102,7 +104,7 @@ import {
   Toaster,
   toast,
   Tooltip,
-} from "prava-ui";
+} from "@prava-ui/react";
 
 export default function App() {
   return (
@@ -196,7 +198,7 @@ Do a rehearsal first. It runs everything except the upload, including a fresh bu
 npm publish --dry-run --tag next
 ```
 
-Check that the end of the output says `with tag next` and `+ prava-ui@1.0.0-rc.1`. Then publish for real:
+Check that the end of the output says `with tag next` and `+ @prava-ui/react@1.0.0-rc.1`. Then publish for real:
 
 ```powershell
 npm publish --tag next
@@ -205,22 +207,22 @@ npm publish --tag next
 It will ask for your two-factor code, or open a browser to confirm. Success looks like this:
 
 ```text
-+ prava-ui@1.0.0-rc.1
++ @prava-ui/react@1.0.0-rc.1
 ```
 
 ## 7. Check it as a stranger would
 
 ```powershell
-npm view prava-ui dist-tags
+npm view @prava-ui/react dist-tags
 ```
 
-You should see `next: '1.0.0-rc.1'`. You'll probably see `latest` pointing to it too, because npm requires a package's first version to be `latest`. That's fine: it means a plain `npm install prava-ui` also gets the RC until `1.0.0` is out, and the README's RC notice covers this.
+You should see `next: '1.0.0-rc.1'`. You'll probably see `latest` pointing to it too, because npm requires a package's first version to be `latest`. That's fine: it means a plain `npm install @prava-ui/react` also gets the RC until `1.0.0` is out, and the README's RC notice covers this.
 
-Then look at <https://www.npmjs.com/package/prava-ui>, and in your test app:
+Then look at <https://www.npmjs.com/package/@prava-ui/react>, and in your test app:
 
 ```powershell
 cd ..\prava-test
-npm install prava-ui@next
+npm install @prava-ui/react@next
 npm run dev
 cd ..\prava-ui
 ```
@@ -245,15 +247,16 @@ On GitHub, go to **Releases**, then **Draft a new release**. Pick the `v1.0.0-rc
 
 ## If something goes wrong
 
-| Problem                        | What to do                                                                                   |
-| ------------------------------ | -------------------------------------------------------------------------------------------- |
-| `403` or "cannot publish over" | That version already exists. Bump the version (below).                                       |
-| `E403` mentioning 2FA          | Finish turning on two-factor authentication in step 2.                                       |
-| `ENEEDAUTH`                    | Run `npm login`.                                                                             |
-| "Package name too similar"     | npm rejected the name. Stop and choose another, or use a scope such as `@yourname/prava-ui`. |
-| A bug in a published version   | Fix it and publish the next RC.                                                              |
-| A seriously broken version     | Publish a fix, then warn people: `npm deprecate prava-ui@1.0.0-rc.1 "Broken, use rc.2"`.     |
-| Published a secret by accident | Change that secret immediately, because it's already public. Then unpublish.                 |
+| Problem                        | What to do                                                                                      |
+| ------------------------------ | ----------------------------------------------------------------------------------------------- |
+| `403` or "cannot publish over" | That version already exists. Bump the version (below).                                          |
+| `E403` mentioning 2FA          | Finish turning on two-factor authentication in step 2.                                          |
+| `ENEEDAUTH`                    | Run `npm login`.                                                                                |
+| `E404` on publish              | The `prava-ui` organization doesn't exist or you aren't a member. See step 2.                   |
+| "Package name too similar"     | npm rejected the name. Stop and choose another name.                                            |
+| A bug in a published version   | Fix it and publish the next RC.                                                                 |
+| A seriously broken version     | Publish a fix, then warn people: `npm deprecate @prava-ui/react@1.0.0-rc.1 "Broken, use rc.2"`. |
+| Published a secret by accident | Change that secret immediately, because it's already public. Then unpublish.                    |
 
 Avoid `npm unpublish`. It only works within a limited window, the version number stays used forever, and it can break anyone already using it.
 
@@ -275,5 +278,5 @@ Avoid `npm unpublish`. It only works within a limited window, the version number
 Before calling it stable, finish what's listed as open in [V1-PROGRESS.md](./V1-PROGRESS.md), then:
 
 1. Remove the `publishConfig` block from `package.json`, so the release goes to `latest`.
-2. Remove the release candidate notice from the README, and change its install command to `npm install prava-ui`.
+2. Remove the release candidate notice from the README, and change its install command to `npm install @prava-ui/react`.
 3. Run `npm version 1.0.0`, push with `git push --follow-tags`, then run `npm publish`.

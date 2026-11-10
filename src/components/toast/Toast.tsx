@@ -44,7 +44,7 @@ const serverSnapshot = () => none;
  * Shows a toast through the page's `<Toaster />` and returns its id.
  * @example
  * ```tsx
- * import { toast } from 'prava-ui/toast';
+ * import { toast } from '@prava-ui/react/toast';
  *
  * toast({ title: 'Invitation sent', tone: 'success' });
  * ```
@@ -64,7 +64,7 @@ export function toast(options: ToastOptions) {
  * Dismisses one toast, or every toast when called with no id.
  * @example
  * ```tsx
- * import { dismissToast } from 'prava-ui/toast';
+ * import { dismissToast } from '@prava-ui/react/toast';
  *
  * dismissToast(id);
  * ```
@@ -144,7 +144,7 @@ export type ToasterProps = HTMLAttributes<HTMLDivElement> & {
  * be pressed or announced until it closes. Upgrade by rendering a Toaster inside that Dialog.
  * @example
  * ```tsx
- * import { Toaster } from 'prava-ui/toast';
+ * import { Toaster } from '@prava-ui/react/toast';
  *
  * <Toaster placement="bottom-end" />
  * ```

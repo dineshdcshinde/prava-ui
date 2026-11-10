@@ -12,7 +12,7 @@ export type ContainerProps = HTMLAttributes<HTMLElement> & {
  * Centers content and keeps a responsive inline gutter. Set `--prava-container-max` for a custom width.
  * @example
  * ```tsx
- * import { Container } from 'prava-ui/container';
+ * import { Container } from '@prava-ui/react/container';
  *
  * <Container as="main" size="md">Page content</Container>
  * ```

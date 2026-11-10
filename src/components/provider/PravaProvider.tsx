@@ -92,7 +92,7 @@ export type PravaProviderProps = {
  * Scopes direction, locale, messages, and theme to its subtree without adding layout.
  * @example
  * ```tsx
- * import { PravaProvider } from 'prava-ui/provider';
+ * import { PravaProvider } from '@prava-ui/react/provider';
  *
  * <PravaProvider direction="rtl" locale="ar" theme="system" messages={{ required: 'مطلوب' }}>
  *   <App />

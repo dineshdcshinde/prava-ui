@@ -20,7 +20,7 @@ export type StackProps = HTMLAttributes<HTMLElement> & {
  * Arranges children in a row or column with a consistent gap, without wrapping each child.
  * @example
  * ```tsx
- * import { Stack } from 'prava-ui/stack';
+ * import { Stack } from '@prava-ui/react/stack';
  *
  * <Stack orientation="horizontal" gap={2} wrap><Button>Save</Button><Button>Cancel</Button></Stack>
  * ```

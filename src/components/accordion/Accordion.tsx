@@ -29,7 +29,7 @@ export type AccordionProps = Omit<
  * Discloses related content. Up and Down, Home and End move between headers.
  * @example
  * ```tsx
- * import { Accordion, AccordionItem } from 'prava-ui/accordion';
+ * import { Accordion, AccordionItem } from '@prava-ui/react/accordion';
  *
  * <Accordion defaultValue={['billing']}>
  *   <AccordionItem value="billing" title="Billing">Invoices are sent monthly.</AccordionItem>

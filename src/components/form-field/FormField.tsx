@@ -62,8 +62,8 @@ export type FormFieldProps = Omit<
  * Native and Prava controls both get localized validation messages here.
  * @example
  * ```tsx
- * import { FormField } from 'prava-ui/form-field';
- * import { Input } from 'prava-ui/input';
+ * import { FormField } from '@prava-ui/react/form-field';
+ * import { Input } from '@prava-ui/react/input';
  * <FormField label="Email" required error={errors.email?.message} control={<Input type="email" field={register('email')} />} />
  * ```
  */

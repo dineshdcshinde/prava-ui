@@ -65,7 +65,7 @@ const TYPE_AHEAD_RESET = 500;
  * For choosing a value, use Select.
  * @example
  * ```tsx
- * import { DropdownMenu } from 'prava-ui/dropdown-menu';
+ * import { DropdownMenu } from '@prava-ui/react/dropdown-menu';
  *
  * <DropdownMenu
  *   trigger={<Button variant="outline">Actions</Button>}
