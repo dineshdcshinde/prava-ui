@@ -42,6 +42,14 @@ for (const path of ["dist/tokens.css"]) {
     );
   }
 }
+const devOnly = pack.files.filter(({ path }) =>
+  /\.(test|spec|stories)\.|Story\.|^dist\/test\//.test(path),
+);
+if (devOnly.length) {
+  throw new Error(
+    `The package ships test or story files: ${devOnly.map(({ path }) => path).join(", ")}`,
+  );
+}
 const manifest = JSON.parse(await readFile("package.json", "utf8"));
 const rootEntry = await readFile("dist/index.js", "utf8");
 for (const { name } of components) {
@@ -143,11 +151,11 @@ try {
   const builds = components.flatMap(({ name, component }) => [
     {
       out: name,
-      code: `import * as m from '@prava-ui/react/${name}'; console.log(m);`,
+      code: `import * as m from '${manifest.name}/${name}'; console.log(m);`,
     },
     {
       out: `root-${name}`,
-      code: `import { ${component} } from '@prava-ui/react'; console.log(${component});`,
+      code: `import { ${component} } from '${manifest.name}'; console.log(${component});`,
     },
   ]);
   for (const { out, code } of builds) {

@@ -2,8 +2,8 @@
 
 Accessible, responsive React components that look finished the moment you install them. No Tailwind setup, no CSS-in-JS runtime, and no runtime dependencies.
 
-[![npm version](https://img.shields.io/npm/v/@prava-ui/react/next?label=npm%40next)](https://www.npmjs.com/package/@prava-ui/react?activeTab=versions)
-[![license: MIT](https://img.shields.io/npm/l/prava-ui)](./LICENSE)
+[![npm version](https://img.shields.io/npm/v/@prava/ui/next?label=npm%40next)](https://www.npmjs.com/package/@prava/ui?activeTab=versions)
+[![license: MIT](https://img.shields.io/npm/l/@prava/ui)](./LICENSE)
 [![CI](https://github.com/dineshdcshinde/prava-ui/actions/workflows/ci.yml/badge.svg)](https://github.com/dineshdcshinde/prava-ui/actions/workflows/ci.yml)
 
 > **Release candidate.** The API is close to final, but it can still change before `1.0.0`. Please try it and [report what you find](https://github.com/dineshdcshinde/prava-ui/issues).
@@ -22,13 +22,13 @@ Accessible, responsive React components that look finished the moment you instal
 Prava UI needs React 18.2 or newer, including React 19.
 
 ```sh
-npm install @prava-ui/react@next
+npm install @prava/ui@next
 ```
 
 Import a component and use it. Its styles come with it:
 
 ```tsx
-import { Button, Dialog, DialogClose, Input } from "@prava-ui/react";
+import { Button, Dialog, DialogClose, Input } from "@prava/ui";
 
 export function InviteTeammate() {
   return (
@@ -51,7 +51,7 @@ export function InviteTeammate() {
 }
 ```
 
-You can also import one component at a time, such as `import { Button } from "@prava-ui/react/button"`.
+You can also import one component at a time, such as `import { Button } from "@prava/ui/button"`.
 
 Components inherit your app's font. Prava UI never loads a font or adds global styles to your page.
 
@@ -119,7 +119,7 @@ Every component also takes `className` and `style`, and compound ones take `clas
 Prava UI has no translation dependency, so it works alongside whichever library you already use. `PravaProvider` sets direction, locale, and the library's own text for its subtree:
 
 ```tsx
-import { PravaProvider } from "@prava-ui/react";
+import { PravaProvider } from "@prava/ui";
 
 <PravaProvider direction="rtl" locale="ar" messages={{ close: "إغلاق" }}>
   <App />

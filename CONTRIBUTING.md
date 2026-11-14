@@ -35,13 +35,26 @@ npm run dev
 | `npm test`             | Runs the unit tests                                         |
 | `npm run typecheck`    | Checks types                                                |
 | `npm run lint`         | Runs ESLint                                                 |
-| `npm run format`       | Formats the code                                            |
+| `npm run format`       | Formats the code in `src/`                                  |
 | `npm run build`        | Builds the package into `dist/`                             |
 | `npm run test:package` | Installs the built package in a temporary app and checks it |
 | `npm run test:e2e`     | Runs the browser tests in Chromium                          |
 | `npm run test:e2e:all` | Runs them in Chromium, Firefox, WebKit, and emulated phones |
 
 The first time you run browser tests, install the browsers with `npx playwright install`.
+
+### Trying your build in another app
+
+| Where         | Command                | What it does                                                  |
+| ------------- | ---------------------- | ------------------------------------------------------------- |
+| In `prava-ui` | `npm run link:local`   | Builds, then makes `@prava/ui` linkable on your machine       |
+| In your app   | `npm link @prava/ui`   | Uses your local build instead of the npm version              |
+| In your app   | `npm unlink @prava/ui` | Stops using it; run `npm install` afterwards to restore npm's |
+| In `prava-ui` | `npm run unlink:local` | Removes the machine-wide link                                 |
+
+After a change, run `npm run build` again; the app picks it up through the link.
+
+A linked package can load a second copy of React, which shows up as an "Invalid hook call" error. In a Vite app, fix it with `resolve: { dedupe: ["react", "react-dom"] }` in `vite.config.ts`. In a Next.js app, use the packed file instead: run `npm run build && npm pack --pack-destination ..` here, then in the app run `npm install ../<file>`, using the `.tgz` file name it printed.
 
 ## Where things live
 

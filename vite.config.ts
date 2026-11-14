@@ -6,7 +6,22 @@ import dts from "vite-plugin-dts";
 import { components } from "./scripts/components.mjs";
 
 export default defineConfig({
-  plugins: [react(), tailwindcss(), dts({ include: ["src"], outDir: "dist" })],
+  plugins: [
+    react(),
+    tailwindcss(),
+    dts({
+      include: ["src"],
+      exclude: [
+        "src/**/*.test.*",
+        "src/**/*.spec.*",
+        "src/**/*.stories.*",
+        // Story helpers such as HookFormStory end in "Story" and are imported only by stories.
+        "src/**/*Story.*",
+        "src/test",
+      ],
+      outDir: "dist",
+    }),
+  ],
   build: {
     lib: {
       entry: {
