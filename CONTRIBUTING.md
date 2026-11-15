@@ -45,12 +45,12 @@ The first time you run browser tests, install the browsers with `npx playwright 
 
 ### Trying your build in another app
 
-| Where         | Command                | What it does                                                  |
-| ------------- | ---------------------- | ------------------------------------------------------------- |
-| In `prava-ui` | `npm run link:local`   | Builds, then makes `@prava/ui` linkable on your machine       |
-| In your app   | `npm link @prava/ui`   | Uses your local build instead of the npm version              |
-| In your app   | `npm unlink @prava/ui` | Stops using it; run `npm install` afterwards to restore npm's |
-| In `prava-ui` | `npm run unlink:local` | Removes the machine-wide link                                 |
+| Where         | Command                    | What it does                                                  |
+| ------------- | -------------------------- | ------------------------------------------------------------- |
+| In `prava-ui` | `npm run link:local`       | Builds, then makes `@pravalabs/ui` linkable on your machine   |
+| In your app   | `npm link @pravalabs/ui`   | Uses your local build instead of the npm version              |
+| In your app   | `npm unlink @pravalabs/ui` | Stops using it; run `npm install` afterwards to restore npm's |
+| In `prava-ui` | `npm run unlink:local`     | Removes the machine-wide link                                 |
 
 After a change, run `npm run build` again; the app picks it up through the link.
 

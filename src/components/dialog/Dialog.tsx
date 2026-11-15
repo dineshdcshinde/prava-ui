@@ -75,7 +75,7 @@ export function DialogClose({ children }: { children: ReactElement }) {
  * Focus lands on the first focusable child; mark another with `data-autofocus`.
  * @example
  * ```tsx
- * import { Dialog, DialogClose } from '@prava/ui/dialog';
+ * import { Dialog, DialogClose } from '@pravalabs/ui/dialog';
  *
  * <Dialog
  *   trigger={<Button>Delete project</Button>}
