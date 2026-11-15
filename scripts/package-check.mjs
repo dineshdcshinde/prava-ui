@@ -9,9 +9,19 @@ import {
 } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve, sep } from "node:path";
+import { createRequire } from "node:module";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { build } from "vite";
-import { components, fieldControls, floatingControls } from "./components.mjs";
+import { rolldown } from "rolldown";
+import webpack from "webpack";
+import {
+  componentChunk,
+  components,
+  fieldControls,
+  floatingControls,
+} from "./components.mjs";
 
+const require = createRequire(import.meta.url);
 const npmCommand = process.platform === "win32" ? process.execPath : "npm";
 const npmPrefixArgs =
   process.platform === "win32" ? [process.env.npm_execpath] : [];
@@ -68,13 +78,14 @@ for (const { name } of components) {
     throw new Error(
       `The ${name} entry must start with "use client" for Next.js.`,
     );
+  const chunk = await readFile(`dist/${componentChunk(js, name)}`, "utf8");
   if (
-    !js.includes(`import './tokens.css';`) ||
-    !js.includes(`import './styles/components/${name}.css';`) ||
+    !chunk.includes(`import './tokens.css';`) ||
+    !chunk.includes(`import './styles/components/${name}.css';`) ||
     (fieldControls.has(name) &&
-      !js.includes(`import './styles/components/field.css';`)) ||
+      !chunk.includes(`import './styles/components/field.css';`)) ||
     (floatingControls.has(name) &&
-      !js.includes(`import './styles/components/floating.css';`))
+      !chunk.includes(`import './styles/components/floating.css';`))
   ) {
     throw new Error(
       `The ${name} JavaScript entry does not automatically import its stylesheets.`,
@@ -86,7 +97,7 @@ for (const { name } of components) {
   ) {
     throw new Error(`Package exports are missing the ${name} entry points.`);
   }
-  if (!rootEntry.includes(`export * from './${name}.js';`)) {
+  if (!rootEntry.includes(` } from './${name}.js';`)) {
     throw new Error(
       `The package root entry is missing ${name} exports with automatic styles.`,
     );
@@ -158,15 +169,14 @@ try {
       code: `import { ${component} } from '${manifest.name}'; console.log(${component});`,
     },
   ]);
-  for (const { out, code } of builds) {
-    const input = resolve(consumer, `${out}.js`);
-    await writeFile(input, code);
-    await build({
+  const external = ["react", "react-dom", "react/jsx-runtime"];
+  const viteBuild = (build) => (input, outDir) =>
+    build({
       configFile: false,
       root: consumer,
       logLevel: "warn",
       build: {
-        outDir: resolve(output, out),
+        outDir,
         emptyOutDir: true,
         rollupOptions: {
           input,
@@ -174,11 +184,90 @@ try {
           onwarn(warning, warn) {
             if (warning.code !== "MODULE_LEVEL_DIRECTIVE") warn(warning);
           },
-          external: ["react", "react-dom", "react/jsx-runtime"],
+          external,
         },
       },
     });
+  // Vite 8 (Rolldown) and webpack skip side-effect-free re-export modules, unlike Vite 7 (Rollup).
+  const bundlers = {
+    vite7: viteBuild(build),
+    // Like Vite 8's dependency pre-bundler: CSS stays an external import, so copy what survives.
+    async rolldown(input, dir) {
+      const bundle = await rolldown({
+        input,
+        cwd: consumer,
+        external: (id) => external.includes(id) || id.endsWith(".css"),
+        onwarn(warning, warn) {
+          if (warning.code !== "MODULE_LEVEL_DIRECTIVE") warn(warning);
+        },
+      });
+      const { output: chunks } = await bundle.write({ dir });
+      const kept = chunks.flatMap((chunk) => chunk.imports ?? []);
+      await Promise.all(
+        kept
+          .filter((id) => id.endsWith(".css"))
+          .map(async (id, index) =>
+            writeFile(
+              join(dir, `${index}.css`),
+              await readFile(resolve(consumer, id), "utf8"),
+            ),
+          ),
+      );
+    },
+    webpack: (entry, path) =>
+      new Promise((done, fail) =>
+        webpack(
+          {
+            mode: "production",
+            context: consumer,
+            entry,
+            output: { path },
+            externals: external,
+            plugins: [new MiniCssExtractPlugin()],
+            module: {
+              rules: [
+                {
+                  test: /\.css$/,
+                  use: [
+                    MiniCssExtractPlugin.loader,
+                    require.resolve("css-loader"),
+                  ],
+                },
+              ],
+            },
+          },
+          (error, stats) =>
+            error || stats.hasErrors()
+              ? fail(error ?? new Error(stats.toString("errors-only")))
+              : done(),
+        ),
+      ),
+  };
+  for (const { out, code } of builds) {
+    const input = resolve(consumer, `${out}.js`);
+    await writeFile(input, code);
+    await Promise.all(
+      Object.entries(bundlers).map(([bundler, bundle]) =>
+        bundle(input, resolve(output, bundler, out)),
+      ),
+    );
   }
+
+  // A component may ship the styles of components its chunk imports (Toast renders Alert), no others.
+  const owners = new Map();
+  for (const { name } of components)
+    owners.set(
+      componentChunk(await readFile(`dist/${name}.js`, "utf8"), name),
+      name,
+    );
+  const rendered = async (chunk, seen = new Set()) => {
+    if (seen.has(chunk)) return seen;
+    seen.add(chunk);
+    const code = await readFile(`dist/${chunk}`, "utf8");
+    for (const [, next] of code.matchAll(/from "\.\/([^"]+\.js)"/g))
+      await rendered(next, seen);
+    return seen;
+  };
 
   const readCss = async (directory) =>
     (
@@ -190,12 +279,25 @@ try {
     new RegExp(`\\.prava-${name}[\\s{.:,[>+~]`).test(css);
   // Each entry, direct or through the root, must ship its own styles and no unrelated component's.
   for (const { name, component } of components) {
-    const other = name === "button" ? ".prava-badge{" : ".prava-button{";
-    for (const out of [name, `root-${name}`]) {
+    const chunk = componentChunk(
+      await readFile(`dist/${name}.js`, "utf8"),
+      name,
+    );
+    const allowed = new Set(
+      [...(await rendered(chunk))].map((file) => owners.get(file)),
+    );
+    const foreign = components
+      .map((other) => other.name)
+      .filter((other) => !allowed.has(other));
+    for (const out of Object.keys(bundlers).flatMap((bundler) => [
+      `${bundler}/${name}`,
+      `${bundler}/root-${name}`,
+    ])) {
       const css = await readCss(resolve(output, out));
-      if (!hasSelector(css, name) || css.includes(other))
+      const extra = foreign.filter((other) => hasSelector(css, other));
+      if (!hasSelector(css, name) || extra.length)
         throw new Error(
-          `The ${out} consumer build did not select only ${component} styles.`,
+          `The ${out} consumer build did not select only ${component} styles${extra.length ? `; it also has ${extra.join(", ")}` : ""}.`,
         );
       if (fieldControls.has(name) && !css.includes(".prava-field__error{"))
         throw new Error(`The ${out} consumer build is missing field styles.`);

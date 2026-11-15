@@ -53,6 +53,8 @@ export function InviteTeammate() {
 
 You can also import one component at a time, such as `import { Button } from "@pravalabs/ui/button"`.
 
+Styles load automatically with Vite, webpack, Rspack, Parcel, and Next.js. esbuild writes them to a separate `.css` file next to your bundle, which you link from your page. With Vite, webpack, and Next.js, you get only the CSS for the components you use and the components they render, such as Alert inside Toast; Next.js loads it per page. With esbuild and plain Rollup, importing from the package root includes CSS for every component; import from component paths like `@pravalabs/ui/button` if CSS size matters. Parcel needs `"@parcel/resolver-default": { "packageExports": true }` in your `package.json` to resolve component paths.
+
 Components inherit your app's font. Prava UI never loads a font or adds global styles to your page.
 
 ### Next.js

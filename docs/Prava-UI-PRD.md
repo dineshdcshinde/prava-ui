@@ -217,7 +217,7 @@ These primitives must not require the consumer to configure Tailwind. Their API 
 
 ### 6.3 Import API
 
-The simplest consumer experience imports components from the package root. The ESM entry re-exports components through their style-bearing modules so a consumer bundler can include the selected components' compiled CSS:
+The simplest consumer experience imports components from the package root. The ESM entry re-exports the component entries by name (not `export *`, which made Next.js ship every component's CSS), and each component's compiled CSS is imported by the chunk holding its code (not by the re-export entry, which Vite 8, webpack, Rspack, Parcel, and Next.js skip), so a consumer bundler includes the selected components' CSS plus that of components they render. Packed consumer builds with Vite 7, Rolldown, and webpack prove this selection in the package check, and packed Next.js 15/16 builds proved it per route by hand; esbuild and plain Rollup include every component's CSS on root imports (recorded 2026-11-15):
 
 ```tsx
 import { Button, Card, Input } from "@pravalabs/ui";

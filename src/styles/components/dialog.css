@@ -3,7 +3,8 @@
 @layer prava.components {
   /* The panel settles into place from just below; it leaves faster than it arrives. */
   .prava-dialog {
-    @apply box-border overflow-hidden rounded-(--prava-radius-card) border-0 bg-(--prava-color-surface) p-0 text-(length:--prava-font-size-3) text-(--prava-color-text);
+    /* m-auto: modal centering comes from the browser's dialog margin, which consumer resets like Tailwind's Preflight zero. */
+    @apply m-auto box-border overflow-hidden rounded-(--prava-radius-card) border-0 bg-(--prava-color-surface) p-0 text-(length:--prava-font-size-3) text-(--prava-color-text);
     --prava-dialog-width: 32rem;
     --prava-dialog-from: 0 0.5rem;
     --prava-dialog-scale: var(--prava-dialog-scale);

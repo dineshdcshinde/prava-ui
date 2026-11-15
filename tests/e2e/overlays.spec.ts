@@ -149,6 +149,29 @@ test.describe("Dialog", () => {
     await expect(page.locator(".prava-dialog__footer")).toBeInViewport();
   });
 
+  test("stays centered under a consumer reset like Tailwind's Preflight", async ({
+    page,
+  }) => {
+    await visit(page, "overlays-dialog--default");
+    // First in <head>, as an app's own reset loads before component styles.
+    await page.evaluate(() => {
+      const reset = document.createElement("style");
+      reset.textContent = "@layer base { *, ::before, ::after { margin: 0; } }";
+      document.head.prepend(reset);
+    });
+    await page.getByRole("button", { name: "Invite" }).click();
+    const dialog = page.getByRole("dialog");
+    await settled(dialog);
+    const box = (await dialog.boundingBox())!;
+    const viewport = page.viewportSize()!;
+    expect(
+      Math.abs(box.x + box.width / 2 - viewport.width / 2),
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.abs(box.y + box.height / 2 - viewport.height / 2),
+    ).toBeLessThanOrEqual(1);
+  });
+
   test("non-modal leaves the page interactive", async ({ page }) => {
     await visit(page, "overlays-dialog--non-modal");
     const trigger = page.getByRole("button", { name: "Invite" });

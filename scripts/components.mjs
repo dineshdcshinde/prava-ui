@@ -49,3 +49,15 @@ export const floatingControls = new Set([
   "tooltip",
   "dropdown-menu",
 ]);
+
+// The chunk holding a component's code: its styles live there, since bundlers skip the re-export entry.
+export const componentChunk = (entryCode, name) => {
+  const chunks = [...entryCode.matchAll(/from "\.\/([^"]+\.js)"/g)].map(
+    ([, chunk]) => chunk,
+  );
+  if (chunks.length !== 1)
+    throw new Error(
+      `dist/${name}.js must re-export exactly one chunk to carry its styles, found: ${chunks.join(", ") || "none"}.`,
+    );
+  return chunks[0];
+};
