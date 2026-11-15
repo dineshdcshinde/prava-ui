@@ -1,6 +1,6 @@
 {
   "name": "@prava/ui",
-  "version": "1.0.0-rc.1",
+  "version": "1.0.0-rc.2",
   "private": false,
   "type": "module",
   "description": "Accessible, responsive React components with compiled CSS.",
