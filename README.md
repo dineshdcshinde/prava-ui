@@ -87,7 +87,7 @@ export default function RootLayout({
 
 ### 3. Build your screens
 
-Here's a complete team page built only from Prava UI components. Copy it into your app, and you can invite teammates, change roles, remove someone with Undo, and reach every control from the keyboard. The same file works in React and Next.js:
+Here's a complete team page built only from Prava UI components. Copy it into your app, and you can invite teammates, change roles, remove someone with Undo, switch between light and dark, and reach every control from the keyboard. The same file works in React and Next.js:
 
 | App          | Save the file as        | Then render it                                 |
 | ------------ | ----------------------- | ---------------------------------------------- |
@@ -97,7 +97,7 @@ Here's a complete team page built only from Prava UI components. Copy it into yo
 ```tsx
 "use client"; // Needed by Next.js. Vite ignores it, so one file works in both.
 
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import {
   Alert,
   Avatar,
@@ -141,6 +141,11 @@ const roleTone = {
   Editor: "info",
   Viewer: "neutral",
 } as const;
+const themes = [
+  { value: "light", label: "Light" },
+  { value: "dark", label: "Dark" },
+  { value: "system", label: "System" },
+];
 const muted = { margin: 0, color: "var(--prava-color-text-muted)" };
 
 export function TeamPage() {
@@ -151,7 +156,16 @@ export function TeamPage() {
   ]);
   const [invites, setInvites] = useState<string[]>([]);
   const [inviting, setInviting] = useState(false);
+  const [theme, setTheme] = useState("light");
   const seatsUsed = members.length + invites.length;
+
+  // Themes the whole document, so toasts and the page background follow too.
+  useEffect(() => {
+    document.documentElement.dataset.pravaTheme = theme;
+    return () => {
+      delete document.documentElement.dataset.pravaTheme;
+    };
+  }, [theme]);
 
   function sendInvite(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -199,12 +213,20 @@ export function TeamPage() {
             <h1 style={{ margin: 0 }}>Team</h1>
             <p style={muted}>Choose who can see and edit your workspace.</p>
           </div>
-          <Button
-            onClick={() => setInviting(true)}
-            disabled={seatsUsed >= SEATS}
-          >
-            Invite people
-          </Button>
+          <Stack orientation="horizontal" align="end" gap={3} wrap>
+            <Select
+              label="Theme"
+              options={themes}
+              value={theme}
+              onValueChange={setTheme}
+            />
+            <Button
+              onClick={() => setInviting(true)}
+              disabled={seatsUsed >= SEATS}
+            >
+              Invite people
+            </Button>
+          </Stack>
         </Stack>
 
         <Progress label="Seats used" value={seatsUsed} max={SEATS} showValue />
@@ -215,7 +237,7 @@ export function TeamPage() {
             <Tab value="invites">
               Pending{" "}
               {invites.length > 0 && (
-                <Badge tone="primary" content={invites.length} />
+                <Badge tone="primary" content={String(invites.length)} />
               )}
             </Tab>
           </TabList>
@@ -354,7 +376,16 @@ export default function Page() {
 }
 ```
 
-None of this code handles styling, focus, ARIA, or validation, because the components do. The Dialog traps focus and returns it when it closes, the menu works with the arrow keys, and an invalid email shows a message. `PravaProvider` can switch the whole page to dark mode or right-to-left.
+None of this code handles styling, focus, ARIA, or validation, because the components do. The Dialog traps focus and returns it when it closes, the menu works with the arrow keys, and an invalid email shows a message. The theme control sets `data-prava-theme` on `<html>`, and every component, Dialog, and toast restyles at once. "System" follows the visitor's OS setting. Leave `theme` off your root `PravaProvider` when you use a control like this, because a provider's theme overrides the one on `<html>`.
+
+Prava UI never styles your `<body>`. To make the page background follow the theme too, add this to your global CSS:
+
+```css
+body {
+  background: var(--prava-color-canvas);
+  color: var(--prava-color-text);
+}
+```
 
 ### Configure `PravaProvider`
 
