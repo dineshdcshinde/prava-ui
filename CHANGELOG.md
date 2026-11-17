@@ -4,6 +4,10 @@ Notable changes to Prava UI. This project follows [semantic versioning](https://
 
 ## Unreleased
 
+### Fixed
+
+- **Badge:** `content` accepts numbers and other React nodes, as documented, instead of only strings.
+
 ## 1.0.0-rc.1
 
 The first public release candidate.

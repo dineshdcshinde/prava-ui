@@ -1,6 +1,7 @@
 import type { HTMLAttributes, ReactNode } from "react";
 
-export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
+// The HTML `content` attribute is dropped so it doesn't narrow ours to `string`.
+export type BadgeProps = Omit<HTMLAttributes<HTMLSpanElement>, "content"> & {
   /** Visible badge text or count. Status meaning must be in this text, not only the tone. */
   content: ReactNode;
   /** Element the badge is anchored to. Omit to render a standalone status label. */
@@ -17,7 +18,7 @@ export type BadgeProps = HTMLAttributes<HTMLSpanElement> & {
  * @example
  * ```tsx
  * import { Badge } from '@pravalabs/ui/badge';
- * <Badge content="3"><Button>Inbox</Button></Badge>
+ * <Badge content={3}><Button>Inbox</Button></Badge>
  * <Badge tone="success" content="Active" />
  * ```
  */

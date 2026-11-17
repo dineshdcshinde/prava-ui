@@ -6,7 +6,7 @@ import { Badge } from "./Badge";
 describe("Badge", () => {
   it("anchors a non-interactive count to its child at the logical top-end by default", () => {
     render(
-      <Badge size="sm" content="3">
+      <Badge size="sm" content={3}>
         <Button>Inbox</Button>
       </Badge>,
     );
