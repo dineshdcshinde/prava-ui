@@ -2,11 +2,15 @@
 
 Notable changes to Prava UI. This project follows [semantic versioning](https://semver.org/) from `1.0.0` onwards. Release candidates can still include breaking changes.
 
-## Unreleased
+## 1.0.0-rc.3
 
 ### Fixed
 
 - **Badge:** `content` accepts numbers and other React nodes, as documented, instead of only strings.
+
+### Documentation
+
+- **README:** rewritten getting started for React and Next.js, with `PravaProvider` setup, brand colors, and a complete Team page example with a theme switcher.
 
 ## 1.0.0-rc.1
 

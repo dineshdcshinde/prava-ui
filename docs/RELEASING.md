@@ -273,16 +273,17 @@ Avoid `npm unpublish`. It only works within a limited window, the version number
 
 ## Publishing the next release candidate
 
-1. Add your changes to `CHANGELOG.md`, under a new `1.0.0-rc.2` heading.
+1. Add your changes to `CHANGELOG.md`, under a heading for the new version, such as `1.0.0-rc.3`.
 2. Commit them, then run:
 
    ```powershell
    npm run version:rc
    git push --follow-tags
    npm publish --tag next
+   npm dist-tag add @pravalabs/ui@<new version> latest
    ```
 
-   `npm run version:rc` moves `1.0.0-rc.1` to `1.0.0-rc.2`. Like every version script, it updates `package.json`, commits it, and creates the git tag, so your working tree must be committed first.
+   `npm run version:rc` moves `1.0.0-rc.2` to `1.0.0-rc.3`. Like every version script, it updates `package.json`, commits it, and creates the git tag, so your working tree must be committed first. The README tells people to run plain `npm i @pravalabs/ui`, which installs the `latest` tag, so `npm dist-tag add` moves `latest` to the new release candidate too.
 
 ## Version scripts
 
